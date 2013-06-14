@@ -64,7 +64,8 @@ CREATE TABLE ADICIONAL(
       REFERENCES SERVICIO(NOMBRE_SERVICIO),
    CONSTRAINT DOM_TARIFA CHECK (TARIFA >= 0),
    CONSTRAINT DOM_CANTIDAD_ADICIONAL CHECK (CANTIDAD_ADICIONAL > 0),
-   CONSTRAINT DOM_TIPO_PLAN CHECK (TIPO_PLAN IN ('PREPAGO', 'POSTPAGO', 'AMBAS')
+   CONSTRAINT DOM_TIPO_PLAN CHECK (TIPO_PLAN IN 
+      ('PREPAGO', 'POSTPAGO', 'AMBAS'))
 );  
 
 CREATE TABLE EFECTIVO(
@@ -430,11 +431,10 @@ CREATE OR REPLACE FUNCTION func_VerificarServicio() RETURNS TRIGGER
 AS $func_VerificarServicio$
 DECLARE
 
-   C1 CURSOR FOR SELECT FECHA_INIC, FECHA_FIN FROM POSEE P, ADICIONAL A 
+   C1 CURSOR FOR SELECT FECHA_INIC FROM POSEE P, ADICIONAL A 
                  WHERE ID = NEW.ID AND A.NOMBRE_SERVICIO = NEW.NOMBRE_SERVICIO
                  AND P.NOMBRE_SERVICIO = A.NOMBRE_SERVICIO;
    F_INIC DATE;
-   F_FIN DATE;
                  
 BEGIN
 
@@ -442,13 +442,10 @@ BEGIN
    
    LOOP
    
-      FETCH C1 INTO F_INIC, F_FIN;
+      FETCH C1 INTO F_INIC;
       EXIT WHEN NOT FOUND;
       
-      IF (F_FIN IS NULL OR
-         NOT (F_INIC < NEW.FECHA_INIC AND F_FIN <= NEW.FECHA_INIC)) AND
-         (NEW.FECHA_FIN IS NULL OR
-         NOT (NEW.FECHA_INIC < F_INIC AND NEW.FECHA_FIN <= F_INIC)) THEN
+      IF (F_INIC = NEW.FECHA_INIC) THEN
         
          RAISE EXCEPTION 'Un producto no puede tener contratado el mismo
                           servicio adicional durante el mismo periodo.';
@@ -622,8 +619,7 @@ DECLARE
       
    C2 CURSOR FOR SELECT CANTIDAD FROM POSEE P WHERE NEW.ID = P.ID AND
       P.NOMBRE_SERVICIO = NEW.NOMBRE_SERVICIO AND 
-      date_trunc('month', P.FECHA_INIC) <= NEW.FECHA AND
-      P.FECHA_FIN > NEW.FECHA;
+      P.FECHA_INIC = NEW.FECHA;
       
    CANTIDAD NUMERIC;
    TIPO_P VARCHAR(50);
@@ -727,8 +723,7 @@ DECLARE
       NEW.FECHA < E.FECHA_FIN);
       
    C2 CURSOR FOR SELECT NOMBRE_SERVICIO
-      FROM POSEE P WHERE NEW.ID = P.ID AND NEW.FECHA >= P.FECHA_INIC AND
-      (P.FECHA_FIN IS NULL OR NEW.FECHA < P.FECHA_FIN) AND 
+      FROM POSEE P WHERE NEW.ID = P.ID AND NEW.FECHA = P.FECHA_INIC AND
       P.NOMBRE_SERVICIO = NEW.NOMBRE_SERVICIO;
    
    nomServicio VARCHAR(50);
@@ -814,3 +809,39 @@ BEFORE INSERT ON TIENE
 FOR EACH ROW
 EXECUTE PROCEDURE func_VerificarFechasTiene();
 
+-- Verifica el tipo de plan asociado a un servicio adicional de un producto
+-- concuerde con el plan al cual esta afiliado.
+
+CREATE OR REPLACE FUNCTION func_VerificarTipoPlanAdicional() RETURNS TRIGGER
+AS $func_VerificarTipoPlanAdicional$
+
+DECLARE
+
+   C1 CURSOR FOR SELECT TIPO_PLAN FROM ESTA_AFILIADO E
+                 WHERE E.ID = NEW.ID AND E.FECHA_INIC <= NEW.FECHA_INIC
+                 AND (E.FECHA_FIN IS NULL OR NEW.FECHA_INIC < E.FECHA_FIN);
+   TIPO  VARCHAR(20);
+
+BEGIN
+
+   OPEN C1;
+   FETCH C1 INTO TIPO;
+
+   IF (FOUND AND NEW.TIPO_PLAN != E.TIPO_PLAN) THEN
+
+      RAISE EXCEPTION 'El producto no puede poseer este servicio porque
+                       difieren en el tipo de plan.';
+      CLOSE C1;
+      RETURN NULL;
+
+   END IF;
+
+   RETURN NEW;
+
+END;
+$func_VerificarTipoPlanAdicional$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trig_VerificarTipoPlanAdicional 
+BEFORE INSERT ON POSEE
+FOR EACH ROW
+EXECUTE PROCEDURE func_VerificarTipoPlanAdicional();
