@@ -1,0 +1,27 @@
+Orden de ejecución de los scripts:
+
+Resumen:
+1. Carga de tablas
+2. Inserción de alguna de las 2 base de datos (MOCEL O TVCABLE)
+3. Eliminación de tablas
+
+Nota: la inserción de datos MOCEL requiere de un solo script insert, mientras 
+que la inserción de datos TVCABLE requiere de dos insert. 
+A continuación más detalles:
+
+
+****************** Carga de tablas genéricas INNOVA *************************
+
+1. \i INNOVAschema.sql
+
+***************** Carga de base de datos MOCEL *****************************
+
+2.1 \i MOCELinsertl.sql
+
+*********** Carga de base de datos TVCABLE *********************************
+2.2 \i TVCABLEinsert.sql
+2.3 \i PRODUCTOinsert.sql
+
+
+**************** Eliminación de tablas genéricas INNOVA **********************
+3. \i INNOVAdrop.sql
