@@ -11,13 +11,14 @@ public class Producto {
     
     public int codigoProd = 0; 
     public String modelo;
-    //public Cliente cliente;
+    public Cliente cliente;
     
     
-    public Producto (int codigo, String model) {
+    public Producto (int codigo, String model, Cliente cliente) {
         
         this.codigoProd = codigo;
         this.modelo = model;
+        this.cliente = cliente;
 
     }
     
@@ -48,23 +49,28 @@ public class Producto {
         
         Producto product = null;
         
+        
         Connection conexion = Conexion.obtenerConn();
         
         if (conexion != null){
             
             Statement stmt = null;
             
-            String query = "select NOMBRE_MODELO from PRODUCTO where " +
-                    "ID = " + codigo + ";";
+            String query = "select P.NOMBRE_MODELO, C.CI from PRODUCTO P, "
+                    + "ES_DUENIO E, CLIENTE C where P.ID = " + codigo 
+                    + " and E.ID =  P.ID and C.CI = E.CI;";
             
             try{
-                
+                Cliente client = null;
                 stmt = conexion.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 
                 if (rs.next())
+                    client = Cliente.consultarCliente(
+                            Integer.parseInt(rs.getString("C.CI")));
+                    
                     product = new Producto(codigo, 
-                            rs.getString("NOMBRE_MODELO"));
+                            rs.getString("NOMBRE_MODELO"), client);
                  
             } catch (SQLException e){
             
@@ -80,7 +86,7 @@ public class Producto {
         
     }
     
-    public static void eliminarProducto(int codigo) throws SQLException{
+    public void eliminarProducto() throws SQLException{
         
         Connection conexion = null;
         
@@ -90,7 +96,7 @@ public class Producto {
             stmt = conexion.createStatement();
             
             String delete = "delete from PRODUCTO where ID = " +
-                    codigo + ";";
+                    this.codigoProd + ";";
             stmt.executeUpdate(delete);
             
             
@@ -103,7 +109,7 @@ public class Producto {
         } 
     }
     
-    public void actualizarProducto() throws SQLException{
+    public void modificarProducto() throws SQLException{
         
         Connection conexion = null;
         

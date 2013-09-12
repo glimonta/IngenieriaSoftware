@@ -84,7 +84,7 @@ public class Paquete {
     }
     
     
-    public static void eliminarPaquete(String nom) throws SQLException{
+    public void eliminarPaquete() throws SQLException{
         
         Connection conexion = null;
         
@@ -94,7 +94,7 @@ public class Paquete {
             stmt = conexion.createStatement();
             
             String delete = "delete from PAQUETE where NOMBRE_PAQUETE ='" 
-                    + nom + "';";
+                    + this.nombre + "';";
             stmt.executeUpdate(delete);
             
         }catch (SQLException e) {            
@@ -108,7 +108,7 @@ public class Paquete {
 
     }
     
-    public void actualizarPaquete() throws SQLException{
+    public void modificarPaquete() throws SQLException{
         
         Connection conexion = null;
         
@@ -181,7 +181,15 @@ public class Paquete {
         
         return lista;
         
-    }   
+    }  
+    
+    
+    @Override
+    public String toString() {
+        
+        return "Nombre: " + nombre + " Descrpcion: " + descripcion; 
+        
+    }
 
     
 }

@@ -83,7 +83,7 @@ public class Servicio {
     }
     
     
-    public static void eliminarServicio(String nom) throws SQLException{
+    public void eliminarServicio() throws SQLException{
         
         Connection conexion = Conexion.obtenerConn();
         
@@ -94,7 +94,7 @@ public class Servicio {
             stmt = conexion.createStatement();
             
             String delete = "delete from SERVICIO where NOMBRE_SERVICIO ='" 
-                    + nom + "';";
+                    + this.nombre + "';";
             stmt.executeUpdate(delete);  
             
         } catch (SQLException e) {
@@ -109,7 +109,7 @@ public class Servicio {
         
     }
     
-    public void actualizarServicio() throws SQLException{
+    public void modificarServicio() throws SQLException{
         
         Connection conexion = null;
         
@@ -132,6 +132,15 @@ public class Servicio {
 
         }     
         
+        
+    }
+    
+    
+    @Override
+    public String toString() {
+        
+        return "Nombre: " + nombre + ", Descripcion: " + descripcion 
+                + ", Tipo de servicio: " + tipoServicio;
         
     }
     

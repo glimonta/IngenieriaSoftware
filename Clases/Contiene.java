@@ -83,8 +83,7 @@ public class Contiene {
         
     }
     
-    public static void eliminarContiene(Paquete pack, Servicio serv) 
-            throws SQLException{
+    public void eliminarContiene() throws SQLException{
         
         Connection conexion = null;
         
@@ -94,8 +93,8 @@ public class Contiene {
             stmt = conexion.createStatement();
             
             String delete = "delete from CONTIENE where NOMBRE_PAQUETE = '" +
-                    pack.nombre + "' and NOMBRE_SERVICIO = '" + 
-                    serv.nombre + "';";
+                   this.paquete.nombre + "' and NOMBRE_SERVICIO = '" + 
+                    this.servicio.nombre + "';";
             stmt.executeUpdate(delete);
             
             
@@ -109,7 +108,7 @@ public class Contiene {
     }
     
     
-    public void actualizarContiene() throws SQLException{
+    public void modificarContiene() throws SQLException{
         
         Connection conexion = null;
         
@@ -132,6 +131,15 @@ public class Contiene {
             conexion.close();
             
         } 
+    }
+    
+    @Override
+    public String toString(){
+        
+        return "Cantidad: " + cantidad + ", Costo Adicional: " + costoAdicional
+                + ", Paquete: " + paquete.toString() + ", Servicio: " 
+                + servicio.toString();
+        
     }
     
     
