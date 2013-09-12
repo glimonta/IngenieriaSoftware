@@ -1,22 +1,15 @@
-
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/**
- *
- * @author gabriela
- */
 public class Conexion {
     
-    private static String url = "jdbc:postgresql:innova";
-    private static String user = "gabriela";
-    private static String pass = "wennicheinjungewar";
+    private static String url = "jdbc:postgresql://localhost/marcos";
+    private static String user = "marcos";
+    private static String pass = "postgres";
     
     /* Obtiene la conexion a la base de datos */
     
@@ -44,4 +37,5 @@ public class Conexion {
        
         return conexion;        
     } 
+    
 }
