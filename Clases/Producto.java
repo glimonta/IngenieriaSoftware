@@ -267,6 +267,12 @@ public class Producto {
         
     }*/
     
-    
+    @Override
+    public String toString() {
+        
+        return "Codigo del producto: " + codigoProd + ", Modelo: " + modelo 
+                + ", Cliente: " + cliente.toString();
+        
+    }
     
 }
