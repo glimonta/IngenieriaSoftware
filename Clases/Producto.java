@@ -12,6 +12,12 @@ public class Producto {
     String modelo;
     Cliente cliente;
     
+    public Producto() {
+        this.codigoProd = null;
+        this.modelo = null;
+        this.cliente = null;
+    }
+    
     public Producto(Integer codigo, String modelo, Cliente cliente) {
         this.codigoProd = codigo;
         this.modelo = modelo;
@@ -20,6 +26,13 @@ public class Producto {
     
     public Integer getCod() {
         return this.codigoProd;
+    }
+    
+    public void eliminarProducto() {
+    }
+    
+    static Producto consultarProducto(Integer id) {
+        return null;
     }
     
     @Override

@@ -27,14 +27,42 @@ public class Plan {
         this.tipoPlan = tipoPlan;
     }
     
+    public Plan() {
+        this.descripcion = null;
+        this.nombre = null;
+        this.tipoPlan = null;
+    }
+    
     @Override
     public String toString() {
         return "Nombre: " + this.nombre + ", Descripcion: " + this.descripcion +
                 ", Tipo de Plan: " + this.tipoPlan;
     }
     
-    // no he probado que este metodo funcione.
-    void RegistrarPlan() {
+    void modificarPlan() {
+         try {
+            String url = "jdbc:postgresql:innova";
+            Properties props = new Properties();
+            props.setProperty("user","gabriela");
+            props.setProperty("password","wennicheinjungewar");
+             try (Connection conn = DriverManager.getConnection(url,props)) {
+                 Statement st;
+                 st = conn.createStatement();
+                 
+                 st.executeUpdate("update plan set nombre ='"
+                         +this.nombre+"', descripcion ='"+this.descripcion+"'"
+                         + "where nombre ='"+this.nombre+"' and tipo_plan='"
+                         + this.tipoPlan +"';");
+                         
+            }
+            
+          } catch (SQLException ex) {
+              System.err.println(ex.getMessage());
+          }
+        
+    }   
+    
+    void registrarPlan() {
         
         try {
             String url = "jdbc:postgresql:innova";
@@ -46,7 +74,7 @@ public class Plan {
             Statement st;
             st = conn.createStatement();
             
-            st.executeUpdate("insert into plan values ('"+ this.nombre + 
+            st.execute("insert into plan values ('"+ this.nombre + 
                     "', '" + this.tipoPlan + "', '" + this.descripcion + "');");
             
             
@@ -58,11 +86,65 @@ public class Plan {
         
     }
     
-    void ConsultarPlan() {
+    void eliminarPlan() {
+        String url = "jdbc:postgresql:innova";
+        Properties props = new Properties();
+        props.setProperty("user","gabriela");
+        props.setProperty("password","wennicheinjungewar");
+       
+        try (Connection conn = DriverManager.getConnection(url,props)) {
+            Statement st;
+            st = conn.createStatement();
+                        
+            st.execute("delete from esta_afiliado where nombre_plan ='" + 
+                    this.nombre + "' and tipo_plan ='" + this.tipoPlan + "';");
+            
+            st.execute("delete from tiene where nombre_plan ='" + 
+                    this.nombre + "' and tipo_plan ='" + this.tipoPlan + "';");
+
+            st.execute("delete from Plan where nombre_plan ='" + 
+                    this.nombre + "' and tipo_plan ='" + this.tipoPlan + "';");
         
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
     }
     
-    //Este metodo no esta probado.
+    static Plan consultarPlan(String nombre, String tipo_plan) {
+             
+        Plan plan = new Plan();
+        
+        try {
+            String url = "jdbc:postgresql:innova";
+            Properties props = new Properties();
+            props.setProperty("user","gabriela");
+            props.setProperty("password","wennicheinjungewar");
+            Connection conn = DriverManager.getConnection(url,props);
+            
+            Statement st;
+            st = conn.createStatement();
+             
+            ResultSet rs = st.executeQuery("select nombre_plan, tipo_plan, "
+                    + "descripcion from plan where nombre = '" + 
+                        nombre + "' and tipo_plan = '" +tipo_plan+ "';");
+            
+            rs.next();
+              
+            plan = new Plan(rs.getString(1),
+                     rs.getString(2), rs.getString(3));
+                        
+            
+            
+          conn.close();
+            
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        
+        return plan;
+          
+    }
+    
     ArrayList<Paquete> ListarPaquetes() {
         
         ArrayList<Paquete> paquetes = new ArrayList<>();

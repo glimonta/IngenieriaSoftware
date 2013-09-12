@@ -8,14 +8,18 @@
  * @author gabriela
  */
 public class FormaPago {
-    String tipoDePago;
+    Integer id;
     
-    public FormaPago(String tipoDePago) {
-        this.tipoDePago = tipoDePago;
+    public FormaPago() {
+        this.id = null;
     }
+    
+    public FormaPago(Integer id) {
+        this.id = id;
+    }   
     
     @Override
     public String toString() {
-        return this.tipoDePago;
+        return this.id.toString();
     }
 }

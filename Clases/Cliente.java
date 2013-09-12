@@ -17,19 +17,26 @@ import java.util.Properties;
  * @author gabriela
  */
 public class Cliente {
-    Integer cedula;
-    String nombre;
-    String direccion;
-    ArrayList<Integer> telefonos;
+    public Integer cedula;
+    public String nombre;
+    public String direccion;
+    public ArrayList<Long> telefonos;
     
-    public Cliente(Integer cedula, String nombre, String direccion, ArrayList<Integer> telefonos) {
+    public Cliente() {
+        this.cedula = null;
+        this.nombre = null;
+        this.direccion = null;
+        this.telefonos = null;
+    }
+    
+    public Cliente(Integer cedula, String nombre, String direccion, ArrayList<Long> telefonos) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefonos = telefonos;
     }
     
-    void RegistrarCliente() throws SQLException {
+    void registrarCliente() throws SQLException {
         
         try {
             String url = "jdbc:postgresql:innova";
@@ -44,7 +51,7 @@ public class Cliente {
             st.executeUpdate("insert into cliente values ('" + this.cedula.toString() + "', '"
                     + this.nombre + "', '" + this.direccion + "');");
             
-            for (int i=0; i < this.telefonos.toArray().length; ++i) {
+            for (int i=0; i < telefonos.toArray().length; ++i) {
                 st.executeUpdate("insert into telefono values ('" + this.cedula.toString() 
                         + "', '" + this.telefonos.get(i).toString() + "');");
             }
@@ -57,11 +64,112 @@ public class Cliente {
           
     }
     
-    void ConsultarCliente() {
-        // Consultar clientes que es? es consultar segun el nombre? segun la cedula? no se que debe hacer el metodo :S
+    static Cliente consultarCliente(Integer cedula) {
+        
+        Cliente cliente = new Cliente();
+        
+        try {
+            String url = "jdbc:postgresql:innova";
+            Properties props = new Properties();
+            props.setProperty("user","gabriela");
+            props.setProperty("password","wennicheinjungewar");
+            Connection conn = DriverManager.getConnection(url,props);
+            
+            Statement st;
+            st = conn.createStatement();
+            
+            ResultSet rs = st.executeQuery("select numero from telefono where "
+                    + "ci = '" + cedula.toString() + "';");
+            
+            if (rs != null) {
+
+                ArrayList<Long> tlfs = new ArrayList<>();
+                
+                while (rs.next()) {
+                    Long telefono = Long.valueOf(rs.getString(1));
+                    tlfs.add(telefono);
+                }
+                
+                rs.close();
+                
+                rs = st.executeQuery("select ci, nombre, direccion from cliente where ci = '" + 
+                    cedula.toString() + "';");
+            
+                rs.next();
+              
+                cliente = new Cliente(rs.getInt(1),
+                        rs.getString(2), rs.getString(3), tlfs);
+                        
+            }
+            
+            conn.close();
+            
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        
+        return cliente;
+        
     }
     
-    ArrayList<Producto> ObtenerProductos() {
+    
+    void modificarCliente() {
+         try {
+            String url = "jdbc:postgresql:innova";
+            Properties props = new Properties();
+            props.setProperty("user","gabriela");
+            props.setProperty("password","wennicheinjungewar");
+             try (Connection conn = DriverManager.getConnection(url,props)) {
+                 Statement st;
+                 st = conn.createStatement();
+                 
+                 st.executeUpdate("update cliente set nombre ='"
+                         +this.nombre+"', direccion ='"+this.direccion+"'"
+                         + "where ci ='"+this.cedula+"';");
+       
+                 st.execute("delete from Telefono where ci ='"+this.cedula+"';");
+                 
+                for (int i=0; i < this.telefonos.toArray().length; ++i) {
+                  st.execute("insert into Telefono values ("+ this.cedula +"','"
+                          +this.telefonos.get(i).toString()+"');");
+                 }                  
+            }
+            
+          } catch (SQLException ex) {
+              System.err.println(ex.getMessage());
+          }
+        
+    }
+   
+    void eliminarCliente() {
+          
+      ArrayList<Producto> productos = this.obtenerProductos();
+    
+            String url = "jdbc:postgresql:innova";
+            Properties props = new Properties();
+            props.setProperty("user","gabriela");
+            props.setProperty("password","wennicheinjungewar");
+             try (Connection conn = DriverManager.getConnection(url,props)) {
+                 Statement st;
+                 st = conn.createStatement();
+                        
+                 st.execute("delete from Telefono where ci ='"+this.cedula+"';");
+
+                 st.execute("delete from Cliente where ci ='"+this.cedula+"';");
+
+                 for (int i=0; i < productos.toArray().length; ++i) {
+                   ((Producto) productos.get(i)).eliminarProducto();
+                 }            
+                 
+            
+          } catch (SQLException ex) {
+              System.err.println(ex.getMessage());
+          }
+        
+    }
+      
+    
+    ArrayList<Producto> obtenerProductos() {
         
         ArrayList<Producto> productos = new ArrayList<>();
         
@@ -96,8 +204,6 @@ public class Cliente {
     
     @Override
     public String toString() {
-        String retorno = "Cedula: " + this.cedula.toString() + ", Nombre: " + 
-                this.nombre + ", Direccion: " + this.direccion + ", Telefonos: ";
         String tlfs = "";
         
         for (int i=0; i < this.telefonos.toArray().length; ++i) {
@@ -112,18 +218,16 @@ public class Cliente {
                 + tlfs;
     }
     
-    public static void main(String[] args) {
-        ArrayList<Integer> telefonosG = new ArrayList<>();
-        telefonosG.add(2122564041);
-        telefonosG.add(2122344229);
-        Cliente c = new Cliente(21030282, "Gabriela", "Macaracuay", telefonosG);
+  /*  public static void main(String[] args) throws SQLException {
         
+        Cliente c = consultarCliente(21030282);
         
-        ArrayList<Producto> productos = c.ObtenerProductos();
+        System.out.println(c.toString());
+        ArrayList<Producto> productos = c.obtenerProductos();
         
         for (int i=0; i < productos.toArray().length; ++i) {
-                System.out.println(productos.get(i).toString());
-            }
+            System.out.println(productos.get(i).toString());
+        }
         
-    }
+    }*/
 }
