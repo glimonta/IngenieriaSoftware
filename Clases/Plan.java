@@ -27,12 +27,6 @@ public class Plan {
         this.tipoPlan = tipoPlan;
     }
     
-    public Plan() {
-        this.descripcion = null;
-        this.nombre = null;
-        this.tipoPlan = null;
-    }
-    
     @Override
     public String toString() {
         return "Nombre: " + this.nombre + ", Descripcion: " + this.descripcion +
@@ -95,7 +89,7 @@ public class Plan {
     
     static Plan consultarPlan(String nombre, String tipo_plan) {
              
-        Plan plan = new Plan();
+        Plan plan = null;
         
         try (Connection conn = Conexion.obtenerConn()) {
             

@@ -23,12 +23,6 @@ public class Posee {
     ServicioAdicional adicional;
     Producto producto;
     
-    public Posee() {
-        fechaInicio = null;
-        adicional = new ServicioAdicional();
-        producto = new Producto();
-    }
-    
     public Posee(Date fechaInicio, ServicioAdicional adicional, Producto producto) {
         this.fechaInicio = fechaInicio;
         this.adicional = adicional;
@@ -61,7 +55,7 @@ public class Posee {
     }
      
     static Posee consultarPosee(Integer id, String nombre_servicio, java.sql.Date fecha) throws ParseException {
-        Posee posee = new Posee();
+        Posee posee = null;
         
         try (Connection conn = Conexion.obtenerConn()) {
             
@@ -76,14 +70,14 @@ public class Posee {
             
             rs.next();
               
-            java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(2));
+            java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(3));
             fecha = new java.sql.Date(utilDate.getTime());
             
             
-            Producto producto = Producto.consultarProducto(id);
-            ServicioAdicional servicioAdicional = ServicioAdicional.consultarServicioAdicional(nombre_servicio);
+            Producto producto = Producto.consultarProducto(rs.getInt(1));
+            ServicioAdicional servicioAdicional = ServicioAdicional.consultarServicioAd(rs.getString(2));
             
-            posee = new Posee(rs.getInt(1), fecha, servicioAdicional, producto);
+            posee = new Posee(fecha, servicioAdicional, producto);
             
             
           conn.close();

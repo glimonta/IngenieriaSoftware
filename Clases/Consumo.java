@@ -24,13 +24,6 @@ public class Consumo {
     Producto producto;
     Servicio servicio;
     
-    public Consumo() {
-        this.cantidad = null;
-        this.fecha = null;
-        this.producto = new Producto();
-        this.servicio = new Servicio();
-    }
-    
     public Consumo(Integer cantidad, Date fecha, Producto producto, Servicio servicio) {
         this.cantidad = cantidad;
         this.fecha = fecha;
@@ -65,7 +58,7 @@ public class Consumo {
     }
     
     static Consumo consultarConsumo(Integer id, String nombre_servicio, java.sql.Date fecha) throws ParseException {
-        Consumo consumo = new Consumo();
+        Consumo consumo = null;
         
         try (Connection conn = Conexion.obtenerConn()) {
             

@@ -18,11 +18,6 @@ import java.util.Properties;
 public class Efectivo extends FormaPago {
     Integer numeroPago;
     
-    public Efectivo() {
-        super();
-        this.numeroPago = null;
-    }
-    
     public Efectivo(Integer id, Integer numPago) {
         super(id);
         this.numeroPago = numPago;
@@ -54,7 +49,7 @@ public class Efectivo extends FormaPago {
     }
     
     static Efectivo consultarEfectivo(Integer numPago) {
-        Efectivo efectivo = new Efectivo();
+        Efectivo efectivo = null;
         
         try (Connection conn = Conexion.obtenerConn()) {
             
