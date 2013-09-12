@@ -79,7 +79,7 @@ public class Factura {
             st = conn.createStatement();
             
             ResultSet rs = st.executeQuery("select valor from comentario where"
-                    + " id = '" + producto.codigoProd.toString() + "' and fecha ='"
+                    + " id = '" + producto.codigoProd + "' and fecha ='"
                     + fecha.toString() + "';");
             
             if (rs != null) {
@@ -95,7 +95,7 @@ public class Factura {
                 rs.close();
                 
                 rs = st.executeQuery("select monto_total from factura where "
-                    + "id = '" + producto.codigoProd.toString() + "' and fecha ='"
+                    + "id = '" + producto.codigoProd + "' and fecha ='"
                     + fecha.toString() + "';");
             
                 rs.next();
@@ -120,16 +120,16 @@ public class Factura {
                
             st.executeUpdate("update factura set monto_total ='"
                     + this.montoTotal +"' where id ='"
-                    + this.producto.codigoProd.toString()
+                    + this.producto.codigoProd
                     + "' and fecha ='" + this.fecha.toString() +"';");
        
             st.execute("delete from comentario where id ='" 
-                    + this.producto.codigoProd.toString() + "' and fecha ='"
+                    + this.producto.codigoProd + "' and fecha ='"
                     + this.fecha.toString() + "';");
                 
             for (int i=0; i < this.comentarios.toArray().length; ++i) {
                 st.execute("insert into comentario values ('" +
-                        this.producto.codigoProd.toString() + "', '" +
+                        this.producto.codigoProd + "', '" +
                         this.fecha.toString() + "', '" +
                         this.comentarios.get(i).toString() +"');");
                 }                  
@@ -146,11 +146,11 @@ public class Factura {
                  st = conn.createStatement();
                         
                  st.execute("delete from comentario where id ='"
-                         + this.producto.codigoProd.toString() 
+                         + this.producto.codigoProd 
                          + "' and fecha ='" + this.fecha.toString() +"';");
 
                  st.execute("delete from factura where id ='"
-                         + this.producto.codigoProd.toString() 
+                         + this.producto.codigoProd
                          + "' and fecha ='" + this.fecha.toString() +"';");                         
             
           } catch (SQLException ex) {
@@ -158,7 +158,7 @@ public class Factura {
           }
     }
     
-    /*public static void main(String[] args) {
+    public static void main(String[] args) {
         Date fecha = new Date(2015-1900,04,26);
         ArrayList<String> comentarios = new ArrayList<>();
         comentarios.add("holis soy un comentario!");
@@ -183,5 +183,5 @@ public class Factura {
         
         factura.eliminarFactura();
         
-    }*/
+    }
 }

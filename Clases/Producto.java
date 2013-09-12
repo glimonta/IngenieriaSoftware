@@ -14,7 +14,7 @@ public class Producto {
     public Cliente cliente;
     
     
-    public Producto (int codigo, String model, Cliente cliente) {
+    public Producto(int codigo, String model, Cliente cliente) {
         
         this.codigoProd = codigo;
         this.modelo = model;

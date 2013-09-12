@@ -36,7 +36,7 @@ public class Afiliacion {
     public String toString() {
         return "Fecha de Inicio: " + this.fechaInicio.toString() +
                 "Fecha de Fin: " + this.fechaFin.toString() +
-                "ID de producto: " + this.producto.codigoProd.toString() +
+                "ID de producto: " + this.producto.codigoProd +
                 "Nombre del Plan: " + this.plan.nombre +
                 "Tipo de Plan: " + this.plan.tipoPlan;
     }
