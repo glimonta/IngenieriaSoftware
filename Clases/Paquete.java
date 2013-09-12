@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class Paquete {
     
@@ -134,17 +135,19 @@ public class Paquete {
     }
     
     /*Imprime los servicios asociados a un Paquete*/
-    // Falta pasarlo a lista.
-    public static void ListarServicios(String nom) throws SQLException {
+    public static ArrayList<Servicio> ListarServicios(String nom) throws SQLException {
         
+        ArrayList<Servicio> lista = new ArrayList();
         Connection conexion = Conexion.obtenerConn();
         
         if (conexion != null) {
             
             Statement stmt = null;
             
-            String query = "select NOMBRE_SERVICIO from CONTIENE where " +
-                           "NOMBRE_PAQUETE = '" + nom + "'";            
+            String query = "select S.NOMBRE_SERVICIO, DESCRIPCION, TIPO_SERVICIO "
+                    + "from CONTIENE C, SERVICO S where " 
+                    + "C.NOMBRE_PAQUETE = '" + nom + "' and C.NOMBRE_SERVICIO "
+                    + "= S.NOMBRE_SERVICIO";
             
             try {
             
@@ -152,13 +155,17 @@ public class Paquete {
                 stmt = conexion.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 
-                System.out.println("Lista de Servicios: ");
-                
                 while (rs.next()) {
                     
-
                     String nomServicio = rs.getString("NOMBRE_SERVICIO");
-                    System.out.println(nomServicio);
+                    String descripcion = rs.getString("DESCRIPCION");
+                    String tipoServ = rs.getString("TIPO_SERVICIO");
+                    
+                    Servicio serv = new Servicio(nomServicio,descripcion,
+                            tipoServ);
+                    
+                    lista.add(serv);
+                    
                 }
                 
             } catch (SQLException e) {
@@ -171,6 +178,9 @@ public class Paquete {
                 }
             }
         }
+        
+        return lista;
+        
     }   
 
     
