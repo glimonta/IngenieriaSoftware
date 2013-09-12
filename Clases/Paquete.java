@@ -18,7 +18,7 @@ public class Paquete {
     }
     
     
-    public static void registrarPaquete(String nom, String desc) throws Exception {
+    public void registrarPaquete() throws Exception {
         
                 
         Connection conexion = null;
@@ -28,8 +28,8 @@ public class Paquete {
             Statement stmt = null;
             stmt = conexion.createStatement();
             
-            String insert = "insert into PAQUETE values ('" + nom + "', '" +
-                            desc + "');";
+            String insert = "insert into PAQUETE values ('" + nombre + "', '" +
+                            descripcion + "');";
             stmt.executeUpdate(insert);
             
         }catch (SQLException e) {            
@@ -181,7 +181,7 @@ public class Paquete {
         
         return lista;
         
-    }   
+    }  
     
     
     @Override

@@ -14,7 +14,7 @@ public class Producto {
     public Cliente cliente;
     
     
-    public Producto(int codigo, String model, Cliente cliente) {
+    public Producto (int codigo, String model, Cliente cliente) {
         
         this.codigoProd = codigo;
         this.modelo = model;
@@ -22,7 +22,7 @@ public class Producto {
 
     }
     
-    public static void registrarProducto(int codigo, String model) throws SQLException{
+    public void registrarProducto() throws SQLException{
         
         Connection conexion = null;
         
@@ -31,8 +31,8 @@ public class Producto {
             Statement stmt = null;
             stmt = conexion.createStatement();
             
-            String insert = "insert into PRODUCTO values ("+ codigo +
-                    ", '" + model + "');";
+            String insert = "insert into PRODUCTO values ("+ codigoProd +
+                    ", '" + modelo + "');";
             stmt.executeUpdate(insert);
             
             

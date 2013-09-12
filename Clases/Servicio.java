@@ -19,7 +19,7 @@ public class Servicio {
         this.tipoServicio = tipo;
     }
             
-    public static void resgistrarServicio(String nom, String desc, String tipo) 
+    public void resgistrarServicio() 
                    throws Exception{
         
         Connection conexion = null;
@@ -30,8 +30,8 @@ public class Servicio {
             Statement stmt = null;
             stmt = conexion.createStatement();
             
-            String insert = "insert into SERVICIO values ('" + nom + "', '" +
-                            desc + "', '" + tipo + "');";
+            String insert = "insert into SERVICIO values ('" + nombre + "', '" +
+                            descripcion + "', '" + tipoServicio + "');";
             stmt.executeUpdate(insert);
             
         }catch (SQLException e) {            

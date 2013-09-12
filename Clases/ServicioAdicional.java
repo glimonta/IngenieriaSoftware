@@ -21,8 +21,7 @@ public class ServicioAdicional extends Servicio {
     }
     
     /** SI EXPLOTA PUEDE SER POR EL FLOAT **/
-    public static void registrarServicioAd(String nom, float tarifa, int cantAd, 
-                                       String tipoPlan) throws Exception {
+    public void registrarServicioAd() throws Exception {
         
         Connection conexion = null;
         
@@ -31,8 +30,9 @@ public class ServicioAdicional extends Servicio {
             Statement stmt = null;
             stmt = conexion.createStatement();
             
-            String insert = "insert into ADICIONAL values ('" + nom + "', '" +
-                            tarifa + "', '" + cantAd + "', '" + tipoPlan + "');";
+            String insert = "insert into ADICIONAL values ('" + nombre + "', '" 
+                    + tarifa + "', '" + cantidadAdicional + "', '" 
+                    + tipoPlan + "');";
             stmt.executeUpdate(insert);
             
         }catch (SQLException e) {            
