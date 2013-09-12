@@ -22,13 +22,6 @@ public class Cliente {
     public String direccion;
     public ArrayList<Long> telefonos;
     
-    public Cliente() {
-        this.cedula = null;
-        this.nombre = null;
-        this.direccion = null;
-        this.telefonos = null;
-    }
-    
     public Cliente(Integer cedula, String nombre, String direccion, ArrayList<Long> telefonos) {
         this.cedula = cedula;
         this.nombre = nombre;
@@ -61,7 +54,7 @@ public class Cliente {
     
     static Cliente consultarCliente(Integer cedula) {
         
-        Cliente cliente = new Cliente();
+        Cliente cliente = null;
         
         try (Connection conn = Conexion.obtenerConn()) {
             

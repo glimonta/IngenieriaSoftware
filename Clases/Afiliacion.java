@@ -25,13 +25,6 @@ public class Afiliacion {
     Plan plan;
     Producto producto;
     
-    public Afiliacion() {
-        this.fechaInicio = null;
-        this.fechaFin = null;
-        this.plan = new Plan();
-        this.producto = new Producto();
-    }
-    
     public Afiliacion(Date fechaI, Date fechaF, Plan plan, Producto producto) {
         this.fechaInicio = fechaI;
         this.fechaFin = fechaF;
@@ -67,7 +60,7 @@ public class Afiliacion {
     }
     
     static Afiliacion consultarAfiliacion(Integer id, String nombre_plan, String tipo_plan, Date fechaInicio) throws ParseException {
-        Afiliacion afiliacion = new Afiliacion();
+        Afiliacion afiliacion = null;
         
         try (Connection conn = Conexion.obtenerConn()) {
             
@@ -80,21 +73,22 @@ public class Afiliacion {
                     + tipo_plan + "' and fecha_inic = '" + fechaInicio.toString()
                     + "';");
             
-            rs.next();
+            if (rs != null) {
+                rs.next();
               
-            java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(1));
-            java.sql.Date fechaI = new java.sql.Date(utilDate.getTime());
+                java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(1));
+                java.sql.Date fechaI = new java.sql.Date(utilDate.getTime());
             
-            utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(2));
-            java.sql.Date fechaF = new java.sql.Date(utilDate.getTime());
+                utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(2));
+                java.sql.Date fechaF = new java.sql.Date(utilDate.getTime());
             
-            Plan plan = Plan.consultarPlan(rs.getString(2), rs.getString(3));
-            Producto producto = Producto.consultarProducto(rs.getInt(1));
+                Plan plan = Plan.consultarPlan(rs.getString(2), rs.getString(3));
+                Producto producto = Producto.consultarProducto(rs.getInt(1));
             
-            afiliacion = new Afiliacion(fechaI, fechaF, plan, producto);
-            
-            
-          conn.close();
+                afiliacion = new Afiliacion(fechaI, fechaF, plan, producto);
+            }
+                conn.close();
+
             
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());

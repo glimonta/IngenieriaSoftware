@@ -24,17 +24,6 @@ public class Tarjeta extends FormaPago {
     String cedulaTitular;
     String marca;
     
-    public Tarjeta() {
-        super();
-        this.numero = null;
-        this.banco = null;
-        this.fechaVenc = null;
-        this.tipoTarjeta = null;
-        this.codSeguridad = null;
-        this.cedulaTitular = null;
-        this.marca = null;
-    }
-    
     public Tarjeta(Integer id, String numero, String banco,
             Date fechaVenc, String tipoTarjeta, Integer codSeguridad,
             String cedulaTitular, String marca) {
@@ -88,7 +77,7 @@ public class Tarjeta extends FormaPago {
     }
     
     static Tarjeta consultarTarjeta(String numero) throws ParseException {
-        Tarjeta tarjeta = new Tarjeta();
+        Tarjeta tarjeta = null;
         
         try (Connection conn = Conexion.obtenerConn()) {
             

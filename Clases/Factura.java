@@ -23,13 +23,6 @@ public class Factura {
     ArrayList<String> comentarios;
     Producto producto;
     
-    public Factura() {
-        this.fecha = null;
-        this.montoTotal = 0.0;
-        this.comentarios = new ArrayList<>();
-        this.producto = new Producto();
-    }
-    
     public Factura(Date fecha, double montoTotal, ArrayList<String> comentarios, Producto producto) {
         this.fecha = fecha;
         this.montoTotal = montoTotal;
@@ -78,7 +71,7 @@ public class Factura {
     }
     
     static Factura consultarFactura(Producto producto, Date fecha) {
-        Factura factura = new Factura();
+        Factura factura = null;
         
         try (Connection conn = Conexion.obtenerConn()) {
             

@@ -10,10 +10,6 @@
 public class FormaPago {
     Integer id;
     
-    public FormaPago() {
-        this.id = null;
-    }
-    
     public FormaPago(Integer id) {
         this.id = id;
     }   

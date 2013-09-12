@@ -12,15 +12,6 @@ public class Servicio {
     public String tipoServicio;
     
     
-    public Servicio() {
-        
-    }
-    
-    public Servicio(String nom) {
-        
-        this.nombre = nom;
-    }
-    
     public Servicio(String nom, String desc, String tipo) {
         
         this.nombre = nom;
@@ -110,7 +101,7 @@ public class Servicio {
             
             System.out.println(e.getMessage());
             
-        }finally {                       
+        } finally {                       
             conexion.close();
 
         }

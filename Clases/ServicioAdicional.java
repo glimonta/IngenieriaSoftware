@@ -10,13 +10,6 @@ public class ServicioAdicional extends Servicio {
     public int cantidadAdicional = 0;
     public String tipoPlan;
     
-    public ServicioAdicional(String nom, float tarifa, int cantAd, String tipoPlan) {
-     
-        super(nom);
-        this.tarifa = tarifa;
-        this.cantidadAdicional = cantAd;
-        this.tipoPlan = tipoPlan;
-    }
     
     public ServicioAdicional(String nom, String desc, String tipo, float tarifa, 
                              int cantAd, String tipoPlan) {
@@ -140,10 +133,10 @@ public class ServicioAdicional extends Servicio {
                     this.nombre +"';";
             stmt.executeUpdate(update);
             
-        }catch (SQLException e) {            
+        } catch (SQLException e) {            
             System.out.println(e.getMessage());
             
-        }finally {                       
+        } finally {                       
             conexion.close();
         }   
     }
