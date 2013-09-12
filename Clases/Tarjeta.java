@@ -60,12 +60,7 @@ public class Tarjeta extends FormaPago {
     }
     
     void RegistrarTarjeta() {
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-            Connection conn = DriverManager.getConnection(url,props);
+        try (Connection conn = Conexion.obtenerConn()) {
             
             Statement st;
             st = conn.createStatement();
@@ -95,12 +90,7 @@ public class Tarjeta extends FormaPago {
     static Tarjeta consultarTarjeta(String numero) throws ParseException {
         Tarjeta tarjeta = new Tarjeta();
         
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-            Connection conn = DriverManager.getConnection(url,props);
+        try (Connection conn = Conexion.obtenerConn()) {
             
             Statement st;
             st = conn.createStatement();
@@ -127,23 +117,16 @@ public class Tarjeta extends FormaPago {
     }
     
     void modificarTarjeta() {
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-             try (Connection conn = DriverManager.getConnection(url,props)) {
-                 Statement st;
-                 st = conn.createStatement();
+        try (Connection conn = Conexion.obtenerConn()) {
+            Statement st;
+            st = conn.createStatement();
                  
-                 st.executeUpdate("update tarjeta set marca ='"
-                         + this.marca + "', banco ='" + this.banco + "', cod_seguridad = '"
-                         + this.codSeguridad + "', fecha_venc = '" + this.fechaVenc.toString()
-                         + "', tipo_tarjeta ='" + this.tipoTarjeta + "', postiza_pago = '"
-                         + this.id + "', ci_titular ='" + this.cedulaTitular
-                         + "' where numero ='" + this.numero + "';");
-                         
-            }
+            st.executeUpdate("update tarjeta set marca ='"
+                    + this.marca + "', banco ='" + this.banco + "', cod_seguridad = '"
+                    + this.codSeguridad + "', fecha_venc = '" + this.fechaVenc.toString()
+                    + "', tipo_tarjeta ='" + this.tipoTarjeta + "', postiza_pago = '"
+                    + this.id + "', ci_titular ='" + this.cedulaTitular
+                    + "' where numero ='" + this.numero + "';");
             
           } catch (SQLException ex) {
               System.err.println(ex.getMessage());
@@ -151,12 +134,8 @@ public class Tarjeta extends FormaPago {
     }
     
     void eliminarTarjeta() {
-        String url = "jdbc:postgresql:innova";
-        Properties props = new Properties();
-        props.setProperty("user","gabriela");
-        props.setProperty("password","wennicheinjungewar");
-       
-        try (Connection conn = DriverManager.getConnection(url,props)) {
+        
+        try (Connection conn = Conexion.obtenerConn()) {
             Statement st;
             st = conn.createStatement();
                         
@@ -168,7 +147,7 @@ public class Tarjeta extends FormaPago {
         }
     }
     
-   /* public static void main(String[] args) throws ParseException {
+    /*public static void main(String[] args) throws ParseException {
         Date fechaV = new Date(2015-1900,04,26);
         Tarjeta t = new Tarjeta(46, "4567894652365", "mercantil", fechaV,
                 "CREDITO", 456, "21030282", "Visa");

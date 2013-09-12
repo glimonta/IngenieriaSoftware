@@ -54,12 +54,7 @@ public class Factura {
     }
     
     void registrarFactura() {
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-            Connection conn = DriverManager.getConnection(url,props);
+        try (Connection conn = Conexion.obtenerConn()) {
             
             Statement st;
             st = conn.createStatement();
@@ -85,12 +80,7 @@ public class Factura {
     static Factura consultarFactura(Producto producto, Date fecha) {
         Factura factura = new Factura();
         
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-            Connection conn = DriverManager.getConnection(url,props);
+        try (Connection conn = Conexion.obtenerConn()) {
             
             Statement st;
             st = conn.createStatement();
@@ -131,31 +121,25 @@ public class Factura {
     }
     
     void modificarFactura() {
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-             try (Connection conn = DriverManager.getConnection(url,props)) {
-                 Statement st;
-                 st = conn.createStatement();
-                 
-                 st.executeUpdate("update factura set monto_total ='"
-                         + this.montoTotal +"' where id ='"
-                         + this.producto.codigoProd.toString()
-                         + "' and fecha ='" + this.fecha.toString() +"';");
+        try (Connection conn = Conexion.obtenerConn()) {
+            Statement st;
+            st = conn.createStatement();
+               
+            st.executeUpdate("update factura set monto_total ='"
+                    + this.montoTotal +"' where id ='"
+                    + this.producto.codigoProd.toString()
+                    + "' and fecha ='" + this.fecha.toString() +"';");
        
-                 st.execute("delete from comentario where id ='" 
-                         + this.producto.codigoProd.toString() + "' and fecha ='"
-                         + this.fecha.toString() + "';");
-                 
-                for (int i=0; i < this.comentarios.toArray().length; ++i) {
-                  st.execute("insert into comentario values ('" +
-                          this.producto.codigoProd.toString() + "', '" +
-                          this.fecha.toString() + "', '" +
-                          this.comentarios.get(i).toString() +"');");
-                 }                  
-            }
+            st.execute("delete from comentario where id ='" 
+                    + this.producto.codigoProd.toString() + "' and fecha ='"
+                    + this.fecha.toString() + "';");
+                
+            for (int i=0; i < this.comentarios.toArray().length; ++i) {
+                st.execute("insert into comentario values ('" +
+                        this.producto.codigoProd.toString() + "', '" +
+                        this.fecha.toString() + "', '" +
+                        this.comentarios.get(i).toString() +"');");
+                }                  
             
           } catch (SQLException ex) {
               System.err.println(ex.getMessage());
@@ -163,11 +147,8 @@ public class Factura {
     }
     
     void eliminarFactura() {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-             try (Connection conn = DriverManager.getConnection(url,props)) {
+
+             try (Connection conn = Conexion.obtenerConn()) {
                  Statement st;
                  st = conn.createStatement();
                         
@@ -184,7 +165,7 @@ public class Factura {
           }
     }
     
-  /*  public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Date fecha = new Date(2015-1900,04,26);
         ArrayList<String> comentarios = new ArrayList<>();
         comentarios.add("holis soy un comentario!");

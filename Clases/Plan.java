@@ -40,22 +40,14 @@ public class Plan {
     }
     
     void modificarPlan() {
-         try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-             try (Connection conn = DriverManager.getConnection(url,props)) {
-                 Statement st;
-                 st = conn.createStatement();
+         try (Connection conn = Conexion.obtenerConn()) {
+            Statement st;
+            st = conn.createStatement();
                  
-                 st.executeUpdate("update plan set nombre ='"
-                         +this.nombre+"', descripcion ='"+this.descripcion+"'"
-                         + "where nombre ='"+this.nombre+"' and tipo_plan='"
-                         + this.tipoPlan +"';");
-                         
-            }
-            
+            st.executeUpdate("update plan set nombre ='"
+                     +this.nombre+"', descripcion ='"+this.descripcion+"'"
+                     + "where nombre ='"+this.nombre+"' and tipo_plan='"
+                     + this.tipoPlan +"';");
           } catch (SQLException ex) {
               System.err.println(ex.getMessage());
           }
@@ -64,12 +56,7 @@ public class Plan {
     
     void registrarPlan() {
         
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-            Connection conn = DriverManager.getConnection(url,props);
+        try (Connection conn = Conexion.obtenerConn()) {
             
             Statement st;
             st = conn.createStatement();
@@ -87,12 +74,8 @@ public class Plan {
     }
     
     void eliminarPlan() {
-        String url = "jdbc:postgresql:innova";
-        Properties props = new Properties();
-        props.setProperty("user","gabriela");
-        props.setProperty("password","wennicheinjungewar");
-       
-        try (Connection conn = DriverManager.getConnection(url,props)) {
+        
+        try (Connection conn = Conexion.obtenerConn()) {
             Statement st;
             st = conn.createStatement();
                         
@@ -114,12 +97,7 @@ public class Plan {
              
         Plan plan = new Plan();
         
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-            Connection conn = DriverManager.getConnection(url,props);
+        try (Connection conn = Conexion.obtenerConn()) {
             
             Statement st;
             st = conn.createStatement();
@@ -149,12 +127,7 @@ public class Plan {
         
         ArrayList<Paquete> paquetes = new ArrayList<>();
         
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-            Connection conn = DriverManager.getConnection(url,props);
+        try (Connection conn = Conexion.obtenerConn()) {
             
             Statement st;
             st = conn.createStatement();

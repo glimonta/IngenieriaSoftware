@@ -49,12 +49,7 @@ public class Afiliacion {
     }
     
     void registrarAfiliacion() {
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-            Connection conn = DriverManager.getConnection(url,props);
+        try (Connection conn = Conexion.obtenerConn()) {
             
             Statement st;
             st = conn.createStatement();
@@ -74,12 +69,7 @@ public class Afiliacion {
     static Afiliacion consultarAfiliacion(Integer id, String nombre_plan, String tipo_plan, Date fechaInicio) throws ParseException {
         Afiliacion afiliacion = new Afiliacion();
         
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-            Connection conn = DriverManager.getConnection(url,props);
+        try (Connection conn = Conexion.obtenerConn()) {
             
             Statement st;
             st = conn.createStatement();
@@ -114,12 +104,8 @@ public class Afiliacion {
     }
     
     void eliminarAfiliacion() {
-        String url = "jdbc:postgresql:innova";
-        Properties props = new Properties();
-        props.setProperty("user","gabriela");
-        props.setProperty("password","wennicheinjungewar");
-       
-        try (Connection conn = DriverManager.getConnection(url,props)) {
+        
+        try (Connection conn = Conexion.obtenerConn()) {
             Statement st;
             st = conn.createStatement();
                         
@@ -134,12 +120,8 @@ public class Afiliacion {
     }
     
     void modificarAfiliacion() {
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-             try (Connection conn = DriverManager.getConnection(url,props)) {
+        
+             try (Connection conn = Conexion.obtenerConn()) {
                  Statement st;
                  st = conn.createStatement();
                  
@@ -149,8 +131,6 @@ public class Afiliacion {
                          + this.plan.nombre
                          + "' and tipo_plan ='" + this.plan.tipoPlan
                          + "' and fecha_inic ='" + this.fechaInicio.toString() +"';");
-                         
-            }
             
           } catch (SQLException ex) {
               System.err.println(ex.getMessage());

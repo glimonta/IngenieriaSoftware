@@ -38,12 +38,7 @@ public class Cliente {
     
     void registrarCliente() throws SQLException {
         
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-            Connection conn = DriverManager.getConnection(url,props);
+        try (Connection conn = Conexion.obtenerConn()) {
             
             Statement st;
             st = conn.createStatement();
@@ -68,12 +63,7 @@ public class Cliente {
         
         Cliente cliente = new Cliente();
         
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-            Connection conn = DriverManager.getConnection(url,props);
+        try (Connection conn = Conexion.obtenerConn()) {
             
             Statement st;
             st = conn.createStatement();
@@ -84,12 +74,12 @@ public class Cliente {
             if (rs != null) {
 
                 ArrayList<Long> tlfs = new ArrayList<>();
-                
+
                 while (rs.next()) {
                     Long telefono = Long.valueOf(rs.getString(1));
                     tlfs.add(telefono);
                 }
-                
+
                 rs.close();
                 
                 rs = st.executeQuery("select ci, nombre, direccion from cliente where ci = '" + 
@@ -114,12 +104,8 @@ public class Cliente {
     
     
     void modificarCliente() {
-         try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-             try (Connection conn = DriverManager.getConnection(url,props)) {
+         try (Connection conn = Conexion.obtenerConn()) {
+            
                  Statement st;
                  st = conn.createStatement();
                  
@@ -133,8 +119,7 @@ public class Cliente {
                   st.execute("insert into Telefono values ("+ this.cedula +"','"
                           +this.telefonos.get(i).toString()+"');");
                  }                  
-            }
-            
+    
           } catch (SQLException ex) {
               System.err.println(ex.getMessage());
           }
@@ -144,12 +129,8 @@ public class Cliente {
     void eliminarCliente() {
           
       ArrayList<Producto> productos = this.obtenerProductos();
-    
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-             try (Connection conn = DriverManager.getConnection(url,props)) {
+
+             try (Connection conn = Conexion.obtenerConn()) {
                  Statement st;
                  st = conn.createStatement();
                         
@@ -173,12 +154,7 @@ public class Cliente {
         
         ArrayList<Producto> productos = new ArrayList<>();
         
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-            Connection conn = DriverManager.getConnection(url,props);
+        try (Connection conn = Conexion.obtenerConn()) {
             
             Statement st;
             st = conn.createStatement();
@@ -218,7 +194,7 @@ public class Cliente {
                 + tlfs;
     }
     
-  /*  public static void main(String[] args) throws SQLException {
+   /* public static void main(String[] args) throws SQLException {
         
         Cliente c = consultarCliente(21030282);
         

@@ -29,12 +29,7 @@ public class Efectivo extends FormaPago {
     }
     
     void registrarEfectivo() {
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-            Connection conn = DriverManager.getConnection(url,props);
+        try (Connection conn = Conexion.obtenerConn()) {
             
             Statement st;
             st = conn.createStatement();
@@ -61,12 +56,7 @@ public class Efectivo extends FormaPago {
     static Efectivo consultarEfectivo(Integer numPago) {
         Efectivo efectivo = new Efectivo();
         
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-            Connection conn = DriverManager.getConnection(url,props);
+        try (Connection conn = Conexion.obtenerConn()) {
             
             Statement st;
             st = conn.createStatement();
@@ -89,19 +79,13 @@ public class Efectivo extends FormaPago {
     }
     
     void modificarEfectivo() {
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-             try (Connection conn = DriverManager.getConnection(url,props)) {
-                 Statement st;
-                 st = conn.createStatement();
+        try (Connection conn = Conexion.obtenerConn()) {
+            
+            Statement st;
+            st = conn.createStatement();
                  
-                 st.executeUpdate("update efectivo set postiza_pago ='"
-                         + this.id + "' where nro_pago ='" + this.numeroPago + "';");
-                         
-            }
+            st.executeUpdate("update efectivo set postiza_pago ='"
+                     + this.id + "' where nro_pago ='" + this.numeroPago + "';");
             
           } catch (SQLException ex) {
               System.err.println(ex.getMessage());
@@ -109,12 +93,8 @@ public class Efectivo extends FormaPago {
     }
     
     void eliminarEfectivo() {
-        String url = "jdbc:postgresql:innova";
-        Properties props = new Properties();
-        props.setProperty("user","gabriela");
-        props.setProperty("password","wennicheinjungewar");
-       
-        try (Connection conn = DriverManager.getConnection(url,props)) {
+
+        try (Connection conn = Conexion.obtenerConn()) {
             Statement st;
             st = conn.createStatement();
                         
@@ -135,7 +115,7 @@ public class Efectivo extends FormaPago {
         Efectivo e = new Efectivo(46, 165);
         e.registrarEfectivo();
         
-        e = consultarEfectivo(164);
+        e = consultarEfectivo(165);
         System.out.println(e.toString());
         
         e.id = 10;
@@ -143,7 +123,7 @@ public class Efectivo extends FormaPago {
         
         e.modificarEfectivo();
         
-        e.consultarEfectivo(164);
+        e.consultarEfectivo(165);
         System.out.println(e.toString());
         
         e.eliminarEfectivo();

@@ -43,12 +43,7 @@ public class Posee {
     }
     
      void registrarPosee() {
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-            Connection conn = DriverManager.getConnection(url,props);
+        try (Connection conn = Conexion.obtenerConn()) {
             
             Statement st;
             st = conn.createStatement();
@@ -68,12 +63,7 @@ public class Posee {
     static Posee consultarPosee(Integer id, String nombre_servicio, java.sql.Date fecha) throws ParseException {
         Posee posee = new Posee();
         
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-            Connection conn = DriverManager.getConnection(url,props);
+        try (Connection conn = Conexion.obtenerConn()) {
             
             Statement st;
             st = conn.createStatement();
@@ -106,12 +96,8 @@ public class Posee {
     }
      
     void eliminarPosee() {
-        String url = "jdbc:postgresql:innova";
-        Properties props = new Properties();
-        props.setProperty("user","gabriela");
-        props.setProperty("password","wennicheinjungewar");
-       
-        try (Connection conn = DriverManager.getConnection(url,props)) {
+        
+        try (Connection conn = Conexion.obtenerConn()) {
             Statement st;
             st = conn.createStatement();
                         

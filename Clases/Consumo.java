@@ -47,12 +47,7 @@ public class Consumo {
     }
     
     void registrarConsumo() {
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-            Connection conn = DriverManager.getConnection(url,props);
+        try (Connection conn = Conexion.obtenerConn()) {
             
             Statement st;
             st = conn.createStatement();
@@ -72,12 +67,7 @@ public class Consumo {
     static Consumo consultarConsumo(Integer id, String nombre_servicio, java.sql.Date fecha) throws ParseException {
         Consumo consumo = new Consumo();
         
-        try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-            Connection conn = DriverManager.getConnection(url,props);
+        try (Connection conn = Conexion.obtenerConn()) {
             
             Statement st;
             st = conn.createStatement();
@@ -110,12 +100,8 @@ public class Consumo {
     }
     
     void eliminarConsmo() {
-        String url = "jdbc:postgresql:innova";
-        Properties props = new Properties();
-        props.setProperty("user","gabriela");
-        props.setProperty("password","wennicheinjungewar");
-       
-        try (Connection conn = DriverManager.getConnection(url,props)) {
+        
+        try (Connection conn = Conexion.obtenerConn()) {
             Statement st;
             st = conn.createStatement();
                         
@@ -130,11 +116,7 @@ public class Consumo {
     
     void modificarConsumo() {
         try {
-            String url = "jdbc:postgresql:innova";
-            Properties props = new Properties();
-            props.setProperty("user","gabriela");
-            props.setProperty("password","wennicheinjungewar");
-             try (Connection conn = DriverManager.getConnection(url,props)) {
+             try (Connection conn = Conexion.obtenerConn()) {
                  Statement st;
                  st = conn.createStatement();
                  
@@ -151,7 +133,7 @@ public class Consumo {
           }
     }
     
-   /** public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Date fecha = new Date(2015-1900,04,26);
         Cliente cliente = Cliente.consultarCliente(20);
         Producto producto = new Producto(1, "modelo2", cliente);
@@ -163,5 +145,5 @@ public class Consumo {
         consumo.cantidad = 23423;
         consumo.modificarConsumo();
 
-    } **/
+    } */
 }
