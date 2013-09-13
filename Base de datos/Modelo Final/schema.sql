@@ -527,8 +527,8 @@ AS $func_MontoFacturaConsume$
 DECLARE
 
    C1 CURSOR FOR SELECT MONTO_TOTAL FROM FACTURA 
-      WHERE date_part('month', FECHA) = date_part('month', NEW.FECHA_INIC)
-      AND date_part('year', FECHA) = date_part('year', NEW.FECHA_INIC)
+      WHERE date_part('month', FECHA) = date_part('month', NEW.FECHA)
+      AND date_part('year', FECHA) = date_part('year', NEW.FECHA)
       AND ID = NEW.ID;
       
    C2 CURSOR FOR SELECT C.CANTIDAD, C.COSTO_ADICIONAL, E.TIPO_PLAN 
@@ -841,10 +841,14 @@ BEGIN
       RAISE EXCEPTION 'El producto no puede poseer este servicio porque
                        difieren en el tipo de plan.';
       CLOSE C1;
+      CLOSE C2;
       RETURN NULL;
 
    END IF;
 
+   CLOSE C1;
+   CLOSE C2;
+   
    RETURN NEW;
 
 END;

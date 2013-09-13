@@ -191,7 +191,6 @@ public class Producto {
         }
     }
 
-//Arreglar una cosita de este metodo!
 
    /**
     * Metodo para obtener el plan actual segun la fecha del sistema.
@@ -208,9 +207,16 @@ public class Producto {
 
         if (conexion != null){
 
+            //Obteniene la fecha actual del sistema
+            Calendar calendar = new GregorianCalendar();
+
+            //Pasa la fecha actual a una fecha de sql para comparar.
+            Date fechaActual = new Date(calendar.getTimeInMillis());
+            
             Statement stmt = null;
             String query = "select NOMBRE_PLAN, TIPO_PLAN from ESTA_AFILIADO " +
-                    "where ID = " + this.codigoProd + " and FECHA_FIN is null;";
+                    "where ID = " + this.codigoProd + " and FECHA_FIN is null "
+                    + "and FECHA_INIC <= DATE '" + fechaActual.toString() + "';";
             try{
 
                 //Busca los datos de aquel plan que no tenga fecha final
@@ -226,13 +232,9 @@ public class Producto {
 
                 } else {
 
-                    //Obteniene la fecha actual del sistema
-                    Calendar calendar = new GregorianCalendar();
-
-                    //Pasa la fecha actual a una fecha de sql para comparar.
-                    Date fechaActual = new Date(calendar.getTimeInMillis());
                     query = "select NOMBRE_PLAN, TIPO_PLAN, FECHA_INIC, FECHA_FIN " +
-                        "from ESTA_AFILIADO where ID = " + this.codigoProd + ";";
+                           "from ESTA_AFILIADO where ID = " + this.codigoProd + 
+                           "and FECHA_FIN is not null;";
 
                     //Busca los planes afiliados que no tengan fecha fin null
                     rs = stmt.executeQuery(query);
@@ -250,7 +252,7 @@ public class Producto {
 
                             plan = Plan.consultarPlan(rs.getString("NOMBRE_PLAN")
                                     , rs.getString("TIPO_PLAN"));
-                            return plan; //BREAK!
+                            break;
                         }
                     }
                 }
@@ -293,14 +295,15 @@ public class Producto {
                 /*Se obtiene la fecha actual sin tomar en cuenta el dia 
                   y se convierte a formato sql*/
                 Calendar calendar = new GregorianCalendar();
-                Date fechaActual = new Date (calendar.get(Calendar.YEAR), 
-                        calendar.get(Calendar.MONTH) + 1, 1);
+                Date fechaActual = new Date (calendar.get(Calendar.YEAR)-1900, 
+                        calendar.get(Calendar.MONTH), 1);
 
                 while (rs.next()){
 
                     /* Se verifica si la fecha es igual, de ser asi, 
                      se crea la factura*/
                     Date fechaFact = Date.valueOf(rs.getString("FECHA"));
+
                     if (fechaFact.compareTo(fechaActual) == 0)
                         factura = Factura.consultarFactura(this, fechaFact);
                 }
@@ -418,7 +421,7 @@ public class Producto {
 
                     //Si la fecha fin no es null agrega su valor como fecha.
                     if (fechaFinStr != null)
-                       fechaF = Date.valueOf(fehcaFinStr);
+                       fechaF = Date.valueOf(fechaFinStr);
 
                     //Se crea la afiliacion
                     Afiliacion afil = new Afiliacion(fechaI,fechaF, plan, this);
