@@ -21,8 +21,7 @@ public class ServicioAdicional extends Servicio {
     }
     
     /** SI EXPLOTA PUEDE SER POR EL FLOAT **/
-    public static void registrarServicioAd(String nom, float tarifa, int cantAd, 
-                                       String tipoPlan) throws Exception {
+    public void registrarServicioAd() throws Exception {
         
         Connection conexion = null;
         
@@ -31,8 +30,9 @@ public class ServicioAdicional extends Servicio {
             Statement stmt = null;
             stmt = conexion.createStatement();
             
-            String insert = "insert into ADICIONAL values ('" + nom + "', '" +
-                            tarifa + "', '" + cantAd + "', '" + tipoPlan + "');";
+            String insert = "insert into ADICIONAL values ('" + nombre + "', '" 
+                    + tarifa + "', '" + cantidadAdicional + "', '" 
+                    + tipoPlan + "');";
             stmt.executeUpdate(insert);
             
         }catch (SQLException e) {            
@@ -96,7 +96,7 @@ public class ServicioAdicional extends Servicio {
         
     }
     
-    public static void eliminarServicioAd(String nom) throws Exception {
+    public void eliminarServicioAd() throws Exception {
         
         Connection conexion = null;
         
@@ -106,7 +106,7 @@ public class ServicioAdicional extends Servicio {
             stmt = conexion.createStatement();
             
             String delete = "delete from ADICIONAL where NOMBRE_SERVICIO = '" +
-                    nom + "';";
+                    this.nombre + "';";
             stmt.executeUpdate(delete);
             
         }catch (SQLException e) {            
@@ -117,7 +117,7 @@ public class ServicioAdicional extends Servicio {
         }   
     }
     
-    public void actualizarServicioAd() throws Exception {
+    public void modificarServicioAd() throws Exception {
         
         Connection conexion = null;
         
@@ -139,6 +139,17 @@ public class ServicioAdicional extends Servicio {
         } finally {                       
             conexion.close();
         }   
+    }
+    
+    @Override
+    public String toString() {
+        
+        return "Nombre: " + nombre + ", Descripcion: " + descripcion 
+                + "Tipo de Servicio: " + tipoServicio + ", Tarifa: " + tarifa 
+                + ", Cantidad Adicional: " + cantidadAdicional 
+                + ", Tipo de plan : " + tipoPlan;
+                 
+        
     }
     
     

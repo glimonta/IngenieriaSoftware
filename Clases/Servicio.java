@@ -3,8 +3,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
-
 public class Servicio {
     
     public String nombre;
@@ -19,7 +17,7 @@ public class Servicio {
         this.tipoServicio = tipo;
     }
             
-    public static void resgistrarServicio(String nom, String desc, String tipo) 
+    public void resgistrarServicio() 
                    throws Exception{
         
         Connection conexion = null;
@@ -30,8 +28,8 @@ public class Servicio {
             Statement stmt = null;
             stmt = conexion.createStatement();
             
-            String insert = "insert into SERVICIO values ('" + nom + "', '" +
-                            desc + "', '" + tipo + "');";
+            String insert = "insert into SERVICIO values ('" + nombre + "', '" +
+                            descripcion + "', '" + tipoServicio + "');";
             stmt.executeUpdate(insert);
             
         }catch (SQLException e) {            
@@ -83,7 +81,7 @@ public class Servicio {
     }
     
     
-    public static void eliminarServicio(String nom) throws SQLException{
+    public void eliminarServicio() throws SQLException{
         
         Connection conexion = Conexion.obtenerConn();
         
@@ -94,7 +92,7 @@ public class Servicio {
             stmt = conexion.createStatement();
             
             String delete = "delete from SERVICIO where NOMBRE_SERVICIO ='" 
-                    + nom + "';";
+                    + this.nombre + "';";
             stmt.executeUpdate(delete);  
             
         } catch (SQLException e) {
@@ -109,7 +107,7 @@ public class Servicio {
         
     }
     
-    public void actualizarServicio() throws SQLException{
+    public void modificarServicio() throws SQLException{
         
         Connection conexion = null;
         
@@ -130,8 +128,15 @@ public class Servicio {
         }finally {                       
             conexion.close();
 
-        }     
+        }      
+    }
+    
+    
+    @Override
+    public String toString() {
         
+        return "Nombre: " + nombre + ", Descripcion: " + descripcion 
+                + ", Tipo de servicio: " + tipoServicio;
         
     }
     

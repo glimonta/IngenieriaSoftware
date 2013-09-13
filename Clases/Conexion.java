@@ -1,3 +1,8 @@
+/*
+ * Conexion: Se encarga de establecer la conexion con la base de datos.
+ * Se debe indicar en los string url, user y pass la url de la base de datos,
+ * el usuario y la clave de postgres.
+ */
 
 import java.sql.Connection;
 import java.sql.DriverManager;

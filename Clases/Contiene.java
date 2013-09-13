@@ -18,8 +18,7 @@ public class Contiene {
         this.servicio = serv;
     }
     
-    public static void registrarContiene(int cant, float costo, Paquete pack, 
-            Servicio serv) throws SQLException {
+    public void registrarContiene() throws SQLException {
         
         Connection conexion = null;
         
@@ -28,8 +27,9 @@ public class Contiene {
             Statement stmt = null;
             stmt = conexion.createStatement();
             
-            String insert = "insert into CONTIENE values ('"+ pack.nombre +
-                    "', '" + serv.nombre + "', " + cant + ", " + costo + ");";
+            String insert = "insert into CONTIENE values ('"+ paquete.nombre +
+                    "', '" + servicio.nombre + "', " + cantidad + ", " 
+                    + costoAdicional + ");";
             stmt.executeUpdate(insert);
             
         } catch (SQLException e){
@@ -44,7 +44,7 @@ public class Contiene {
     }
     
     
-    public static Contiene consultarContiene(Paquete pack, Servicio serv) 
+    public static Contiene consultarContiene(String nomPack, String nomServ) 
             throws SQLException{
         
         Contiene cont = null;
@@ -56,13 +56,16 @@ public class Contiene {
             Statement stmt = null;
             
             String query = "select CANTIDAD, COSTO_ADICIONAL from CONTIENE " +
-                    "where NOMBRE_PAQUETE = '" + pack.nombre + "' and " +
-                    "NOMBRE_SERVICIO = '" + serv.nombre + "';";
+                    "where NOMBRE_PAQUETE = '" + nomPack + "' and " +
+                    "NOMBRE_SERVICIO = '" + nomServ + "';";
             
             try{
                 
                 stmt = conexion.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
+                
+                Paquete pack = Paquete.consultarPaquete(nomPack);
+                Servicio serv = Servicio.consultarServicio(nomServ);
                 
                 if (rs.next())
                     cont = new Contiene(Integer.parseInt(rs.getString("CANTIDAD")),
@@ -83,8 +86,7 @@ public class Contiene {
         
     }
     
-    public static void eliminarContiene(Paquete pack, Servicio serv) 
-            throws SQLException{
+    public void eliminarContiene() throws SQLException{
         
         Connection conexion = null;
         
@@ -94,8 +96,8 @@ public class Contiene {
             stmt = conexion.createStatement();
             
             String delete = "delete from CONTIENE where NOMBRE_PAQUETE = '" +
-                    pack.nombre + "' and NOMBRE_SERVICIO = '" + 
-                    serv.nombre + "';";
+                   this.paquete.nombre + "' and NOMBRE_SERVICIO = '" + 
+                    this.servicio.nombre + "';";
             stmt.executeUpdate(delete);
             
             
@@ -109,7 +111,7 @@ public class Contiene {
     }
     
     
-    public void actualizarContiene() throws SQLException{
+    public void modificarContiene() throws SQLException{
         
         Connection conexion = null;
         
@@ -132,6 +134,15 @@ public class Contiene {
             conexion.close();
             
         } 
+    }
+    
+    @Override
+    public String toString(){
+        
+        return "Cantidad: " + cantidad + ", Costo Adicional: " + costoAdicional
+                + ", Paquete: " + paquete.toString() + ", Servicio: " 
+                + servicio.toString();
+        
     }
     
     
