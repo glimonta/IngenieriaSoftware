@@ -135,7 +135,7 @@ public class Paquete {
     }
     
     /*Imprime los servicios asociados a un Paquete*/
-    public static ArrayList<Servicio> ListarServicios(String nom) throws SQLException {
+    public ArrayList<Servicio> ListarServicios() throws SQLException {
         
         ArrayList<Servicio> lista = new ArrayList();
         Connection conexion = Conexion.obtenerConn();
@@ -144,10 +144,8 @@ public class Paquete {
             
             Statement stmt = null;
             
-            String query = "select S.NOMBRE_SERVICIO, DESCRIPCION, TIPO_SERVICIO "
-                    + "from CONTIENE C, SERVICO S where " 
-                    + "C.NOMBRE_PAQUETE = '" + nom + "' and C.NOMBRE_SERVICIO "
-                    + "= S.NOMBRE_SERVICIO";
+            String query = "select NOMBRE_SERVICIO from CONTIENE where " 
+                    + "NOMBRE_PAQUETE = '" + nombre + "';";
             
             try {
             
@@ -158,18 +156,14 @@ public class Paquete {
                 while (rs.next()) {
                     
                     String nomServicio = rs.getString("NOMBRE_SERVICIO");
-                    String descripcion = rs.getString("DESCRIPCION");
-                    String tipoServ = rs.getString("TIPO_SERVICIO");
-                    
-                    Servicio serv = new Servicio(nomServicio,descripcion,
-                            tipoServ);
+                    Servicio serv = Servicio.consultarServicio(nomServicio);
                     
                     lista.add(serv);
                     
                 }
                 
             } catch (SQLException e) {
-                System.out.println("SQL Exception: ListarServicios");
+                System.out.println(e.getMessage());
                 
             } finally {
                 
@@ -187,7 +181,7 @@ public class Paquete {
     @Override
     public String toString() {
         
-        return "Nombre: " + nombre + " Descrpcion: " + descripcion; 
+        return "Nombre: " + nombre + ", Descrpcion: " + descripcion; 
         
     }
 

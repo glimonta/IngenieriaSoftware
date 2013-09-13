@@ -3,8 +3,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
-
 public class Servicio {
     
     public String nombre;
@@ -130,9 +128,7 @@ public class Servicio {
         }finally {                       
             conexion.close();
 
-        }     
-        
-        
+        }      
     }
     
     

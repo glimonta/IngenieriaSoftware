@@ -33,12 +33,20 @@ public class Tiene {
             Statement stmt = null;
             stmt = conexion.createStatement();
             
-            //Aqui puede que explote si fecha fin es null!
             
+             
             String insert = "insert into TIENE values ('" + plan.nombre +
                     "', '" + plan.tipoPlan + "', '" + paquete.nombre 
                     + "', " + costo + ", DATE '" + fechaInicio.toString() 
-                    + "', DATE '" + fechaFin.toString() + "');";
+                    + "', ";
+            
+            Tiene t = null;
+            
+            if (fechaFin != null)
+                insert = insert + "DATE '" + fechaFin.toString() + "');";
+            else
+                insert = insert + "null);";
+            
             stmt.executeUpdate(insert);
             
         } catch (SQLException e){
@@ -51,10 +59,10 @@ public class Tiene {
           
     }
     
-    public static Contiene consultarTiene(String nomPlan, String nomPack,
+    public static Tiene consultarTiene(String nomPlan, String nomPack,
             String tipoPlan, Date fechaI) throws SQLException{
         
-        Contiene cont = null;
+        Tiene tiene = null;
         
         Connection conexion = Conexion.obtenerConn();
         
@@ -76,12 +84,25 @@ public class Tiene {
                 Plan plan = Plan.consultarPlan(nomPlan, tipoPlan);
                 Paquete pack = Paquete.consultarPaquete(nomPack);
                 
-                Tiene tiene;
                 
+                String fechaFinString = null;
                 if (rs.next())
-                    tiene = new Tiene(fechaI, 
-                            Date.valueOf(rs.getString("FECHA_FIN")), 
-                            Float.parseFloat(rs.getString("COSTO")), plan, pack);
+                    
+                    fechaFinString = rs.getString("FECHA_FIN");
+                    
+                    if (fechaFinString != null)
+                    
+                        tiene = new Tiene(fechaI, 
+                                Date.valueOf(fechaFinString), 
+                                Float.parseFloat(rs.getString("COSTO")), plan, 
+                                pack);
+                    
+                    else
+                        
+                        tiene = new Tiene(fechaI, null, 
+                                Float.parseFloat(rs.getString("COSTO")), plan, 
+                                pack);
+                    
                  
             } catch (SQLException e){
             
@@ -93,7 +114,7 @@ public class Tiene {
             }
         }
         
-        return cont;
+        return tiene;
         
     }
     
@@ -123,7 +144,6 @@ public class Tiene {
         } 
     }
     
-    //Puede que explote cuando fecha fin es null
     
     public void modificarTiene() throws SQLException{
         
@@ -133,14 +153,28 @@ public class Tiene {
             conexion = Conexion.obtenerConn();
             Statement stmt = null;
             stmt = conexion.createStatement();
+            String update;
             
-            String update = "update TIENE set COSTO = "+
-                    this.costo + ", FECHA_FIN = DATE '" + 
-                    this.fechaFin.toString() + "' where NOMBRE_PLAN = '" + 
-                    this.plan.nombre + "' and NOMBRE_PAQUETE = '" + 
-                    this.paquete.nombre + "' and TIPO_PLAN = '" +  
-                    this.plan.tipoPlan + "' and FECHA_INIC = DATE '" + 
-                    this.fechaInicio.toString()  + "';";
+            
+            if (fechaFin != null)
+            
+                update = "update TIENE set COSTO = "+
+                        this.costo + ", FECHA_FIN = DATE '" + 
+                        this.fechaFin.toString() + "' where NOMBRE_PLAN = '" + 
+                        this.plan.nombre + "' and NOMBRE_PAQUETE = '" + 
+                        this.paquete.nombre + "' and TIPO_PLAN = '" +  
+                        this.plan.tipoPlan + "' and FECHA_INIC = DATE '" + 
+                        this.fechaInicio.toString()  + "';";
+            
+            else
+                
+                update = "update TIENE set COSTO = "+
+                        this.costo + ", FECHA_FIN = NULL where NOMBRE_PLAN = '" + 
+                        this.plan.nombre + "' and NOMBRE_PAQUETE = '" + 
+                        this.paquete.nombre + "' and TIPO_PLAN = '" +  
+                        this.plan.tipoPlan + "' and FECHA_INIC = DATE '" + 
+                        this.fechaInicio.toString()  + "';";
+            
             stmt.executeUpdate(update);
             
             
@@ -157,10 +191,16 @@ public class Tiene {
     @Override
     public String toString(){
         
-        return "Nombre del Plan: " + plan.nombre + ", Tipo del plan: " +
+        String res = "Nombre del Plan: " + plan.nombre + ", Tipo del plan: " +
                 plan.tipoPlan + ", Nombre del paquete: " + paquete.nombre + 
                 ", Costo: " + costo + ", Fecha de inicio: " + 
-                fechaInicio.toString() + ", Fecha fin: " + fechaFin.toString();
+                fechaInicio.toString();
+        
+        if (fechaFin != null)
+            res = res + ", Fecha fin: " + fechaFin.toString();
+        
+        return res;
+        
         
     }
     
