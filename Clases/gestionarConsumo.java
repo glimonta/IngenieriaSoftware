@@ -9,23 +9,6 @@ public class GestionarConsumo {
    */
   public static void registrarConsumo() {
 
-    System.out.println("Ingrese la cedula del cliente asociada al consumo.");
-
-    int cedula;
-
-    //El programa pide la cedula hasta que sea valido
-    while (true) {
-      try {
-
-        String cedulaStr = Main.scanner.nextLine();
-        cedula = Integer.parseInt(cedulaStr);
-        break;
-
-      } catch (Exception e) {
-        System.out.println("Ingrese la cedula del cliente de nuevo");
-      }
-    }
-
     System.out.println("Ingrese el codigo del producto asociado al consumo.");
 
     int codigo_producto;
@@ -74,12 +57,20 @@ public class GestionarConsumo {
     java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(fechaStr);
     Date fecha = new java.sql.Date(utilDate.getTime());
 
-    //Se obtiene el cliente
-    Cliente cliente = consultarCliente(cedula);
     //Se obtiene el producto
     Producto producto = consultarProducto(codigo_producto);
+
+    if (null == producto){
+      System.out.println("El producto no existe en el sistema");
+      return;
+    }
+
     //Se obtiene el servicio
     Servicio servicio = consultarServicio(nombre_servicio);
+    if (null == servicio){
+      System.out.println("El servicio no existe en el sistema");
+      return;
+    }
     //Crea el consumo
     Consumo consumo = new Consumo(monto, fecha, producto, servicio);
 
@@ -98,13 +89,8 @@ public class GestionarConsumo {
      */
     public static void consultarConsumo() {
 
-      //Se solicita el nombre del servicio asociado al consumo
-      System.out.println("Por favor ingrese el nombre del servicio asociado al consumo.");
-
-      String nombre_servicio = Main.scanner.nextLine();
-
-      //Se solicita el codigo de identificacion del consumo
-      System.out.println("Ingrese el codigo del consumo a consultar.");
+      //Se solicita el codigo de identificacion del producto asociado al consumo
+      System.out.println("Ingrese el codigo del producto asociado al consumo.");
       int codigo;
 
       //El programa pide la codigo hasta que sea un numero valido
@@ -119,6 +105,11 @@ public class GestionarConsumo {
           System.out.println("Ingrese el codigo de nuevo");
         }
       }
+
+      //Se solicita el nombre del servicio asociado al consumo
+      System.out.println("Por favor ingrese el nombre del servicio asociado al consumo.");
+
+      String nombre_servicio = Main.scanner.nextLine();
 
       //Se solicita la fecha en donde se incurrio al consumo y se parsea al tipo de dato requerido
       System.out.println("Ingrese la fecha del consumo en formato: yyyy-MM-dd");
@@ -136,7 +127,7 @@ public class GestionarConsumo {
 
         System.out.println(consumo.toString());
         System.out.println("Que desea hacer ahora?");
-        System.out.println("1. Modificar el consumo\n2. Eliminar el cliente\n" +
+        System.out.println("1. Modificar el consumo\n2. Eliminar el consumo\n" +
             "3. Salir");
 
         String input = Main.scanner.nextLine();
