@@ -69,7 +69,8 @@ public class Posee {
      * @param id id asociado al producto
      * @param nombre_servicio nombre del servicio adicional
      * @param fecha fecha de la adquisicion del servicio adicional por parte del producto
-     * @return se retorna una instancia en forma de objeto de la clase posee 
+     * @return se retorna una instancia en forma de objeto de la clase posee en
+     * caso de que exista, sino se retorna null
      * @throws ParseException devolvemos una excepcion de parseo
      */
     static Posee consultarPosee(Integer id, String nombre_servicio, java.sql.Date fecha) throws ParseException {
@@ -89,19 +90,21 @@ public class Posee {
                     + " fecha_inic= '" + fecha.toString()
                     + "';");
             
-            rs.next();
-
-            // Creamos un nuevo objeto del tipo Date con la fecha de
-            // consumo conseguida
-            java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(3));
-            fecha = new java.sql.Date(utilDate.getTime());
+            // Verificamos que el query no sea vacio
+            if (rs.next()) {
+                // Creamos un nuevo objeto del tipo Date con la fecha de
+                // consumo conseguida
+                java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(3));
+                fecha = new java.sql.Date(utilDate.getTime());
             
-            // Buscamos en la base de datos el producto correspondiente a
-            // ese id y creamos un objeto con el. 
-            Producto producto = Producto.consultarProducto(rs.getInt(1));
-            ServicioAdicional servicioAdicional = ServicioAdicional.consultarServicioAd(rs.getString(2));
-            // Creamos un nuevo objeto posee para retornar
-            posee = new Posee(fecha, servicioAdicional, producto);
+                // Buscamos en la base de datos el producto correspondiente a
+                // ese id y creamos un objeto con el. 
+                Producto producto = Producto.consultarProducto(rs.getInt(1));
+                ServicioAdicional servicioAdicional = ServicioAdicional.consultarServicioAd(rs.getString(2));
+                
+                // Creamos un nuevo objeto posee para retornar
+                posee = new Posee(fecha, servicioAdicional, producto);
+            }
             
           // Cerramos la conexion.
           conn.close();

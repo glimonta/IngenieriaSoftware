@@ -200,7 +200,7 @@ public class Contiene {
     public String toString(){
 
         return "Cantidad: " + cantidad + ", Costo Adicional: " + costoAdicional
-                + ", Paquete: " + paquete.toString() + ", Servicio: " 
-                + servicio.toString();
+                + ", Paquete: [" + paquete.toString() + "], Servicio: [" 
+                + servicio.toString() + "]";
     }
 }

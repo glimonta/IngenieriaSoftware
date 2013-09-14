@@ -37,11 +37,17 @@ public class Afiliacion {
      */
     @Override
     public String toString() {
-        return "Fecha de Inicio: " + this.fechaInicio.toString() +
-                "Fecha de Fin: " + this.fechaFin.toString() +
-                "ID de producto: " + this.producto.codigoProd +
-                "Nombre del Plan: " + this.plan.nombre +
-                "Tipo de Plan: " + this.plan.tipoPlan;
+        if (this.fechaFin == null) {
+            return "Fecha de Inicio: " + this.fechaInicio.toString() +
+                    ", Produto: [ " + this.producto.toString() +
+                    "], Plan: [" + this.plan.toString() + "]";
+        }
+        else {
+            return "Fecha de Inicio: " + this.fechaInicio.toString() +
+                    ", Fecha de Fin: " + this.fechaFin.toString() +
+                    ", Produto: [ " + this.producto.toString() +
+                    "], Plan: [" + this.plan.toString() + "]";
+        }
     }
 
     /**
@@ -55,9 +61,18 @@ public class Afiliacion {
             st = conn.createStatement();
 
             // Se ejecuta el insert a la base de datos de los valores correspondientes
-            st.execute("insert into esta_afiliado values ('"+ this.producto.codigoProd +
+            // diferenciando el caso donde haya una fecha de fin y donde no.
+            if (this.fechaFin == null) {
+                st.execute("insert into esta_afiliado values ('"+ this.producto.codigoProd +
                     "', '" + this.plan.nombre + "', '" + this.plan.tipoPlan + "', '" +
-                    this.fechaInicio.toString() + "', '" + this.fechaFin.toString() + "');");
+                    this.fechaInicio.toString() + "');");
+            }
+            else {
+                st.execute("insert into esta_afiliado values ('"+ this.producto.codigoProd +
+                        "', '" + this.plan.nombre + "', '" + this.plan.tipoPlan + "', '" +
+                        this.fechaInicio.toString() + "', '" + this.fechaFin.toString() + "');");
+            }
+            
             // Cerramos la conexion
             conn.close();
 
@@ -89,36 +104,37 @@ public class Afiliacion {
             st = conn.createStatement();
 
             // Ejecutamos el query buscando la entrada de afiliacion deseada.
-            ResultSet rs = st.executeQuery("select fecha_inic, fecha_fin "
+            ResultSet rs = st.executeQuery("select fecha_fin "
                     + "from esta_afiliado where id = '" + id 
                     + "' and nombre_plan = '" + nombre_plan + "' and tipo_plan = '"
                     + tipo_plan + "' and fecha_inic = '" + fechaInicio.toString()
                     + "';");
 
             // Si el query retorna un resultado 
-            if (rs != null) {
-                rs.next();
+            if (rs.next()) {
 
-                // Creamos un nuevo objeto del tipo Date con la fecha de
-                // inicio conseguida
-                java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(1));
-                java.sql.Date fechaI = new java.sql.Date(utilDate.getTime());
-
-                // Creamos un nuevo objeto del tipo Date con la fecha de
-                // fin conseguida
-                utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(2));
-                java.sql.Date fechaF = new java.sql.Date(utilDate.getTime());
+                // Creamos una nueva fechaF
+                java.sql.Date fechaF = null;
+                
+                // Si hay una fecha fin para la afiliacion se asigna a fechaF
+                // sino, se mantiene null.
+                if (null != rs.getString(1)) {
+                    // Creamos un nuevo objeto del tipo Date con la fecha de
+                    // fin conseguida
+                    java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(1));
+                    fechaF = new java.sql.Date(utilDate.getTime());
+                }
 
                 // Buscamos en la base de datos el plan correspondiente a la
                 // combinacion de nombre y tipo de plan dada
-                Plan plan = Plan.consultarPlan(rs.getString(2), rs.getString(3));
+                Plan plan = Plan.consultarPlan(nombre_plan, tipo_plan);
                 
                 // Buscamos en la base de datos el producto correspondiente a
                 // ese id y creamos un objeto con el.
-                Producto producto = Producto.consultarProducto(rs.getInt(1));
+                Producto producto = Producto.consultarProducto(id);
 
                 // Creamos un nuevo objeto afiliacion para retornar
-                afiliacion = new Afiliacion(fechaI, fechaF, plan, producto);
+                afiliacion = new Afiliacion(fechaInicio, fechaF, plan, producto);
             }
             // Cerramos la conexion.
             conn.close();
@@ -166,13 +182,23 @@ public class Afiliacion {
             Statement st;
             st = conn.createStatement();
 
-            // Ejecutamos el uptdate en la base de datos
-            st.executeUpdate("update esta_afiliado set fecha_fin ='"
-                    + this.fechaFin.toString() + "' " + "where id ='"
-                    + this.producto.codigoProd + "' and nombre_plan ='" 
-                    + this.plan.nombre
-                    + "' and tipo_plan ='" + this.plan.tipoPlan
-                    + "' and fecha_inic ='" + this.fechaInicio.toString() +"';");
+            if (null != this.fechaFin) {
+                // Ejecutamos el uptdate en la base de datos
+                st.executeUpdate("update esta_afiliado set fecha_fin ='"
+                        + this.fechaFin.toString() + "' " + "where id ='"
+                        + this.producto.codigoProd + "' and nombre_plan ='" 
+                        + this.plan.nombre
+                        + "' and tipo_plan ='" + this.plan.tipoPlan
+                        + "' and fecha_inic ='" + this.fechaInicio.toString() +"';");
+            }
+            else {
+                // Ejecutamos el uptdate en la base de datos
+                st.executeUpdate("update esta_afiliado set fecha_fin = 'null'"
+                        + "where id ='" + this.producto.codigoProd 
+                        + "' and nombre_plan ='" + this.plan.nombre
+                        + "' and tipo_plan ='" + this.plan.tipoPlan
+                        + "' and fecha_inic ='" + this.fechaInicio.toString() +"';");
+            }
 
         } catch (SQLException ex) {
             // Si hay una excepcion se imprime el mensaje de la misma.

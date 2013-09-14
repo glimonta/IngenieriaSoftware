@@ -274,7 +274,7 @@ public class Producto {
     * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
     * la conexion.
     */
-    public Factura obtenerFacturaActual() throws SQLException{
+    public Factura obtenerFacturaActual() throws SQLException, ParseException{
 
         Factura factura = null;
 
@@ -450,7 +450,7 @@ public class Producto {
     * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
     * la conexion.
     */
-    public ArrayList<Factura> listarFacturas() throws SQLException{
+    public ArrayList<Factura> listarFacturas() throws SQLException, ParseException{
 
         ArrayList <Factura> list = new ArrayList();
 
@@ -556,7 +556,7 @@ public class Producto {
     @Override
     public String toString() {
 
-        return "Codigo del producto: " + codigoProd + ", Modelo: " + modelo 
-                + ", Cliente: [" + cliente.toString() + "]";
+        return "Codigo del producto: " + this.codigoProd + ", Modelo: " +
+                this.modelo + ", Cliente: [" + this.cliente.toString() + "]";
     }
 }

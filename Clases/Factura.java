@@ -3,8 +3,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Clase factura: contiene los metodos necesarios para manejar los contenidos de
@@ -12,23 +14,36 @@ import java.util.Date;
  */
 public class Factura {
     Date fecha; // Fecha de la factura
-    double montoTotal; // monto de la factura
+    double costoPlan; // monto correspondiente al costo del plan
+    double montoTotal; // monto total de la factura
     ArrayList<String> comentarios; // comentarios asociados a la factura
     Producto producto; //producto asociado a la factura
     
     /**
      * Constructor de la clase factura
      * @param fecha fecha en la que se expide la factura
-     * @param montoTotal monto que englobatodos los consumos y tarifas por servicios prestados
+     * @param costoPlan costo del plan del producto
+     * @param montoTotal monto de la factura
      * @param comentarios detalles de facturacion
      * @param producto producto asociado a la factura
      */
-    public Factura(Date fecha, double montoTotal, ArrayList<String> comentarios, Producto producto) {
+    public Factura(Date fecha, double costoPlan, double montoTotal, ArrayList<String> comentarios, Producto producto) {
         this.fecha = fecha;
+        this.costoPlan = costoPlan;
         this.montoTotal = montoTotal;
         this.comentarios = comentarios;
         this.producto = producto;
     }
+    
+    /**
+     * Permite obtener el monto total de la factura, sumando el monto total mas
+     * el costo del plan.
+     * @return retorna el monto total de la factura mas el costo del plan.
+     */
+    double calcularMontoTotal() {
+        return this.montoTotal + this.costoPlan;
+    }
+    
     
     /**
      * Permite obtener una representacion en string un elemento de la clase Factura.
@@ -47,8 +62,8 @@ public class Factura {
             }
         // se devuelve el string de formato
         return "Fecha: " + this.fecha.toString() + ", Monto: " + 
-                this.montoTotal + ", Comentarios: [" + comentarios + "} , Producto: ["
-                + producto.toString() + "]";
+                this.calcularMontoTotal() + ", Comentarios: [" + comentarios +
+                "] , Producto: [" + producto.toString() + "]";
     }
     
     /**
@@ -89,7 +104,7 @@ public class Factura {
      * @param fecha fecha en la que se expide la factura
      * @return una instancia de la clase factura
      */
-    static Factura consultarFactura(Producto producto, Date fecha) {
+    static Factura consultarFactura(Producto producto, Date fecha) throws ParseException {
         // Inicializamos un objeto factura en null
         Factura factura = null;
 
@@ -104,14 +119,18 @@ public class Factura {
                     + fecha.toString() + "';");
             
             // Si los conseguimos es porque existe la factura
-            if (rs != null) {
+            if (rs.next()) {
+
                 // Creamos una nueva lista para los comentarios
                 ArrayList<String> comentarios = new ArrayList<>();
                 
+                //Agregamos el primer comentario a la lista
+                String comentario = rs.getString(1);
+                comentarios.add(comentario);
+                
                 // Metemos en la lista los comentarios.
                 while (rs.next()) {
-                    String comentario = rs.getString(1);
-                    System.out.println(comentario);
+                    comentario = rs.getString(1);
                     comentarios.add(comentario);
                 }
                 
@@ -122,11 +141,47 @@ public class Factura {
                 rs = st.executeQuery("select monto_total from factura where "
                     + "id = '" + producto.codigoProd + "' and fecha ='"
                     + fecha.toString() + "';");
-            
+
                 rs.next();
-              
+                // Almacenamos el monto de la factura
+                double montoTotal = rs.getDouble(1);
+                rs.close();
+                
+                // Buscamos en la base de datos el plan al que esta asociado
+                // el producto
+                Plan plan = producto.obtenerPlanActual();
+                /*
+                rs = st.executeQuery("select nombre_plan, tipo_plan"
+                        + " from esta_afiliado where id = '" + producto.codigoProd
+                        + "' and fecha_fin is null" );
+                
+                rs.next();
+                //Almacenamos los valores del nombre del plan y el tipo
+                String nombPlan = rs.getString(1);
+                String tipoPlan = rs.getString(2);
+                
+                
+                // Cerramos el ResultSet
+                rs.close();
+*/
+                // Buscamos los montos asociados a costo del plan en la base de datos
+                rs = st.executeQuery("select costo from tiene where " +
+                        "nombre_plan ='" + plan.nombre + "' and tipo_plan ='" +
+                        plan.tipoPlan + "' and fecha_inic < '" + 
+                        fecha.toString() + "' and fecha_fin > '" + 
+                        fecha.toString() + "';");
+
+                double costoPlan = 0;
+                
+                //Sumamos los costos del plan
+                while (rs.next()) {
+                    costoPlan = costoPlan + rs.getDouble(1);
+                }
+                
+                
                 // Creamos un nuevo objeto factura con los datos obtenidos.
-                factura = new Factura(fecha, rs.getDouble(1), comentarios, producto);
+                factura = new Factura(fecha, costoPlan, montoTotal,
+                        comentarios, producto);
                         
             }
             // cerramos la conexion

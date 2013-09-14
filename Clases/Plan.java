@@ -17,7 +17,7 @@ public class Plan {
     String tipoPlan; //tipo del plan
     
     /**
-     * COnstructor de la clase plan
+     * Constructor de la clase plan
      * @param nombre nombre asociado al plan
      * @param descripcion descripcion del plan
      * @param tipoPlan tipo del plan
@@ -118,7 +118,7 @@ public class Plan {
      * Permite realizar una consulta de un plan y retornar su instancia en forma de objeto
      * @param nombre nombre del plan
      * @param tipo_plan tipo del plan
-     * @return la intancia hecha objeto del plan en cuestion
+     * @return la instancia hecha objeto del plan en cuestion
      */
     static Plan consultarPlan(String nombre, String tipo_plan) {
         // Inicializamos un objeto Cliente en null
@@ -134,15 +134,15 @@ public class Plan {
                     + "descripcion from plan where nombre_plan = '" + 
                         nombre + "' and tipo_plan = '" +tipo_plan+ "';");
             
-            rs.next();
+            // Verificamos que el query no retornara vacio
+            if (rs.next()) {
+                // Creamos un nuevo objeto plan con los datos obtenidos.
+                plan = new Plan(rs.getString(1),
+                        rs.getString(3), rs.getString(2));
+            }
             
-            // Creamos un nuevo objeto plan con los datos obtenidos.
-            plan = new Plan(rs.getString(1),
-                     rs.getString(3), rs.getString(2));
-                        
-            
-          // cerramos la conexion
-          conn.close();
+            // cerramos la conexion
+            conn.close();
             
         } catch (SQLException ex) {
             // Si hay una excepcion se imprime un mensaje
@@ -156,12 +156,13 @@ public class Plan {
     }
     
     /**
-     * Metodo que devuelve una lista de paquetes asociados a un plan
-     * @return 
+     * Metodo que devuelve la lista de paquetes asociados al plan
+     * @return retorna la lista de paquetes asociados al plan en caso de existir
+     * en caso contrario retorna null
      */
     ArrayList<Paquete> ListarPaquetes() {
         
-        ArrayList<Paquete> paquetes = new ArrayList<>();
+        ArrayList<Paquete> paquetes = null;
         // Se conecta a la base de datos
         try (Connection conn = Conexion.obtenerConn()) {
             
@@ -171,11 +172,20 @@ public class Plan {
             ResultSet rs = st.executeQuery("select nombre_paquete, descripcion from "
                     + "paquete natural join tiene where nombre_plan = '" + 
                     this.nombre + "';");
-            //Se guardan los paquetes obtenidos en una lista
-            while (rs.next()) {
+            
+            // Verificamos que el query no retornara nulo
+            if (rs.next()) {
+                // Agregamos el primer paquete a la lista paquetes
                 Paquete paq = new Paquete(rs.getString(1), rs.getString(2));
                 paquetes.add(paq);
+                    
+                //Se guardan los paquetes obtenidos en una lista
+                while (rs.next()) {
+                    paq = new Paquete(rs.getString(1), rs.getString(2));
+                    paquetes.add(paq);
+                }
             }
+            
             
             //se cierra la conexion
             conn.close();

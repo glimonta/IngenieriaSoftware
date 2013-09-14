@@ -75,7 +75,7 @@ public class Consumo {
      * @param nombre_servicio nombre del servicio que genero el consumo
      * @param fecha fecha en la que se realizo el consumo
      * @return una instancia de la clase consumo con los datos obtenidos en el query
-     * de la base de datos
+     * de la base de datos en caso de existir, sino retorna null.
      * @throws ParseException puede tirar una excepcion de parseo
      */
     static Consumo consultarConsumo(Integer id, String nombre_servicio, java.sql.Date fecha) throws ParseException {
@@ -94,22 +94,24 @@ public class Consumo {
                     + " fecha = '" + fecha.toString()
                     + "';");
             
-            rs.next();
-            // Creamos un nuevo objeto del tipo Date con la fecha de
-            // consumo conseguida
-            java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(2));
-            fecha = new java.sql.Date(utilDate.getTime());
+            // Verificamos que el consumo exista en la base de datos.
+            if (rs.next()) {
+                // Creamos un nuevo objeto del tipo Date con la fecha de
+                // consumo conseguida
+                java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(2));
+                fecha = new java.sql.Date(utilDate.getTime());
             
-            // Buscamos en la base de datos el producto correspondiente a
-            // ese id y creamos un objeto con el. 
-            Producto producto = Producto.consultarProducto(id);
+                // Buscamos en la base de datos el producto correspondiente a
+                // ese id y creamos un objeto con el. 
+                Producto producto = Producto.consultarProducto(id);
             
-            // Buscamos en la base de datos el servicio correspondiente a
-            // ese id y creamos un objeto con el. 
-            Servicio servicio = Servicio.consultarServicio(nombre_servicio);
+                // Buscamos en la base de datos el servicio correspondiente a
+                // ese id y creamos un objeto con el. 
+                Servicio servicio = Servicio.consultarServicio(nombre_servicio);
             
-            // Creamos un nuevo objeto consumo para retornar
-            consumo = new Consumo(rs.getInt(1), fecha, producto, servicio);
+                // Creamos un nuevo objeto consumo para retornar
+                consumo = new Consumo(rs.getInt(1), fecha, producto, servicio);
+            }
             
           // Cerramos la conexion.
           conn.close();

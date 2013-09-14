@@ -111,17 +111,21 @@ public class Tarjeta extends FormaPago {
             ResultSet rs = st.executeQuery("select * from tarjeta where "
                     + " numero = '" + numero + "';");
             
-            rs.next();
-            // Creamos un nuevo objeto del tipo Date con la fecha de
-            // consumo conseguida
-            java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(5));
-            java.sql.Date fechaV = new java.sql.Date(utilDate.getTime());
-            // Creamos un nuevo objeto tarjeta con los datos obtenidos.
-            tarjeta = new Tarjeta(rs.getInt(7), rs.getString(1), rs.getString(3),
-                    fechaV, rs.getString(6), rs.getInt(4), rs.getString(8),
-                    rs.getString(2));
-          //Se cierra la conexion de la base de datos
-          conn.close();
+            // Verificamos que el query no sea nulo
+            if (rs.next()) {
+                // Creamos un nuevo objeto del tipo Date con la fecha de
+                // consumo conseguida
+                java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(5));
+                java.sql.Date fechaV = new java.sql.Date(utilDate.getTime());
+                
+                // Creamos un nuevo objeto tarjeta con los datos obtenidos.
+                tarjeta = new Tarjeta(rs.getInt(7), rs.getString(1), rs.getString(3),
+                        fechaV, rs.getString(6), rs.getInt(4), rs.getString(8),
+                        rs.getString(2));
+            }
+            
+            //Se cierra la conexion de la base de datos
+            conn.close();
             
         } catch (SQLException ex) {
             // Si hay una excepcion se imprime un mensaje

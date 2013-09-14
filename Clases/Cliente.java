@@ -80,16 +80,20 @@ public class Cliente {
             // Buscamos los telefonos del cliente en la base de datos
             ResultSet rs = st.executeQuery("select numero from telefono where "
                     + "ci = '" + cedula.toString() + "';");
-            
+
             // Si los conseguimos es porque existe el cliente
-            if (rs != null) {
+            if (rs.next()) {
 
                 // Creamos una nueva lista para los telefonos
                 ArrayList<Long> tlfs = new ArrayList<>();
 
+                // Agregamos el primer telefono a la lista de tlfs
+                Long telefono = Long.valueOf(rs.getString(1));
+                tlfs.add(telefono);
+                    
                 // Metemos en la lista los telefonos.
                 while (rs.next()) {
-                    Long telefono = Long.valueOf(rs.getString(1));
+                    telefono = Long.valueOf(rs.getString(1));
                     tlfs.add(telefono);
                 }
                 
@@ -135,7 +139,7 @@ public class Cliente {
              // Actualizamos los datos del cliente en la base de datos
              st.executeUpdate("update cliente set nombre ='"
                     +this.nombre+"', direccion ='"+this.direccion+"'"
-                    + "where ci ='"+this.cedula+"';");
+                    + " where ci ='"+this.cedula+"';");
        
              // Eliminamos los telefonos asociados al cliente
              st.execute("delete from Telefono where ci ='"+this.cedula+"';");
@@ -143,7 +147,7 @@ public class Cliente {
              // Agregamos los telefonos asociados al cliente que se encuentran
              // en el atributo telefonos
              for (int i=0; i < this.telefonos.toArray().length; ++i) {
-                st.execute("insert into Telefono values ("+ this.cedula +"','"
+                st.execute("insert into Telefono values ('"+ this.cedula +"', '"
                         +this.telefonos.get(i).toString()+"');");
              }                  
     
@@ -205,12 +209,16 @@ public class Cliente {
                     + "producto natural join es_duenio where ci = '" + 
                     this.cedula.toString() + "';");
             
-            if (rs != null) {
+            if (rs.next()) {
                 productos = new ArrayList<>();
                 
-                // Agregamos los productos resultantes del query a la lista productos
+                // Agregamos el primer producto a la lista productos
+                Producto prod = new Producto(Integer.parseInt(rs.getString(1)), rs.getString(2), this);
+                productos.add(prod);
+                
+                // Agregamos los productos restantes a la lista productos
                 while (rs.next()) {
-                    Producto prod = new Producto(Integer.parseInt(rs.getString(1)), rs.getString(2), this);
+                    prod = new Producto(Integer.parseInt(rs.getString(1)), rs.getString(2), this);
                     productos.add(prod);
                 }
             }

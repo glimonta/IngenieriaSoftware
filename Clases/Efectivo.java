@@ -73,12 +73,14 @@ public class Efectivo extends FormaPago {
             ResultSet rs = st.executeQuery("select * from efectivo where "
                     + " nro_pago = " + numPago + ";");
             
-            rs.next();
-            // Creamos un nuevo objeto efectivo con los datos obtenidos.
-            efectivo = new Efectivo(Integer.parseInt(rs.getString(2)),
-                     Integer.parseInt(rs.getString(1)));
-          // Se cierra la conexion de la base de datos
-          conn.close();
+            // Verificamos que el query no haya retornado vacio
+            if (rs.next()) {
+                // Creamos un nuevo objeto efectivo con los datos obtenidos.
+                efectivo = new Efectivo(Integer.parseInt(rs.getString(2)),
+                        Integer.parseInt(rs.getString(1)));
+            }
+            // Se cierra la conexion de la base de datos
+            conn.close();
             
         } catch (SQLException ex) {
            // Si hay una excepcion se imprime un mensaje
