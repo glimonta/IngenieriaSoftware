@@ -2,27 +2,54 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Scanner;
+
+
 
 public class Main {
     
-    public  static void main(String[] args) throws Exception {
-
+    public static Scanner scanner = new Scanner(System.in);
+    
+    public static void main(String[] args) throws Exception {
         
-        
-        try{
+        System.out.println("Tarea 3");
             
+        System.out.println("Elija una opcion.");
             
-            Producto.eliminarProducto(21);
-
-
-
+        System.out.println("1. Gestion de Clientes\n" +
+                "2. Gestion de Productos\n" + "3. Gestion de Afiliaciones\n" + 
+                "4. Gestion de Consumos\n" + "0. Salir");
+                                 
             
-        } catch (SQLException e) {
+        String input = scanner.nextLine();
+        OUTER:
+        while (!input.equals("0")) {
             
-            System.out.println(e.getMessage());
-        }
-        
-        
-        
+            input = scanner.nextLine();
+       
+            switch(input) {
+                case "0" : 
+                    break OUTER;
+                case "1" : GestionarClientes.gestionClientes();
+                           break;
+                case "2" : GestionarProductos.gestionProductos();
+                           break;
+                case "3" : //GestionarAfiliaciones.gestionAfiliaciones();
+                           break;
+                case "4" : //GestionarConsumos.gestionConsumos();
+                           break;
+                default  : break;
+            }
+            
+            System.out.println("Elija una opcion.");
+            System.out.println("1. Gestion de Clientes\n" +
+                    "2. Gestion de Productos\n" + "3. Gestion de Afiliaciones\n" + 
+                    "4. Gestion de Consumos\n" + "0. Salir");
+       }
+            
+            System.out.println(input);
+               
     } 
 }
