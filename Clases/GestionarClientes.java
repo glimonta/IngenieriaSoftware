@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 public class GestionarClientes {
     
+    /**
+     * Metodo que interactua con el usuario para registrar un cliente.
+     */
     public static void registrarCliente() {
         
         System.out.println("Por favor ingrese el nombre del cliente.");
@@ -14,6 +17,7 @@ public class GestionarClientes {
 
         int cedula;
 
+        //El programa pide la cedula hasta que sea valida
         while (true) {
             try {
 
@@ -35,10 +39,14 @@ public class GestionarClientes {
 
         ArrayList<Long> telefonos = new ArrayList();
 
+        //Registra los telefonos y verifica que sean validos
         while (true) {
             try {
 
                 String telefonoStr = Main.scanner.nextLine();
+
+                /* Si el String de entrada es vacio ya no se registran 
+                 * mas telefonos */
                 if (telefonoStr.isEmpty())
                     break;
                 long telefono = Long.parseLong(telefonoStr);
@@ -49,8 +57,10 @@ public class GestionarClientes {
             }
         }
 
+        //Crea el cliente
         Cliente cliente = new Cliente(cedula,nombre,direccion,telefonos);
 
+        //Agrega al cliente en la base de datos
         try {
             cliente.registrarCliente();
 
@@ -59,13 +69,17 @@ public class GestionarClientes {
         } 
        
     }
-    
+        
+    /**
+     * Metodo que permite consultar un cliente de la base de datos.
+     */
     public static void consultarCliente() {
         
         System.out.println("Ingrese la cedula del cliente a consultar.");
         
         int cedula;
         
+        //El programa pide la cedula hasta que sea un numero valido
         while (true) {
             try {
 
@@ -78,8 +92,16 @@ public class GestionarClientes {
             }
         }
         
+        //Se busca la nformacion en la base de datos
         Cliente cliente = Cliente.consultarCliente(cedula);
                 
+        //Si el cliente no existe lo notifica.
+        if(cliente == null){
+            System.out.println("El cliente no existe en el sistema.");
+            return;
+        }
+        
+        /* Permite modificar y eliminar el cliente */
         while (true) {
             
             System.out.println(cliente.toString());
@@ -99,9 +121,15 @@ public class GestionarClientes {
         }
     }
     
+    /**
+     * Metodo que permite modificar un cliente ya consultado.
+     * @param cliente cliente a modificar
+     */
     public static void modificarCliente(Cliente cliente) {
         
               
+        /*Ciclo que permite modificar varios campos de cliente antes de
+           registrarlo en la base de datos */
         while (true) {
             System.out.println("Que desea modificar?");
             System.out.println("1. Nombre\n2. Direccion\n3. Telefonos\n4. Salir");
@@ -128,6 +156,7 @@ public class GestionarClientes {
                 //POR AHORA ES ASI. Falta eliminar y modificar uno que ya existe
                 System.out.println("Ingrese un telefono a agregar.");
                 
+                //Permite agregar varios telefonos.
                 while (true) {
                     try {
 
@@ -144,6 +173,8 @@ public class GestionarClientes {
                 
             } else if (input.equals("4")) {
                 
+                /*Luego de que se han modificado todos los campos se modifica 
+                  en la base de datos */
                 cliente.modificarCliente();
                 break;
             }
@@ -154,6 +185,9 @@ public class GestionarClientes {
     }
     
     
+    /**
+     * Menu principal de gestionar Clientes.
+     */
     public static void gestionClientes() {
 
             OUTER:
