@@ -51,11 +51,22 @@ public class Producto {
             Statement stmt = null;
             stmt = conexion.createStatement();
 
-            String insert = "insert into PRODUCTO values ("+ codigoProd +
-                    ", '" + modelo + "');";
+            if (Cliente.consultarCliente(cliente.cedula) != null){
 
-            //Se inserta el producto a la Base de Datos
-            stmt.executeUpdate(insert);
+               String insert = "insert into PRODUCTO values ("+ codigoProd +
+                     ", '" + modelo + "');";
+               //Se inserta el producto a la Base de Datos
+               stmt.executeUpdate(insert);
+
+               String insert = "insert into ES_DUNIEO values("+ codigoProd +
+                     ", " + cliente.cedula + ");";
+
+               //Se inserta la relacion a la Base de Datos
+               stmt.executeUpdate(insert);
+            } else
+               System.out.println("El cliente al que le pertenece este " + 
+                                 " producto no existe");
+
 
         } catch (SQLException e){
 
