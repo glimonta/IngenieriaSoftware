@@ -3,8 +3,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * Clase que utiliza diversas funciones de producto para establecer una interfaz
+ * con el usuario.
+ */
+
 public class GestionarProductos {
-    
+
+    /**
+     * Metodo que lee un numero del teclado.
+     * @param mensajeError imprime este string si el numero no es valido.
+     * @return el entero proveniente de la conversion.
+     */    
     static Integer leerEnteroEntrada(String mensajeError) {
         Integer numero;
         
@@ -21,6 +31,10 @@ public class GestionarProductos {
         }
         return numero;
     }
+   
+    /**
+     * Metodo que interactua con el usuario para registrar un producto.
+     */
     
     public static void registrarProducto() {
         
@@ -38,11 +52,13 @@ public class GestionarProductos {
         
         Cliente cliente = Cliente.consultarCliente(cedula);
         
+        //Imprime un error si el cliente no existe.
         if (cliente == null){
             System.out.println("El cliente dado no existe");
             return;
         }
         
+        //Se crea el producto
         Producto producto = new Producto(id, nombre, cliente);
 
         try {
@@ -53,6 +69,9 @@ public class GestionarProductos {
         } 
     }
     
+    /**
+     * Metodo que permite consultar un cliente de la base de datos.
+     */
     public static void consultarProducto() throws SQLException {
         
         System.out.println("Ingrese el ID del producto a consultar.");
@@ -88,10 +107,13 @@ public class GestionarProductos {
         }
         else {
             System.out.println("El producto no existe");
-            gestionProductos();
         }
     }
     
+    /**
+     * Metodo que permite modificar un producto ya consultado.
+     * @param producto producto a modificar
+     */
     public static void modificarProducto(Producto producto) throws SQLException {        
             
         while (true) {
@@ -127,9 +149,7 @@ public class GestionarProductos {
             System.out.println("Que desea modificar?");
             System.out.println("1. ID\n2. Nombre del modelo\n3. Salir");
             input = Main.scanner.nextLine();
-            
-            
-            
+
             switch (input) {
                 case "1":
                     System.out.println("Ingrese el nuevo ID del producto.");
@@ -151,6 +171,12 @@ public class GestionarProductos {
         
     }
 
+    /**
+     * Metodo que permite listar todas las facturas de un producto, listandolas 
+     * por mes.
+     * @param producto producto a consultar las facturas.
+     */
+    
     public static void consultarFacturas(Producto producto){
        
        System.out.println("Este proceso puede tomar unos minutos.");
@@ -166,9 +192,11 @@ public class GestionarProductos {
        }catch (Exception e){
            System.out.println(e.getMessage());
        }
-
-        
     }
+    
+    /**
+     * Menu principal de gestionar Productos.
+     */
     
     public static void gestionProductos() throws SQLException {
             OUTER:

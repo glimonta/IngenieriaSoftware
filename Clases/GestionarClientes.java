@@ -1,6 +1,9 @@
-
-import java.sql.SQLException;
 import java.util.ArrayList;
+
+/**
+ * Clase que utiliza diversas funciones de cliente para establecer una interfaz
+ * con el usuario.
+ */
 
 public class GestionarClientes {
     
@@ -174,13 +177,9 @@ public class GestionarClientes {
                 cliente.modificarCliente();
                 break;
             }
-        }
-                
-        
-        
+        }  
     }
-    
-    
+     
     /**
      * Menu principal de gestionar Clientes.
      */
@@ -201,10 +200,6 @@ public class GestionarClientes {
                     case "3":
                         break OUTER;
                 }
-            }
-        
-        
-        
+            }  
     }
-    
 }
