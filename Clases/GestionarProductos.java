@@ -26,7 +26,7 @@ public class GestionarProductos {
         
         Integer id = leerEnteroEntrada("Ingrese el ID de nuevo");
         
-        System.out.println("Ingrese el modelo del producto");
+        System.out.println("Ingrese el nombre del producto");
 
         String nombre = Main.scanner.nextLine();
         
@@ -35,12 +35,6 @@ public class GestionarProductos {
         Integer cedula = leerEnteroEntrada("Ingrese la cedula de nuevo");
         
         Cliente cliente = Cliente.consultarCliente(cedula);
-        
-        if (cliente == null){
-            System.out.println("El cliente dado no existe");
-            return;
-        }
-        
         Producto producto = new Producto(id, nombre, cliente);
 
         try {
@@ -62,11 +56,10 @@ public class GestionarProductos {
         if (null != producto) {
             System.out.println(producto.toString());
             
-            OUTER:
             while (true) {
                 System.out.println("Que desea hacer ahora?");
                 System.out.println("1. Modificar el producto\n2. Eliminar el producto\n" +
-                                "3. Consultar sus facturas\n4. Salir");
+                                "3. Salir");
 
                 String input = Main.scanner.nextLine();
                 
@@ -76,9 +69,9 @@ public class GestionarProductos {
                         break;
                     case "2":
                         producto.eliminarProducto();
-                        break OUTER;
+                        break;
                     case "3":
-                        break OUTER;
+                        break;
                 }
             }
         }
@@ -156,7 +149,7 @@ public class GestionarProductos {
             OUTER:
             while (true) {
                 System.out.println("1. Registrar producto\n2. Consultar "
-                        + "producto\n3. Salir");
+                        + "producto\n 3. Salir");
                 String input = Main.scanner.nextLine();
                 switch (input) {
                     case "1":

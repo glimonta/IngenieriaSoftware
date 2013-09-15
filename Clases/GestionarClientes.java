@@ -61,12 +61,7 @@ public class GestionarClientes {
         Cliente cliente = new Cliente(cedula,nombre,direccion,telefonos);
 
         //Agrega al cliente en la base de datos
-        try {
-            cliente.registrarCliente();
-
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        } 
+        cliente.registrarCliente();
        
     }
         

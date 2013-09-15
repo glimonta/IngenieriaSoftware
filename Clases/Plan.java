@@ -49,9 +49,8 @@ public class Plan {
             st = conn.createStatement();
 
             // Actualizamos los datos en la base de datos
-            st.executeUpdate("update plan set nombre ='"
-                     +this.nombre+"', descripcion ='"+this.descripcion+"'"
-                     + "where nombre ='"+this.nombre+"' and tipo_plan='"
+            st.executeUpdate("update plan set descripcion ='"+this.descripcion+"'"
+                     + "where nombre_plan ='"+this.nombre+"' and tipo_plan='"
                      + this.tipoPlan +"';");
           } catch (SQLException ex) {
               // Si hay una excepcion se imprime un mensaje
@@ -74,7 +73,7 @@ public class Plan {
             
             // Se agrega el nuevo plan a la tabla plan
             st.execute("insert into plan values ('"+ this.nombre + 
-                    "', '" + this.tipoPlan + "', '" + this.descripcion + "');");
+                    "', '" + this.descripcion + "', '" + this.tipoPlan + "');");
             
             // Cerramos la conexion
             conn.close();

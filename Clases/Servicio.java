@@ -32,7 +32,7 @@ public class Servicio {
     * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
     * la conexion.
     */
-    public void resgistrarServicio() throws Exception{
+    public void registrarServicio() throws SQLException{
 
         Connection conexion = null;
 

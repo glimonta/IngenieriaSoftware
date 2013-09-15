@@ -1,3 +1,7 @@
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -22,6 +26,8 @@ public class Main {
         String input = scanner.nextLine();
         OUTER:
         while (!input.equals("0")) {
+            
+            input = scanner.nextLine();
        
             switch(input) {
                 case "0" : 
@@ -30,9 +36,9 @@ public class Main {
                            break;
                 case "2" : GestionarProductos.gestionProductos();
                            break;
-                case "3" : GestionarAfiliaciones.gestionAfiliaciones();
+                case "3" : //GestionarAfiliaciones.gestionAfiliaciones();
                            break;
-                case "4" : GestionarConsumos.gestionConsumos();
+                case "4" : //GestionarConsumos.gestionConsumos();
                            break;
                 default  : break;
             }
@@ -41,12 +47,9 @@ public class Main {
             System.out.println("1. Gestion de Clientes\n" +
                     "2. Gestion de Productos\n" + "3. Gestion de Afiliaciones\n" + 
                     "4. Gestion de Consumos\n" + "0. Salir");
-       
-            input = scanner.nextLine();
-        
-        }
+       }
             
-            
+            System.out.println(input);
                
     } 
 }

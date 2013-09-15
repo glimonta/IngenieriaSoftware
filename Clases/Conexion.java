@@ -13,8 +13,8 @@ import java.sql.Statement;
 
 public class Conexion {
     
-    private static String url = "jdbc:postgresql://localhost/marcos";
-    private static String user = "marcos";
+    private static String url = "jdbc:postgresql://localhost/postgres";
+    private static String user = "postgres";
     private static String pass = "postgres";
     
     /* Obtiene la conexion a la base de datos */
@@ -33,7 +33,7 @@ public class Conexion {
         Connection conexion;
         
         try{             
-            conexion = DriverManager.getConnection(url, user,pass);
+            conexion = DriverManager.getConnection(url, user, pass);
             
         } catch (SQLException e){
             

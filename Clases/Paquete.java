@@ -33,7 +33,7 @@ public class Paquete {
     * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
     * la conexion.
     */
-    public void registrarPaquete() throws SQLException {
+    public void registrarPaquete() {
 
         Connection conexion = null;  
 
@@ -49,17 +49,17 @@ public class Paquete {
 
             //Se inserta el paquete a la Base de Datos
             stmt.executeUpdate(insert);
+            
+            //La conexion se cierra
+            conexion.close();
 
         }catch (SQLException e) {
 
             //Si hay un error se imprime en pantalla
             System.out.println(e.getMessage());
 
-        }finally {
-
-            //La conexion se cierra
-            conexion.close();
         }
+        
     }
 
    /**
@@ -70,7 +70,7 @@ public class Paquete {
     * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
     * la conexion.
     */
-    public static Paquete consultarPaquete(String nom)throws SQLException{
+    public static Paquete consultarPaquete(String nom) {
 
         Paquete paquete = null;
 
@@ -93,16 +93,16 @@ public class Paquete {
                 if (rs.next())
                     paquete = new Paquete(nom,rs.getString("DESCRIPCION"));
 
+                //La conexion se cierra
+                conexion.close();
+                
             } catch (SQLException e) {
 
                 //Si hay un error se imprime en pantalla
                 System.out.println("SQL EXCEPTION: ConsultarPaquete");
 
-            } finally {
+            } 
 
-                //La conexion se cierra
-                conexion.close();
-            }
         }
 
         return paquete;
@@ -113,7 +113,7 @@ public class Paquete {
     * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
     * la conexion.
     */
-    public void eliminarPaquete() throws SQLException{
+    public void eliminarPaquete() {
 
         Connection conexion = null;
 
@@ -128,16 +128,16 @@ public class Paquete {
             String delete = "delete from PAQUETE where NOMBRE_PAQUETE ='" 
                     + this.nombre + "';";
             stmt.executeUpdate(delete);
+            
+            //La conexion se cierra
+            conexion.close();
 
         }catch (SQLException e) {
             //Si hay un error se imprime en pantalla
             System.out.println(e.getMessage());
 
-        }finally {
-
-            //La conexion se cierra
-            conexion.close();
         }
+
     }
 
    /**
@@ -146,7 +146,7 @@ public class Paquete {
     * la conexion.
     */
 
-    public void modificarPaquete() throws SQLException{
+    public void modificarPaquete() {
 
         Connection conexion = null;
 
@@ -162,18 +162,17 @@ public class Paquete {
                     + this.descripcion + "' where NOMBRE_PAQUETE = '" 
                     + this.nombre + "';";
             stmt.executeUpdate(update);
+            
+            //La conexion se cierra
+            conexion.close();
 
         }catch (SQLException e) {
 
             //Si hay un error se imprime en pantalla
             System.out.println(e.getMessage());
 
-        }finally {
-
-            //La conexion se cierra
-            conexion.close();
-
         }
+
     }
 
    /**
@@ -183,7 +182,7 @@ public class Paquete {
     * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
     * la conexion.
     */
-    public ArrayList<Servicio> ListarServicios() throws SQLException {
+    public ArrayList<Servicio> ListarServicios() {
 
         //Se crea una lista vacia
         ArrayList<Servicio> lista = new ArrayList();
@@ -209,17 +208,17 @@ public class Paquete {
                     Servicio serv = Servicio.consultarServicio(nomServicio);
                     lista.add(serv);
                 }
+                
+                //La conexion se cierra
+                conexion.close();
 
             } catch (SQLException e) {
 
                 //Si hay un error se imprime en pantalla
                 System.out.println(e.getMessage());
 
-            } finally {
-
-               //La conexion se cierra
-               conexion.close();
             }
+            
         }
 
         return lista;

@@ -51,22 +51,11 @@ public class Producto {
             Statement stmt = null;
             stmt = conexion.createStatement();
 
-            if (Cliente.consultarCliente(cliente.cedula) != null){
+            String insert = "insert into PRODUCTO values ("+ codigoProd +
+                    ", '" + modelo + "');";
 
-               String insert = "insert into PRODUCTO values ("+ codigoProd +
-                     ", '" + modelo + "');";
-               //Se inserta el producto a la Base de Datos
-               stmt.executeUpdate(insert);
-
-               insert = "insert into ES_DUENIO values("+ codigoProd +
-                     ", " + cliente.cedula + ");";
-
-               //Se inserta la relacion a la Base de Datos
-               stmt.executeUpdate(insert);
-            } else
-               System.out.println("El cliente al que le pertenece este " + 
-                                 " producto no existe");
-
+            //Se inserta el producto a la Base de Datos
+            stmt.executeUpdate(insert);
 
         } catch (SQLException e){
 
@@ -103,6 +92,8 @@ public class Producto {
                     + "ES_DUENIO E, CLIENTE C where P.ID = " + codigo 
                     + " and E.ID =  P.ID and C.CI = E.CI;";
 
+            System.out.println(query);
+            
             try{
 
                 Cliente client = null;
@@ -111,8 +102,10 @@ public class Producto {
                 stmt = conexion.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
 
-                if (rs.next())
-
+                if (rs.next()) {
+                    
+                    System.out.println("HOLA"+rs.getString("ci"));
+                    
                     //Se buscan los datos del cliente para agregarlos al objeto
                     client = Cliente.consultarCliente(
                             Integer.parseInt(rs.getString("CI")));
@@ -120,7 +113,8 @@ public class Producto {
                     //Se crea el producto
                     product = new Producto(codigo, 
                             rs.getString("NOMBRE_MODELO"), client);
-
+                }
+                
             } catch (SQLException e){
 
                 //Si hay un error se imprime en pantalla
@@ -133,6 +127,7 @@ public class Producto {
             }
         }
 
+        System.out.println(product.toString());
         return product;
     }
 
@@ -152,15 +147,13 @@ public class Producto {
             Statement stmt = null;
             stmt = conexion.createStatement();
 
-            String delete = "delete from Es_DUENIO where ID = " + this.codigoProd + ";";
-            stmt.executeUpdate(delete);
-            
             //Se elimina el producto de la base de datos
-            delete = "delete from PRODUCTO where ID = " +
+            String delete = "delete from PRODUCTO where ID = " +
                     this.codigoProd + ";";
-            stmt.executeUpdate(delete);
-
             
+            System.out.println(delete);
+            
+            stmt.executeQuery(delete);
 
         } catch (SQLException e){
 
