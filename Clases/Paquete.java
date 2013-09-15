@@ -33,7 +33,7 @@ public class Paquete {
     * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
     * la conexion.
     */
-    public void registrarPaquete() {
+    public void registrarPaquete(){
 
         Connection conexion = null;  
 
@@ -50,16 +50,13 @@ public class Paquete {
             //Se inserta el paquete a la Base de Datos
             stmt.executeUpdate(insert);
             
-            //La conexion se cierra
             conexion.close();
 
         }catch (SQLException e) {
 
             //Si hay un error se imprime en pantalla
             System.out.println(e.getMessage());
-
         }
-        
     }
 
    /**
@@ -70,7 +67,7 @@ public class Paquete {
     * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
     * la conexion.
     */
-    public static Paquete consultarPaquete(String nom) {
+    public static Paquete consultarPaquete(String nom){
 
         Paquete paquete = null;
 
@@ -92,17 +89,15 @@ public class Paquete {
                 //Si el paquete existe, se crea
                 if (rs.next())
                     paquete = new Paquete(nom,rs.getString("DESCRIPCION"));
-
-                //La conexion se cierra
-                conexion.close();
                 
+                conexion.close();
+
             } catch (SQLException e) {
 
                 //Si hay un error se imprime en pantalla
                 System.out.println("SQL EXCEPTION: ConsultarPaquete");
 
             } 
-
         }
 
         return paquete;
@@ -113,7 +108,7 @@ public class Paquete {
     * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
     * la conexion.
     */
-    public void eliminarPaquete() {
+    public void eliminarPaquete(){
 
         Connection conexion = null;
 
@@ -128,8 +123,6 @@ public class Paquete {
             String delete = "delete from PAQUETE where NOMBRE_PAQUETE ='" 
                     + this.nombre + "';";
             stmt.executeUpdate(delete);
-            
-            //La conexion se cierra
             conexion.close();
 
         }catch (SQLException e) {
@@ -137,7 +130,6 @@ public class Paquete {
             System.out.println(e.getMessage());
 
         }
-
     }
 
    /**
@@ -146,7 +138,7 @@ public class Paquete {
     * la conexion.
     */
 
-    public void modificarPaquete() {
+    public void modificarPaquete(){
 
         Connection conexion = null;
 
@@ -162,8 +154,6 @@ public class Paquete {
                     + this.descripcion + "' where NOMBRE_PAQUETE = '" 
                     + this.nombre + "';";
             stmt.executeUpdate(update);
-            
-            //La conexion se cierra
             conexion.close();
 
         }catch (SQLException e) {
@@ -172,7 +162,6 @@ public class Paquete {
             System.out.println(e.getMessage());
 
         }
-
     }
 
    /**
@@ -182,7 +171,7 @@ public class Paquete {
     * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
     * la conexion.
     */
-    public ArrayList<Servicio> ListarServicios() {
+    public ArrayList<Servicio> ListarServicios(){
 
         //Se crea una lista vacia
         ArrayList<Servicio> lista = new ArrayList();
@@ -209,7 +198,6 @@ public class Paquete {
                     lista.add(serv);
                 }
                 
-                //La conexion se cierra
                 conexion.close();
 
             } catch (SQLException e) {
@@ -218,7 +206,6 @@ public class Paquete {
                 System.out.println(e.getMessage());
 
             }
-            
         }
 
         return lista;

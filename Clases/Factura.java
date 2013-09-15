@@ -137,7 +137,7 @@ public class Factura {
                 // Cerramos el ResultSet
                 rs.close();
                 
-              // Buscamos a la factura en la base de datos
+               //Buscamos a la factura en la base de datos
                 rs = st.executeQuery("select monto_total from factura where "
                     + "id = '" + producto.codigoProd + "' and fecha ='"
                     + fecha.toString() + "';");
@@ -149,40 +149,58 @@ public class Factura {
                 
                 // Buscamos en la base de datos el plan al que esta asociado
                 // el producto
-                Plan plan = producto.obtenerPlanActual();
-                /*
+                
                 rs = st.executeQuery("select nombre_plan, tipo_plan"
                         + " from esta_afiliado where id = '" + producto.codigoProd
-                        + "' and fecha_fin is null" );
+                        + "' and fecha_inic <= DATE '" + fecha.toString() +
+                        "' and (fecha_fin is null or fecha_fin > DATE '" +
+                        fecha.toString() + "');");
                 
                 rs.next();
                 //Almacenamos los valores del nombre del plan y el tipo
                 String nombPlan = rs.getString(1);
                 String tipoPlan = rs.getString(2);
                 
-                
+                Plan plan = Plan.consultarPlan(nombPlan, tipoPlan);
                 // Cerramos el ResultSet
                 rs.close();
-*/
-                // Buscamos los montos asociados a costo del plan en la base de datos
-                rs = st.executeQuery("select costo from tiene where " +
-                        "nombre_plan ='" + plan.nombre + "' and tipo_plan ='" +
-                        plan.tipoPlan + "' and fecha_inic < '" + 
-                        fecha.toString() + "' and fecha_fin > '" + 
-                        fecha.toString() + "';");
 
-                double costoPlan = 0;
-                
-                //Sumamos los costos del plan
-                while (rs.next()) {
-                    costoPlan = costoPlan + rs.getDouble(1);
-                }
-                
-                
+                // Buscamos los montos asociados a costo del plan en la base de datos
+
+                double costoPlan = plan.obtenerCosto(fecha);
+                                
                 // Creamos un nuevo objeto factura con los datos obtenidos.
                 factura = new Factura(fecha, costoPlan, montoTotal,
                         comentarios, producto);
-                        
+            
+                
+            /*Puede que la factura todavia no este generada pero haya un plan 
+            asociado que tenga renta basica.  */  
+            } else {
+                
+                rs = st.executeQuery("select nombre_plan, tipo_plan"
+                        + " from esta_afiliado where id = " + producto.codigoProd
+                        + " and fecha_inic <= DATE '" + fecha.toString() +
+                        "' and (fecha_fin is null or fecha_fin > DATE '" +
+                        fecha.toString() + "');");
+                
+                if (rs.next()){
+                    //Almacenamos los valores del nombre del plan y el tipo
+                    String nombPlan = rs.getString(1);
+                    String tipoPlan = rs.getString(2);
+
+                    Plan plan = Plan.consultarPlan(nombPlan, tipoPlan);
+                    
+                    Double costoPlan = plan.obtenerCosto(fecha);
+                    
+                    ArrayList<String> comentarios = new ArrayList();
+                    
+                    if (costoPlan != null)
+                        factura = new Factura(fecha, costoPlan, 0.0, comentarios,
+                                producto);
+                    
+                }
+                
             }
             // cerramos la conexion
             conn.close();
@@ -249,5 +267,6 @@ public class Factura {
               System.err.println(ex.getMessage());
           }
     }
+    
    
 }

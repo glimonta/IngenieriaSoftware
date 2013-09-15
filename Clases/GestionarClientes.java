@@ -61,7 +61,8 @@ public class GestionarClientes {
         Cliente cliente = new Cliente(cedula,nombre,direccion,telefonos);
 
         //Agrega al cliente en la base de datos
-        cliente.registrarCliente();
+         cliente.registrarCliente();
+
        
     }
         
