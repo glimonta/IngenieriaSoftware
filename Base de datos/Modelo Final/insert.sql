@@ -155,3 +155,9 @@ INSERT INTO CONSUME (ID, NOMBRE_SERVICIO, FECHA, CANTIDAD) VALUES
    (011, 'Segundos a otros operadores moviles', '2013-5-1', 1000),                            
    (002, 'Segundos a moviles MOCEL'           , '2013-5-1', 100 );
                    
+
+INSERT INTO TELEFONO (CI, NUMERO) VALUES
+   (1, 04244658129),
+   (2, 02124657871),
+   (3, 04124831597),
+   (4, 04269136584);

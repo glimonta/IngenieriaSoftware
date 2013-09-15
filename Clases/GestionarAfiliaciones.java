@@ -32,24 +32,19 @@ public class GestionarAfiliaciones {
                 
         Producto producto = Producto.consultarProducto(id);   
         
-        System.out.println(producto.toString());
-        
         System.out.println("Por favor ingrese el nombre del plan.");
         
         String nomPlan = Main.scanner.nextLine();
         
         System.out.println("Por favor ingrese el tipo de plan. (PREPAGO o POSTPAGO)");
         
-        String tipoPlan = Main.scanner.nextLine();
+        String tipoPlan = Main.scanner.nextLine().toUpperCase();
         
         Plan plan = Plan.consultarPlan(nomPlan,tipoPlan);
-        
-        System.out.println(plan.toString());
         
         System.out.println("Por favor ingrese la fecha de inicio del plan." +
                            "Formato: AAAA-MM-DD");
         
-        //Comprobar que es una fecha?
         String fechaInicStr = Main.scanner.nextLine();
         
         Date fechaInic = Date.valueOf(fechaInicStr);
@@ -57,12 +52,9 @@ public class GestionarAfiliaciones {
         System.out.println("Por favor ingrese la fecha fin del plan." +
                            "Formato: AAAA-MM-DD o null");
         
-        //Comprobar que es una fecha?
         String fechaFinStr = Main.scanner.nextLine();
         
         Date fechaFin = Date.valueOf(fechaFinStr);
-        
-        System.out.println(fechaInic.toString() + fechaFin.toString());
         
         Afiliacion afiliacion = new Afiliacion(fechaInic,fechaFin,plan,producto);
         
@@ -88,7 +80,6 @@ public class GestionarAfiliaciones {
         System.out.println("Por favor ingrese la fecha de inicio del servicio." +
                            "Formato: AAAA-MM-DD");
         
-        //Comprobar que es una fecha?
         String fechaInicStr = Main.scanner.nextLine();
         
         Date fechaInic = Date.valueOf(fechaInicStr);
@@ -112,15 +103,16 @@ public class GestionarAfiliaciones {
         System.out.println("Por favor ingrese la fecha de inicio del plan." +
                            "Formato: AAAA-MM-DD");
         
-        //Comprobar que es una fecha?
         String fechaInicStr = Main.scanner.nextLine();
         
         Date fechaInic = Date.valueOf(fechaInicStr);
         
         Afiliacion afiliacion = Afiliacion.consultarAfiliacion(id, nomPlan, tipoPlan, fechaInic);
         
-        afiliacion.eliminarAfiliacion();
-        
+        if (afiliacion != null)
+            afiliacion.eliminarAfiliacion();
+        else
+            System.out.println("Este producto no posee este plan");
         
     }
     
@@ -133,15 +125,16 @@ public class GestionarAfiliaciones {
         System.out.println("Por favor ingrese la fecha de inicio del servicio." +
                            "Formato: AAAA-MM-DD");
         
-        //Comprobar que es una fecha?
         String fechaInicStr = Main.scanner.nextLine();
         
         Date fechaInic = Date.valueOf(fechaInicStr);
         
         Posee posee = Posee.consultarPosee(id, nomServicio, fechaInic);
         
-        posee.eliminarPosee();
-                
+        if (posee != null)
+            posee.eliminarPosee();
+        else
+            System.out.println("Este producto no posee este servicio");
         
     }
     
@@ -153,15 +146,25 @@ public class GestionarAfiliaciones {
         
         Producto producto = Producto.consultarProducto(id);
         
+        if (producto == null){
+            System.out.println("Este producto no existe.");
+            return;
+            
+        }
+        
         ArrayList<Afiliacion> afiliaciones = producto.listarPlanesAfiliados();
         
+        if (afiliaciones.isEmpty()){
+          System.out.println("Este producto no tiene planes asociados.");
+          return;
+        }  
         Iterator afil = afiliaciones.iterator();
         
         while (afil.hasNext()) 
             System.out.println(afil.next().toString());
         
         System.out.println("Desea eliminar un plan de este producto?\n"+
-                           "1.Eliminar un plan\n 2.Salir");
+                           "1.Eliminar un plan\n2.Salir");
         
         String input = Main.scanner.nextLine();
         
@@ -184,7 +187,18 @@ public class GestionarAfiliaciones {
         
         Producto producto = Producto.consultarProducto(id);
         
+        if (producto == null){
+            System.out.println("Este producto no existe.");
+            return;
+            
+        }
+        
         ArrayList<Posee> poseeList = producto.listarServiciosAdicionalesContratados();
+        
+        if (poseeList.isEmpty()){
+          System.out.println("Este producto no tiene servicios asociados.");
+          return;
+        }  
         
         Iterator afil = poseeList.iterator();
         

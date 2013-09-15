@@ -30,9 +30,9 @@ public class Main {
                            break;
                 case "2" : GestionarProductos.gestionProductos();
                            break;
-                case "3" : //GestionarAfiliaciones.gestionAfiliaciones();
+                case "3" : GestionarAfiliaciones.gestionAfiliaciones();
                            break;
-                case "4" : //GestionarConsumos.gestionConsumos();
+                case "4" : GestionarConsumos.gestionConsumos();
                            break;
                 default  : break;
             }
