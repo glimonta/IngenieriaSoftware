@@ -58,7 +58,7 @@ public class Producto {
                //Se inserta el producto a la Base de Datos
                stmt.executeUpdate(insert);
 
-               String insert = "insert into ES_DUNIEO values("+ codigoProd +
+               insert = "insert into ES_DUNIEO values("+ codigoProd +
                      ", " + cliente.cedula + ");";
 
                //Se inserta la relacion a la Base de Datos
@@ -152,9 +152,14 @@ public class Producto {
             Statement stmt = null;
             stmt = conexion.createStatement();
 
+            String delete = "delete from Es_DUENIO where ID = " + this.codigoProd + ";"
+
             //Se elimina el producto de la base de datos
-            String delete = "delete from PRODUCTO where ID = " +
+            delete = "delete from PRODUCTO where ID = " +
                     this.codigoProd + ";";
+            stmt.executeUpdate(delete);
+
+            delete = "delete from Es_DUENIO where ID = " + this.codigoProd + ";"
             stmt.executeUpdate(delete);
 
         } catch (SQLException e){
