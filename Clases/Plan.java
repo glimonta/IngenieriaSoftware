@@ -1,5 +1,6 @@
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -199,4 +200,40 @@ public class Plan {
         return paquetes;
         
     }
+    
+    public Double obtenerCosto(Date fecha){
+        
+        Double costo = null;
+        
+        // Conectamos con la base de datos
+        try (Connection conn = Conexion.obtenerConn()) {
+            
+            Statement st;
+            st = conn.createStatement();
+            // Realizamos la consulta del plan
+            ResultSet rs = st.executeQuery("select COSTO From TIENE where " +
+                    "NOMBRE_PLAN = '" + nombre + "' and TIPO_PLAN = '" +
+                    tipoPlan + "' and FECHA_INIC <= DATE '" + fecha.toString() +
+                    "' and (FECHA_FIN IS NULL or FECHA_FIN > DATE '" 
+                    + fecha.toString() + "');");
+            
+            // Verificamos que el query no retornara vacio
+            if (rs.next()) {
+                costo = Double.parseDouble(rs.getString("COSTO"));
+            }
+            
+            // cerramos la conexion
+            conn.close();
+            
+        } catch (SQLException ex) {
+            // Si hay una excepcion se imprime un mensaje
+            System.err.println(ex.getMessage());
+        }
+        
+        // Retorna al plan que saco de la base de datos y en caso de no
+        // conseguirlo retorna null.
+        return costo;        
+        
+    }
+    
 }
