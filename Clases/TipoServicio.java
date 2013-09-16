@@ -1,3 +1,5 @@
+package ingsoftware;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +18,7 @@ public class TipoServicio {
    * @param nombre nombre del TipoServicio
    */
   public TipoServicio(String nombre) {
-    this.nombre = nombre            // Nombre del TipoServicio;
+    this.nombre = nombre;            // Nombre del TipoServicio;
   }
 
   /**
@@ -68,7 +70,7 @@ public class TipoServicio {
       ResultSet rs = st.executeQuery("select * from tipo_servicio where nombre = '" + nombre + "';");
 
       if (rs.next()) {
-        tipoServicio = new tipoServicio(rs.getString(1));
+        tipoServicio = new TipoServicio(rs.getString(1));
       }
       // cerramos la conexion
       conn.close();
