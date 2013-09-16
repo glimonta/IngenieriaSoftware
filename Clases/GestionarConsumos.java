@@ -6,6 +6,11 @@ import java.util.Iterator;
 
 public class GestionarConsumos {
     
+    /**
+     * Metodo que lee un numero del teclado.
+     * @param mensajeError imprime este string si el numero no es valido.
+     * @return el entero proveniente de la conversion.
+     */      
     static Integer leerEnteroEntrada(String mensajeError) {
         Integer numero;
         

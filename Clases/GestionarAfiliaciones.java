@@ -4,9 +4,16 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-public class GestionarAfiliaciones {
     
+/**
+ * Metodo que interactua con el usuario para registrar un cliente.
+ */
+public class GestionarAfiliaciones {
+    /**
+     * Metodo que lee un numero del teclado.
+     * @param mensajeError imprime este string si el numero no es valido.
+     * @return el entero proveniente de la conversion.
+     */      
     static Integer leerEnteroEntrada(String mensajeError) {
         Integer numero;
         
@@ -24,6 +31,9 @@ public class GestionarAfiliaciones {
         return numero;
     }
     
+    /**
+     * Metodo que permite afiliar un plan al interactuar con el usuario.
+     */    
     public static void afiliarPlan() throws SQLException {
         
         System.out.println("Por favor ingrese el ID del producto.");
@@ -56,13 +66,19 @@ public class GestionarAfiliaciones {
         
         Date fechaFin = Date.valueOf(fechaFinStr);
         
+        //Se crea el objeto de afiliacion.
         Afiliacion afiliacion = new Afiliacion(fechaInic,fechaFin,plan,producto);
         
+        //Se registra en la base de datos.
         afiliacion.registrarAfiliacion();           
 
         
     }
     
+    /**
+     * Metodo que permite afiliar un servicio adicional al interactuar 
+     * con el usuario.
+     */
     public static void afiliarServicio() throws SQLException {
         
         System.out.println("Por favor ingrese el ID del producto.");
@@ -84,12 +100,18 @@ public class GestionarAfiliaciones {
         
         Date fechaInic = Date.valueOf(fechaInicStr);
         
+        //Se crea el objeto Posee
         Posee posee = new Posee(fechaInic,servicio,producto);
         
+        //Se registra en la base de datos
         posee.registrarPosee();
         
     }
     
+    /**
+     * Metodo que permite desafiliar un plan al interactuar 
+     * con el usuario.
+     */
     public static void desafiliarPlan(Integer id) throws SQLException, ParseException {
                 
         System.out.println("Por favor ingrese el nombre del plan.");
@@ -116,6 +138,10 @@ public class GestionarAfiliaciones {
         
     }
     
+    /**
+     * Metodo que permite desafiliar un servicio adicional al interactuar 
+     * con el usuario.
+     */
     public static void desafiliarServicio(Integer id) throws SQLException, ParseException {
         
         System.out.println("Por favor ingrese el nombre del servicio adicional.");
@@ -138,6 +164,9 @@ public class GestionarAfiliaciones {
         
     }
     
+    /**
+     * Metodo que permite consultar todos los planes afiliados de un producto.
+     */
     public static void consultarPlanesAfiliados() throws SQLException, ParseException {
         
         System.out.println("Por favor ingrese el ID del producto.");
@@ -178,7 +207,10 @@ public class GestionarAfiliaciones {
         
     }
     
-    
+    /**
+     * Metodo que permite consultar todos los servicios adicionales afiliados 
+     * de un producto.
+     */
     public static void consultarServiciosAfiliados() throws SQLException, ParseException {
         
         System.out.println("Por favor ingrese el ID del producto.");
@@ -189,8 +221,7 @@ public class GestionarAfiliaciones {
         
         if (producto == null){
             System.out.println("Este producto no existe.");
-            return;
-            
+            return;   
         }
         
         ArrayList<Posee> poseeList = producto.listarServiciosAdicionalesContratados();
@@ -218,6 +249,9 @@ public class GestionarAfiliaciones {
         }
     }
     
+    /**
+     * Menu principal de gestionar Afiliaciones. 
+     */
     public static void gestionAfiliaciones() throws SQLException, ParseException {
         
         OUTER:

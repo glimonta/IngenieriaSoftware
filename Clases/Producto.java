@@ -51,11 +51,22 @@ public class Producto {
             Statement stmt = null;
             stmt = conexion.createStatement();
 
-            String insert = "insert into PRODUCTO values ("+ codigoProd +
-                    ", '" + modelo + "');";
+            if (Cliente.consultarCliente(cliente.cedula) != null){
 
-            //Se inserta el producto a la Base de Datos
-            stmt.executeUpdate(insert);
+               String insert = "insert into PRODUCTO values ("+ codigoProd +
+                     ", '" + modelo + "');";
+               //Se inserta el producto a la Base de Datos
+               stmt.executeUpdate(insert);
+
+               insert = "insert into ES_DUENIO values("+ codigoProd +
+                     ", " + cliente.cedula + ");";
+
+               //Se inserta la relacion a la Base de Datos
+               stmt.executeUpdate(insert);
+            } else
+               System.out.println("El cliente al que le pertenece este " + 
+                                 " producto no existe");
+
 
         } catch (SQLException e){
 
@@ -92,8 +103,6 @@ public class Producto {
                     + "ES_DUENIO E, CLIENTE C where P.ID = " + codigo 
                     + " and E.ID =  P.ID and C.CI = E.CI;";
 
-            System.out.println(query);
-            
             try{
 
                 Cliente client = null;
@@ -102,10 +111,8 @@ public class Producto {
                 stmt = conexion.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
 
-                if (rs.next()) {
-                    
-                    System.out.println("HOLA"+rs.getString("ci"));
-                    
+                if (rs.next())
+
                     //Se buscan los datos del cliente para agregarlos al objeto
                     client = Cliente.consultarCliente(
                             Integer.parseInt(rs.getString("CI")));
@@ -113,8 +120,7 @@ public class Producto {
                     //Se crea el producto
                     product = new Producto(codigo, 
                             rs.getString("NOMBRE_MODELO"), client);
-                }
-                
+
             } catch (SQLException e){
 
                 //Si hay un error se imprime en pantalla
@@ -127,7 +133,6 @@ public class Producto {
             }
         }
 
-        System.out.println(product.toString());
         return product;
     }
 
@@ -147,13 +152,15 @@ public class Producto {
             Statement stmt = null;
             stmt = conexion.createStatement();
 
+            String delete = "delete from Es_DUENIO where ID = " + this.codigoProd + ";";
+            stmt.executeUpdate(delete);
+            
             //Se elimina el producto de la base de datos
-            String delete = "delete from PRODUCTO where ID = " +
+            delete = "delete from PRODUCTO where ID = " +
                     this.codigoProd + ";";
+            stmt.executeUpdate(delete);
+
             
-            System.out.println(delete);
-            
-            stmt.executeQuery(delete);
 
         } catch (SQLException e){
 
@@ -469,25 +476,43 @@ public class Producto {
         if (conexion != null) {
 
             Statement stmt = null;
-            String query = "select FECHA from FACTURA where ID = " 
-                    + codigoProd + ";";
-
             try {
 
                 //Se buscan las facturas del producto
                 stmt = conexion.createStatement();
+                
+                String query = "select date_part('month', min(FECHA_INIC)) as mes,"
+                        + "date_part('year', min(FECHA_INIC)) as year "
+                        + "from ESTA_AFILIADO where ID = " + codigoProd + ";";
+                
                 ResultSet rs = stmt.executeQuery(query);
+                
+                if (rs.next()){
+                
+                    int year = Integer.parseInt(rs.getString("year")) - 1900;
+                    int mes = Integer.parseInt(rs.getString("mes")) -1;
+                    Date fechaMinima = new Date (year, mes, 1);
+                    Calendar calendar = new GregorianCalendar();
+                    Date fechaActual = new Date(calendar.getTimeInMillis());
+                    /* Para cada factura se crea un objeto y se agrega a la lista */
+                    while (fechaMinima.compareTo(fechaActual) <= 0){
 
-                /* Para cada factura se crea un objeto y se agrega a la lista */
-                while (rs.next()){
-
-                    Date fecha = Date.valueOf(rs.getString("FECHA"));
-
-                    //Se busca los datos faltantes de la factura en la base de datos
-                    Factura factura = Factura.consultarFactura(this, fecha);
-                    list.add(factura);
+                        //Se busca los datos faltantes de la factura en la base de datos
+                        Factura factura = Factura.consultarFactura(this, fechaMinima);
+                        if (factura != null)
+                            list.add(factura);
+                        
+                        mes++;
+                        if (mes == 12){
+                            mes = 0;
+                            year++;
+                            
+                        }
+                        
+                        fechaMinima = new Date (year, mes, 1);
+                        
+                    }
                 }
-
             } catch (SQLException e) {
 
                 //Si hay un error se imprime en pantalla

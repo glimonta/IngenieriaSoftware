@@ -1,8 +1,20 @@
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+/**
+ * Clase que utiliza diversas funciones de producto para establecer una interfaz
+ * con el usuario.
+ */
 
 public class GestionarProductos {
-    
+
+    /**
+     * Metodo que lee un numero del teclado.
+     * @param mensajeError imprime este string si el numero no es valido.
+     * @return el entero proveniente de la conversion.
+     */    
     static Integer leerEnteroEntrada(String mensajeError) {
         Integer numero;
         
@@ -19,6 +31,10 @@ public class GestionarProductos {
         }
         return numero;
     }
+   
+    /**
+     * Metodo que interactua con el usuario para registrar un producto.
+     */
     
     public static void registrarProducto() {
         
@@ -26,7 +42,7 @@ public class GestionarProductos {
         
         Integer id = leerEnteroEntrada("Ingrese el ID de nuevo");
         
-        System.out.println("Ingrese el nombre del producto");
+        System.out.println("Ingrese el modelo del producto");
 
         String nombre = Main.scanner.nextLine();
         
@@ -35,6 +51,14 @@ public class GestionarProductos {
         Integer cedula = leerEnteroEntrada("Ingrese la cedula de nuevo");
         
         Cliente cliente = Cliente.consultarCliente(cedula);
+        
+        //Imprime un error si el cliente no existe.
+        if (cliente == null){
+            System.out.println("El cliente dado no existe");
+            return;
+        }
+        
+        //Se crea el producto
         Producto producto = new Producto(id, nombre, cliente);
 
         try {
@@ -45,6 +69,9 @@ public class GestionarProductos {
         } 
     }
     
+    /**
+     * Metodo que permite consultar un cliente de la base de datos.
+     */
     public static void consultarProducto() throws SQLException {
         
         System.out.println("Ingrese el ID del producto a consultar.");
@@ -56,10 +83,11 @@ public class GestionarProductos {
         if (null != producto) {
             System.out.println(producto.toString());
             
+            OUTER:
             while (true) {
                 System.out.println("Que desea hacer ahora?");
                 System.out.println("1. Modificar el producto\n2. Eliminar el producto\n" +
-                                "3. Salir");
+                                "3. Consultar sus facturas\n4. Salir");
 
                 String input = Main.scanner.nextLine();
                 
@@ -69,18 +97,23 @@ public class GestionarProductos {
                         break;
                     case "2":
                         producto.eliminarProducto();
-                        break;
+                        break OUTER;
                     case "3":
-                        break;
+                        consultarFacturas(producto);
+                    case "4":
+                        break OUTER;
                 }
             }
         }
         else {
             System.out.println("El producto no existe");
-            gestionProductos();
         }
     }
     
+    /**
+     * Metodo que permite modificar un producto ya consultado.
+     * @param producto producto a modificar
+     */
     public static void modificarProducto(Producto producto) throws SQLException {        
             
         while (true) {
@@ -111,19 +144,12 @@ public class GestionarProductos {
             }
         }
         
-        
-        
-        
-        
-        
         String input;
         do {
             System.out.println("Que desea modificar?");
             System.out.println("1. ID\n2. Nombre del modelo\n3. Salir");
             input = Main.scanner.nextLine();
-            
-            
-            
+
             switch (input) {
                 case "1":
                     System.out.println("Ingrese el nuevo ID del producto.");
@@ -144,12 +170,39 @@ public class GestionarProductos {
         
         
     }
+
+    /**
+     * Metodo que permite listar todas las facturas de un producto, listandolas 
+     * por mes.
+     * @param producto producto a consultar las facturas.
+     */
+    
+    public static void consultarFacturas(Producto producto){
+       
+       System.out.println("Este proceso puede tomar unos minutos.");
+        
+       try{
+           ArrayList<Factura> list = producto.listarFacturas();
+           Iterator i = list.iterator();
+
+           while (i.hasNext())
+               System.out.println(i.next().toString());
+
+
+       }catch (Exception e){
+           System.out.println(e.getMessage());
+       }
+    }
+    
+    /**
+     * Menu principal de gestionar Productos.
+     */
     
     public static void gestionProductos() throws SQLException {
             OUTER:
             while (true) {
                 System.out.println("1. Registrar producto\n2. Consultar "
-                        + "producto\n 3. Salir");
+                        + "producto\n3. Salir");
                 String input = Main.scanner.nextLine();
                 switch (input) {
                     case "1":

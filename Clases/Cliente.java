@@ -33,7 +33,7 @@ public class Cliente {
      * Permite agregar un cliente nuevo a la base de datos.
      * @throws SQLException puede lanzar una excepcion de sql
      */
-    void registrarCliente() {
+    void registrarCliente(){
         // Conectamos con la base de datos
         try (Connection conn = Conexion.obtenerConn()) {
             
@@ -43,7 +43,7 @@ public class Cliente {
             // Se agrega el nuevo cliente a la tabla cliente y se agregan sus
             // telefonos a la tabla telefono.
             
-            st.execute("insert into cliente values ('" + this.cedula + "', '"
+            st.execute("insert into cliente values ('" + this.cedula.toString() + "', '"
                     + this.nombre + "', '" + this.direccion + "');");
 
             for (int i=0; i < telefonos.toArray().length; ++i) {
@@ -79,7 +79,7 @@ public class Cliente {
             
             // Buscamos los telefonos del cliente en la base de datos
             ResultSet rs = st.executeQuery("select numero from telefono where "
-                    + "ci = " + cedula.toString() + ";");
+                    + "ci = '" + cedula.toString() + "';");
 
             // Si los conseguimos es porque existe el cliente
             if (rs.next()) {
@@ -101,9 +101,8 @@ public class Cliente {
                 rs.close();
                 
                 // Buscamos al cliente en la base de datos
-                
-                rs = st.executeQuery("select ci, nombre, direccion from cliente where ci = " + 
-                    cedula.toString() + ";");
+                rs = st.executeQuery("select ci, nombre, direccion from cliente where ci = '" + 
+                    cedula.toString() + "';");
             
                 rs.next();
               
@@ -171,20 +170,17 @@ public class Cliente {
         try (Connection conn = Conexion.obtenerConn()) {
             Statement st;
             st = conn.createStatement();
-            
-            
-            
+                        
             // Eliminamos los telefonos del cliente
-            st.execute("delete from Telefono where ci ="+this.cedula+";");
+            st.execute("delete from Telefono where ci ='"+this.cedula+"';");
 
             // Eliminamos los productos que un clinte posee
-            if (productos != null) {
-                for (int i=0; i < productos.toArray().length; ++i) {
-                    ((Producto) productos.get(i)).eliminarProducto();
-                }        
-            }
+            for (int i=0; i < productos.toArray().length; ++i) {
+                ((Producto) productos.get(i)).eliminarProducto();
+            }            
             
-            st.execute("delete from Cliente where ci ="+this.cedula+";");
+            // Eliminamos al cliente
+            st.execute("delete from Cliente where ci ='"+this.cedula+"';");
             
           } catch (SQLException ex) {
               // Si hay una excepcion se imprime un mensaje
@@ -199,7 +195,7 @@ public class Cliente {
      * de productos en caso de que existan.
      */
     ArrayList<Producto> obtenerProductos() {
-        ArrayList<Producto> productos = null;
+        ArrayList<Producto> productos = new ArrayList<>();
         
         // Conectamos con la base de datos
         try (Connection conn = Conexion.obtenerConn()) {
@@ -214,8 +210,7 @@ public class Cliente {
                     this.cedula.toString() + "';");
             
             if (rs.next()) {
-                productos = new ArrayList<>();
-                
+
                 // Agregamos el primer producto a la lista productos
                 Producto prod = new Producto(Integer.parseInt(rs.getString(1)), rs.getString(2), this);
                 productos.add(prod);
