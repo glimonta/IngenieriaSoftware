@@ -30,7 +30,7 @@ public class Modelo {
             Statement st;
             st = conn.createStatement();
             
-            // Se agrega el nuevo modelo a la tabla cliente y se agregan sus
+            // Se agrega el nuevo modelo a la tabla modelo y se agregan sus
             
             st.execute("insert into modelo values ('"
                     + this.nombre + "');");
