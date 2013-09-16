@@ -24,6 +24,8 @@ import static org.junit.Assert.*;
  */
 public class AfiliacionTest {
     
+    static Modelo M1;
+    
     //Se agregan las instancias necesarias para poder probar
     static Afiliacion dummy;
     static Afiliacion dummyNull; //dummy con fechafin = null
@@ -45,6 +47,9 @@ public class AfiliacionTest {
     
     @BeforeClass
     public static void setUpClass() throws SQLException, ParseException {
+        
+        M1 = new Modelo("ModeloPrueba");
+        M1.registrarModelo();
         
         //Constraint de Cliente para Producto
         ArrayList<Long> telfC1 = new ArrayList<Long>();
@@ -113,7 +118,7 @@ public class AfiliacionTest {
     
     @AfterClass
     public static void tearDownClass() throws SQLException {
-        //Se eliminan todas las instancias agregadas
+        //Se eliminan todas las instancias agregadas 
         dummy.eliminarAfiliacion();
         dummyNull.eliminarAfiliacion();
         C1.eliminarCliente();
@@ -121,6 +126,7 @@ public class AfiliacionTest {
         P2.eliminarProducto();
         P3.eliminarProducto();
         L1.eliminarPlan();
+        M1.eliminarModelo();
         
         System.out.println(" --- FINALIZANDO PRUEBAS DE AFILIACION.JAVA --- ");
     }

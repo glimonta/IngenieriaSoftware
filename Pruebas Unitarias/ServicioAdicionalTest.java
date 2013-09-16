@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+package ingsoftware;
 
 import java.sql.SQLException;
 import org.junit.After;
@@ -23,6 +24,7 @@ public class ServicioAdicionalTest {
     static ServicioAdicional dummyEliminar;
     static Servicio pDummy;
     static Servicio pDummyAgregar;
+    static TipoServicio T1;
     
     public ServicioAdicionalTest() {
     }
@@ -30,6 +32,9 @@ public class ServicioAdicionalTest {
 @BeforeClass
     public static void setUpClass() throws Exception {
         
+        T1 = new TipoServicio("TipoPrueba");
+        T1.registrarTipoServicio();
+    
         //Otorgamos valores a dichas instancias
         dummy = new ServicioAdicional("ServicioAPrueba1","DescripcionPrueba",
                                        "TipoPrueba",1,2,"PREPAGO");
@@ -145,7 +150,7 @@ public class ServicioAdicionalTest {
      * Test of modificarServicioAd method, of class ServicioAdicional.
      */
     @Test
-    public void testModificarServicioAd() throws SQLException {
+    public void testModificarServicioAd() throws SQLException, Exception {
         
         System.out.println("Probando modificarServicioAd de ServicioAdicional");
         
@@ -153,11 +158,8 @@ public class ServicioAdicionalTest {
         dummy.cantidadAdicional = 8;
         
         //Se procede a hacer la modificacion
-        try {
-            dummy.modificarServicioAd();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        dummy.modificarServicioAd();
+        
         //Se extrae el Servicio modificado de la base de datos
         ServicioAdicional result = ServicioAdicional.consultarServicioAd("ServicioAPrueba1");
         

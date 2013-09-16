@@ -42,7 +42,7 @@ public class TipoServicio {
       st = conn.createStatement();
 
       // Se agrega el nuevo TipoServicio a la tabla modelo y se agregan sus
-      st.execute("insert into tipo_servicio values ('" + this.nombre + "';");
+      st.execute("insert into tipo_servicio values ('" + this.nombre + "');");
       // Cerramos la conexion
       conn.close();
     } catch (SQLException ex) {
