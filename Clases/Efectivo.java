@@ -39,9 +39,11 @@ public class Efectivo extends FormaPago {
             rs.next();
             
             Integer max = rs.getInt(1) + 1;
+            this.id = max;
             
             // Se inserta en la tabla forma de pago la nueva postiza asociada al efectivo
             st.execute("insert into forma_pago values (" + max.toString() + ");");
+
             // Se agrega el nuevo efectivo a la tabla efectivo
             st.execute("insert into efectivo values ("+ this.numeroPago + ", " 
                     + max.toString() + ");");
@@ -72,7 +74,7 @@ public class Efectivo extends FormaPago {
             // Buscamos el efectivo en la base de datos
             ResultSet rs = st.executeQuery("select * from efectivo where "
                     + " nro_pago = " + numPago + ";");
-            
+
             // Verificamos que el query no haya retornado vacio
             if (rs.next()) {
                 // Creamos un nuevo objeto efectivo con los datos obtenidos.
@@ -92,24 +94,6 @@ public class Efectivo extends FormaPago {
         return efectivo;
     }
     
-    /**
-     * Permite modificar la informacion del efectivo en la base de datos.
-     */
-    void modificarEfectivo() {
-        // Establecemos la conexion con la base de datos
-        try (Connection conn = Conexion.obtenerConn()) {
-            
-            Statement st;
-            st = conn.createStatement();
-            // Modificamos el efectivo de la base de datos            
-            st.executeUpdate("update efectivo set postiza_pago ='"
-                     + this.id + "' where nro_pago ='" + this.numeroPago + "';");
-            
-          } catch (SQLException ex) {
-            // Si hay una excepcion se imprime un mensaje
-              System.err.println(ex.getMessage());
-          }
-    }
     
     /**
      * Permite eliminar la informacion del efectivo en la base de datos.
@@ -119,9 +103,11 @@ public class Efectivo extends FormaPago {
         try (Connection conn = Conexion.obtenerConn()) {
             Statement st;
             st = conn.createStatement();
-            // Eliminamos el efectivo de la base de datos            
+            // Eliminamos el efectivo de la base de datos
             st.execute("delete from efectivo where nro_pago ='" + 
                     this.numeroPago + "';");
+            st.execute("delete from forma_pago where postiza_pago = " + this.id + ";");
+            
         
         } catch (SQLException ex) {
             // Si hay una excepcion se imprime un mensaje

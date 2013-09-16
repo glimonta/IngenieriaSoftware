@@ -128,7 +128,7 @@ public class Consumo {
      * Se encarga de eliminar una entrada de la tabla consumo en la base
      * de datos correspondiente al objeto.
      */
-    void eliminarConsmo() {
+    void eliminarConsumo() {
         
         // Establecemos conexion con la base de datos.
         try (Connection conn = Conexion.obtenerConn()) {

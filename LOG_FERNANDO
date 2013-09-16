@@ -59,4 +59,6 @@ Producto: Eliminar producto: Linea 152. No deberia ser executeQuery?
 
 
 
+Efectivo: El metodo modificar no es necesario. Hay que eliminarlo.
+
 
