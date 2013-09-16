@@ -7,6 +7,7 @@ package ingsoftware;
 
 import java.util.ArrayList;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.text.ParseException;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -47,8 +48,8 @@ public class ConsumoTest {
         producto = new Producto(7575,"modelo1", cliente);
         servicio = new Servicio("FooServicio", "Meh", "TipoServicio1");
         plan     = new Plan("PlanFoo", "Meh", "PREPAGO");
-        afiliacion = new Afiliacion(Date.valueOf("2013-1-1"), 
-                                    Date.valueOf("2013-1-30"), plan, producto);
+        afiliacion = new Afiliacion(Date.valueOf("2000-1-1"), 
+                                    null, plan, producto);
         tiene = new Tiene(Date.valueOf("2013-1-1"), Date.valueOf("2013-1-30"),
                           250, plan, paquete);
         contiene = new Contiene(30, 2, paquete, servicio);
@@ -77,24 +78,19 @@ public class ConsumoTest {
     }
     
     @AfterClass
-    public static void tearDownClass() {
+    public static void tearDownClass() throws SQLException {
         
         //Eliminamos los dummies restantes
-        try {
-            dummy.eliminarConsumo();
-            tiene.eliminarTiene();
-            contiene.eliminarContiene();
-            paquete.eliminarPaquete();
-            servicio.eliminarServicio();
-            afiliacion.eliminarAfiliacion();
-            plan.eliminarPlan();
-            producto.eliminarProducto();
-            cliente.eliminarCliente();
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        
+        dummy.eliminarConsumo();
+        tiene.eliminarTiene();
+        contiene.eliminarContiene();
+        paquete.eliminarPaquete();    
+        servicio.eliminarServicio();
+        afiliacion.eliminarAfiliacion();
+        plan.eliminarPlan();
+        producto.eliminarProducto();
+        cliente.eliminarCliente();
+     
         System.out.println(" --- FINALIZANDO PRUEBAS DE CONSUMO.JAVA --- ");
         
     }
@@ -129,9 +125,13 @@ public class ConsumoTest {
     public void testRegistrarConsumo() throws ParseException {
         System.out.println("Probando registrarConsumo de Consumo");
         
-        dummy.registrarConsumo();
+        dummyAgregar.registrarConsumo();
+        Consumo result = Consumo.consultarConsumo(7575, "FooServicio", Date.valueOf("2013-1-15"));
         
-        Consumo result = Consumo.consultarConsumo(5, null, null);
+        assertNotNull(result);
+        
+        dummyAgregar.eliminarConsumo();
+        
     }
 
     /**
@@ -139,38 +139,51 @@ public class ConsumoTest {
      */
     @Test
     public void testConsultarConsumo() throws Exception {
-        System.out.println("consultarConsumo");
-        Integer id = null;
-        String nombre_servicio = "";
-        Date fecha = null;
-        Consumo expResult = null;
-        Consumo result = Consumo.consultarConsumo(id, nombre_servicio, fecha);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("Probando consultarConsumo de Consumo");
+        
+        Consumo result = Consumo.consultarConsumo(7575, "FooServicio",Date.valueOf("2013-1-1"));
+        
+        boolean success;
+        success = dummy.cantidad == result.cantidad &&
+                  dummy.fecha.equals(result.fecha) &&
+                  dummy.servicio.nombre.equals(result.servicio.nombre);
+        
+        assertTrue(success);
     }
 
     /**
      * Test of eliminarConsumo method, of class Consumo.
      */
     @Test
-    public void testEliminarConsumo() {
-        System.out.println("eliminarConsumo");
-        Consumo instance = null;
-        instance.eliminarConsumo();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+    public void testEliminarConsumo() throws ParseException {
+        System.out.println("Probando eliminarConsumo de Consumo");
+        
+        dummyEliminar.registrarConsumo();
+        dummyEliminar.eliminarConsumo();
+        
+        Consumo result = Consumo.consultarConsumo(7575, "FooServicio", Date.valueOf("2013-1-29"));
+        
+        assertNull(result);
+        
+    }    
 
     /**
      * Test of modificarConsumo method, of class Consumo.
      */
     @Test
-    public void testModificarConsumo() {
+    public void testModificarConsumo() throws ParseException {
         System.out.println("modificarConsumo");
-        Consumo instance = null;
-        instance.modificarConsumo();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        dummy.cantidad = 80;
+        dummy.modificarConsumo();
+        
+        Consumo result = Consumo.consultarConsumo(7575, "FooServicio", Date.valueOf("2013-1-1"));
+        
+        boolean success;
+        success = dummy.cantidad == result.cantidad &&
+                  dummy.fecha.equals(result.fecha) &&
+                  dummy.servicio.nombre.equals(result.servicio.nombre);
+        
+        assertTrue(success);
     }
 }
