@@ -52,6 +52,7 @@ public class Modelo {
      * datos y si no lo consigue retorna null
      */
     static Modelo consultarModelo(String nombre_modelo) {
+        
       // Inicializamos un objeto Modelo en null
       Modelo modelo = null;
 
@@ -62,16 +63,16 @@ public class Modelo {
         st = conn.createStatement();
 
         // Buscamos al modelo en la base de datos
-        rs = st.executeQuery("select nombre_modelo '" +
-            nombre_modelo + "';");
+        ResultSet rs = st.executeQuery("select nombre_modelo from " +
+            "MODELO where NOMBRE_MODELO = '"+nombre_modelo + "';");
 
         // Creamos un nuevo objeto modelo con los datos obtenidos.
         modelo = new Modelo(rs.getString(1));
-
-      }
+        
+        conn.close();
 
       // cerramos la conexion
-      conn.close();
+      
 
     } catch (SQLException ex) {
       // Si hay una excepcion se imprime un mensaje
@@ -96,7 +97,7 @@ public class Modelo {
                         
 
             // Eliminamos al modelo
-            st.execute("delete from Modelo where nombre_modelo ='"+this.nombre+"';");
+            st.execute("delete from Modelo where nombre_modelo = '"+this.nombre+"';");
             
           } catch (SQLException ex) {
               // Si hay una excepcion se imprime un mensaje
@@ -114,7 +115,7 @@ public class Modelo {
         String tlfs = "";
         
         // Regresamos el string con el formato de salida
-        return "Nombre: " + this.nombre"
+        return "Nombre: " + this.nombre;
     }
 
 }
