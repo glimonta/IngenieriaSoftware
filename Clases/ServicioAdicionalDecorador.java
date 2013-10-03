@@ -7,6 +7,8 @@
  *
  */
 public abstract class ServicioAdicionalDecorador extends Facturable{
+
+  public Facturable facturable;
     @Override
     abstract public void obtenerDescripcion();
     @Override

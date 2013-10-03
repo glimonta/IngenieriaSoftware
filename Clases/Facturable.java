@@ -6,6 +6,7 @@
 /**
  *
  */
+// Esto es una interfaz y no una cosa abstracta.
 public abstract class Facturable {
     public String descripcion;
     public double precio;
