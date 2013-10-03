@@ -164,7 +164,7 @@ public class Cliente {
     void eliminarCliente() {
           
         // Buscamos los productos de los que un cliente es dueño
-        ArrayList<Producto> productos = this.obtenerProductos();
+        ArrayList<Producto> productos = Facturador.obtenerProductos(this);
 
         // Conectamos con la base de datos
         try (Connection conn = Conexion.obtenerConn()) {
@@ -186,53 +186,6 @@ public class Cliente {
               // Si hay una excepcion se imprime un mensaje
               System.err.println(ex.getMessage());
           }
-        
-    }
-      
-    /**
-     * Permite listar los productos de los que es dueño el cliente.
-     * @return retorna null si no es dueño de algun producto y retorna una lista
-     * de productos en caso de que existan.
-     */
-    ArrayList<Producto> obtenerProductos() {
-        ArrayList<Producto> productos = new ArrayList<>();
-        
-        // Conectamos con la base de datos
-        try (Connection conn = Conexion.obtenerConn()) {
-            
-            Statement st;
-            st = conn.createStatement();
-            
-            // Buscamos en la base de datos los productos de los cuales el
-            // cliente es dueño.
-            ResultSet rs = st.executeQuery("select id, nombre_modelo from "
-                    + "producto natural join es_duenio where ci = '" + 
-                    this.cedula.toString() + "';");
-            
-            if (rs.next()) {
-
-                // Agregamos el primer producto a la lista productos
-                Producto prod = new Producto(Integer.parseInt(rs.getString(1)), rs.getString(2), this);
-                productos.add(prod);
-                
-                // Agregamos los productos restantes a la lista productos
-                while (rs.next()) {
-                    prod = new Producto(Integer.parseInt(rs.getString(1)), rs.getString(2), this);
-                    productos.add(prod);
-                }
-            }
-            
-            // Cerramos la conexion
-            conn.close();
-            
-        } catch (SQLException ex) {
-            // Si hay una excepcion se imprime un mensaje
-            System.err.println(ex.getMessage());
-        }
-        
-        // Retorna la lista de productos en caso de que el cliente sea dueño de
-        // al menos un producto, en caso contrario retorna null.
-        return productos;
         
     }
     
