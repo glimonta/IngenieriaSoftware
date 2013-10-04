@@ -219,12 +219,20 @@ public class Producto extends Facturable {
     }
     
     /**
-     * TODO
+     * Se encarga de retornar la descripcion de un producto.
+     * @return Si este producto no esta decorado debe retornar un string vacio,
+     * en caso de estar decorado este sería el caso base de la recursión.
      */
-    public void obtenerDescripcion() {};
+    public String obtenerDescripcion() {
+        return "";    
+    };
 
     /**
-     * TODO
+     * Se encarga de retornar el precio de un producto.
+     * @return Si este producto no esta decorado debe retornar 0 como precio, en
+     * caso de estar decorado este sería el caso base de la recursión.
      */
-    public void obtenerPrecio() {};
+    public double obtenerPrecio() {
+        return 0;
+    };
 }
