@@ -236,4 +236,19 @@ public class Plan {
         
     }
     
+    /**
+     * Verifica si un plan es igual a this.
+     * @return Regresa true si el plan pasado como parametro tiene los
+     * mismos atributos que this.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        
+        Plan plan = (Plan) obj;
+        
+        return (plan.nombre.equals(this.nombre)) &
+               (plan.descripcion.equals(this.descripcion)) &
+               (plan.tipoPlan.equals(this.tipoPlan));
+    }
+    
 }

@@ -117,7 +117,6 @@ public class Factura {
             ResultSet rs = st.executeQuery("select valor from comentario where"
                     + " id = '" + producto.codigoProd + "' and fecha ='"
                     + fecha.toString() + "';");
-            
             // Si los conseguimos es porque existe la factura
             if (rs.next()) {
 
@@ -253,7 +252,7 @@ public class Factura {
           try (Connection conn = Conexion.obtenerConn()) {
              Statement st; 
              st = conn.createStatement();
-            // Eliminamos los comentarios de la factura en la tabla de comentario
+
              st.execute("delete from comentario where id ='"
                       + this.producto.codigoProd 
                       + "' and fecha ='" + this.fecha.toString() +"';");
@@ -268,5 +267,20 @@ public class Factura {
           }
     }
     
-   
+     /**
+     * Verifica si una factura es igual a this.
+     * @return Regresa true si la factura pasado como parametro tiene los
+     * mismos atributos que this.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        
+        Factura plan = (Factura) obj;
+        
+        return (plan.producto.equals(this.producto)) &
+               (plan.costoPlan == this.costoPlan) &
+               (plan.comentarios.equals(this.comentarios)) &
+               (plan.fecha.equals(this.fecha)) &
+               (plan.montoTotal == this.montoTotal);
+    }
 }

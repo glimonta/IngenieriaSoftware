@@ -171,5 +171,21 @@ public class Consumo {
               System.err.println(ex.getMessage());
           }
     }
+    
+    /**
+     * Verifica si un consumo es igual a this.
+     * @return Regresa true si el consumo pasado como parametro tiene los
+     * mismos atributos que this.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        
+        Consumo cons = (Consumo) obj;
+        
+        return (cons.cantidad == this.cantidad) &
+               (cons.fecha.equals(this.fecha))  &
+               (cons.producto.equals(this.producto)) &
+               (cons.servicio.equals(this.servicio));
+    }
 
 }

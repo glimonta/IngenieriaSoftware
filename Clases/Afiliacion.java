@@ -166,6 +166,11 @@ public class Afiliacion {
                     "' and id = '" + this.producto.codigoProd + "' and fecha_inic = '" +
                     this.fechaInicio.toString() + "';");
 
+            System.out.println("delete from esta_afiliado where nombre_plan ='" + 
+                    this.plan.nombre + "' and tipo_plan ='" + this.plan.tipoPlan + 
+                    "' and id = '" + this.producto.codigoProd + "' and fecha_inic = '" +
+                    this.fechaInicio.toString() + "';");
+            
         } catch (SQLException ex) {
             // Si hay una excepcion se imprime el mensaje de la misma.
             System.err.println(ex.getMessage());
@@ -204,5 +209,21 @@ public class Afiliacion {
             // Si hay una excepcion se imprime el mensaje de la misma.
             System.err.println(ex.getMessage());
         }
+    }
+    
+    /**
+     * Verifica si una afiliacion es igual a this.
+     * @return Regresa true si la afiliacion pasada como parametro tiene los
+     * mismos atributos que this.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        
+        Afiliacion afilia = (Afiliacion) obj;
+        
+        return (afilia.fechaFin.equals(this.fechaFin)) &
+               (afilia.fechaInicio.equals(this.fechaInicio)) &
+               (afilia.plan.equals(this.plan)) &
+               (afilia.producto.equals(this.producto));
     }
 }
