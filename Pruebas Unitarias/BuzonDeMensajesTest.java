@@ -27,6 +27,9 @@ public class BuzonDeMensajesTest {
     public static final int    CODIGO_PRODUCTO       = 777;
     public static final String DESCRIPCION_ESPERADA  = "Buzon de mensajes ";
     public static final double PRECIO_ESPERADO       = 42;
+    public static final String DESCRIPCION_ESPERADA_DOS = 
+                                "Buzon de mensajes Conferencia tripartita ";
+    public static final double PRECIO_ESPERADO_DOS   = 42+126;
     
     //Declaracion de variables
     public static Modelo modelo;
@@ -34,6 +37,7 @@ public class BuzonDeMensajesTest {
     public static ArrayList<Long> telefonos;
     public static Producto prodFacturable;
     public static Facturable buzon;
+    public static Facturable buzon_dos;
     
     
     public BuzonDeMensajesTest() {
@@ -73,6 +77,7 @@ public class BuzonDeMensajesTest {
         
         /* Creamos una instancia de Buzon de Mensaje */
         buzon = new BuzonDeMensajes(prodFacturable);
+        buzon_dos = new BuzonDeMensajes(new ConferenciaTripartita(prodFacturable));
         System.out.println("\n**INICIO DE PRUEBAS DE BUZON_DE_MENSAJES**");
     }
     
@@ -116,6 +121,18 @@ public class BuzonDeMensajesTest {
         String result = instance.obtenerDescripcion();
         assertEquals(expResult, result);
     }
+    
+    /**
+     * Test of obtenerDescripcion method, of class BuzonDeMensajes.
+     */
+    @Test
+    public void testObtenerDescripcionDos() {
+        System.out.println("obtenerDescripcion_Segunda_prueba");
+        BuzonDeMensajes instance = (BuzonDeMensajes) buzon_dos;
+        String expResult = DESCRIPCION_ESPERADA_DOS;
+        String result = instance.obtenerDescripcion();
+        assertEquals(expResult, result);
+    }
 
     /**
      * Test of obtenerPrecio method, of class BuzonDeMensajes.
@@ -125,6 +142,18 @@ public class BuzonDeMensajesTest {
         System.out.println("obtenerPrecio");
         BuzonDeMensajes instance = (BuzonDeMensajes) buzon;
         double expResult = PRECIO_ESPERADO;
+        double result = instance.obtenerPrecio();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of obtenerPrecio method, of class BuzonDeMensajes.
+     */
+    @Test
+    public void testObtenerPrecioDos() {
+        System.out.println("obtenerPrecio_Segunda_prueba");
+        BuzonDeMensajes instance = (BuzonDeMensajes) buzon_dos;
+        double expResult = PRECIO_ESPERADO_DOS;
         double result = instance.obtenerPrecio();
         assertEquals(expResult, result, 0.0);
     }

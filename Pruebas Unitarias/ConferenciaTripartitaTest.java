@@ -27,6 +27,9 @@ public class ConferenciaTripartitaTest {
     public static final int    CODIGO_PRODUCTO       = 777;
     public static final String DESCRIPCION_ESPERADA  = "Conferencia tripartita ";
     public static final double PRECIO_ESPERADO       = 126;
+    public static final String DESCRIPCION_ESPERADA_DOS  = 
+                                    "Conferencia tripartita Buzon de mensajes ";
+    public static final double PRECIO_ESPERADO_DOS       = 126 + 42;
     
     //Declaracion de variables
     public static Modelo modelo;
@@ -34,6 +37,7 @@ public class ConferenciaTripartitaTest {
     public static ArrayList<Long> telefonos;
     public static Producto prodFacturable;
     public static Facturable conferencia;
+    public static Facturable conferencia_dos;
     
     public ConferenciaTripartitaTest() {
     }
@@ -71,6 +75,8 @@ public class ConferenciaTripartitaTest {
         
         /* Creamos una instancia de Buzon de Mensaje */
         conferencia = new ConferenciaTripartita(prodFacturable);
+        conferencia_dos = 
+                new ConferenciaTripartita(new BuzonDeMensajes(prodFacturable));
         
         System.out.println("\n**INICIO DE PRUEBAS DE CONFERENCIA_TRIPARTITA**");
         
@@ -112,6 +118,18 @@ public class ConferenciaTripartitaTest {
     @Test
     public void testObtenerDescripcion() {
         System.out.println("obtenerDescripcion");
+        ConferenciaTripartita instance = (ConferenciaTripartita) conferencia_dos;
+        String expResult = DESCRIPCION_ESPERADA_DOS;
+        String result = instance.obtenerDescripcion();
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of obtenerDescripcion method, of class ConferenciaTripartita.
+     */
+    @Test
+    public void testObtenerDescripcionDos() {
+        System.out.println("obtenerDescripcion");
         ConferenciaTripartita instance = (ConferenciaTripartita) conferencia;
         String expResult = DESCRIPCION_ESPERADA;
         String result = instance.obtenerDescripcion();
@@ -126,6 +144,18 @@ public class ConferenciaTripartitaTest {
         System.out.println("obtenerPrecio");
         ConferenciaTripartita instance = (ConferenciaTripartita) conferencia;
         double expResult = PRECIO_ESPERADO;
+        double result = instance.obtenerPrecio();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of obtenerPrecio method, of class ConferenciaTripartita.
+     */
+    @Test
+    public void testObtenerPrecioDos() {
+        System.out.println("obtenerPrecio_Segunda_prueba");
+        ConferenciaTripartita instance = (ConferenciaTripartita) conferencia_dos;
+        double expResult = PRECIO_ESPERADO_DOS;
         double result = instance.obtenerPrecio();
         assertEquals(expResult, result, 0.0);
     }

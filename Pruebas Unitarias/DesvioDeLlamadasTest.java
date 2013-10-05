@@ -27,6 +27,9 @@ public class DesvioDeLlamadasTest {
     public static final int    CODIGO_PRODUCTO       = 777;
     public static final String DESCRIPCION_ESPERADA  = "Desvio de Llamadas ";
     public static final double PRECIO_ESPERADO       = 84;
+    public static final String DESCRIPCION_ESPERADA_DOS  = 
+                                      "Desvio de Llamadas Buzon de mensajes ";
+    public static final double PRECIO_ESPERADO_DOS   = 84+42;
     
     //Declaracion de variables
     public static Modelo modelo;
@@ -34,6 +37,7 @@ public class DesvioDeLlamadasTest {
     public static ArrayList<Long> telefonos;
     public static Producto prodFacturable;
     public static Facturable desvio;
+    public static Facturable desvio_dos;
     
     public DesvioDeLlamadasTest() {
     }
@@ -72,6 +76,7 @@ public class DesvioDeLlamadasTest {
         
         /* Creamos una instancia de Buzon de Mensaje */
         desvio = new DesvioDeLlamadas(prodFacturable);
+        desvio_dos = new DesvioDeLlamadas(new BuzonDeMensajes(prodFacturable));
         System.out.println("\n**INICIO DE PRUEBAS DE DESVIO_DE_LLAMADAS**");
     }
     
@@ -114,6 +119,18 @@ public class DesvioDeLlamadasTest {
         String result = instance.obtenerDescripcion();
         assertEquals(expResult, result);
     }
+    
+    /**
+     * Test of obtenerDescripcion method, of class DesvioDeLlamadas.
+     */
+    @Test
+    public void testObtenerDescripcionDos() {
+        System.out.println("obtenerDescripcion_Segunda_prueba");
+        DesvioDeLlamadas instance = (DesvioDeLlamadas) desvio_dos;
+        String expResult = DESCRIPCION_ESPERADA_DOS;
+        String result = instance.obtenerDescripcion();
+        assertEquals(expResult, result);
+    }
 
     /**
      * Test of obtenerPrecio method, of class DesvioDeLlamadas.
@@ -123,6 +140,18 @@ public class DesvioDeLlamadasTest {
         System.out.println("obtenerPrecio");
         DesvioDeLlamadas instance = (DesvioDeLlamadas) desvio;
         double expResult = PRECIO_ESPERADO;
+        double result = instance.obtenerPrecio();
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    /**
+     * Test of obtenerPrecio method, of class DesvioDeLlamadas.
+     */
+    @Test
+    public void testObtenerPrecioDos() {
+        System.out.println("obtenerPrecio_Segunda_prueba");
+        DesvioDeLlamadas instance = (DesvioDeLlamadas) desvio_dos;
+        double expResult = PRECIO_ESPERADO_DOS;
         double result = instance.obtenerPrecio();
         assertEquals(expResult, result, 0.0);
     }
