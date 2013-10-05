@@ -15,7 +15,9 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.text.DateFormat;
 /**
  *
  * @author fertaku
@@ -187,15 +189,29 @@ public class FacturadorTest {
         inicFact = null;
         
         try {
-        String sInic = "2013-03-13";
+        
+        Calendar c = Calendar.getInstance();
+        
+        //Obteniendo el ultimo dia del mes
+        c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        
+        //Almacenamos un string con el formato indicado
+        String sFin =  sdf.format(c.getTime());
+        
+        //Obtenemos el primer dia del mes
+        c.set(Calendar.DAY_OF_MONTH, c.getActualMinimum(Calendar.DAY_OF_MONTH));
+        
+        //Lo almacenamos como string con el formato adecuado
+        String sInic = sdf.format(c.getTime());
+        
         java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(sInic);
         inic = new java.sql.Date(utilDate.getTime());
         
-        String sFin = "2014-01-31";
         utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(sFin);
         fin = new java.sql.Date(utilDate.getTime());
         
-        String sFact = "2013-10-01";
+        String sFact = sInic;
         utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(sFact);
         inicFact = new java.sql.Date(utilDate.getTime());
         } catch (Exception e) {
@@ -257,7 +273,7 @@ public class FacturadorTest {
             // Si hay una excepcion se imprime un mensaje
             System.err.println(e.getMessage());
         }
-        posee = new Posee(inicFact, servAdicional, producto_uno);
+        posee = new Posee(inic, servAdicional, producto_uno);
         posee.registrarPosee();
         
         try {
@@ -272,18 +288,19 @@ public class FacturadorTest {
         consumo.registrarConsumo();
         
         comentariosFactura = new ArrayList();
-        comentariosFactura.add("Comentario1");
-        comentariosFactura.add("Comentario2");
-        comentariosFactura.add("Comentario3");
         
-        factura = new Factura(inicFact, FACTURA_COSTO_PLAN+TARIFA_SERV_ADICIONAL, 
-                                        FACTURA_MONTO_TOTAL, 
+        factura = new Factura(inicFact, TIENE_COSTO_PLAN, 
+                                        0, //Aqui falta revisar condicion de factura
                                         comentariosFactura,
                                         producto_uno);
         
         //factura.registrarFactura();
         
         System.out.println("\n**INICIO DE PRUEBAS DE FACTURADOR**");
+        
+        
+
+
         
     }
     
@@ -378,8 +395,8 @@ public class FacturadorTest {
     public void testObtenerFacturaActual() throws Exception {
         System.out.println("obtenerFacturaActual");
         Producto producto = producto_uno;
-        Factura expResult = factura;    
-        Factura result = Facturador.obtenerFacturaActual(producto);
+        Factura expResult = factura;
+        Factura result = Facturador.obtenerFacturaActual(producto); 
         assertEquals(expResult, result);
     }
 
@@ -409,8 +426,10 @@ public class FacturadorTest {
         
         expResult.add(factura);
         ArrayList result = instance.listarFacturas(producto);
-        System.out.println(factura.toString());
-        System.out.println(result.toString());
+
+        System.out.println(expResult);
+        System.out.println(result);
+        
         assertEquals(expResult, result);
     }
 
@@ -441,9 +460,6 @@ public class FacturadorTest {
         ArrayList expResult = new ArrayList();
         expResult.add(posee);
         ArrayList result = instance.listarServiciosAdicionalesContratados(producto);
-        
-        System.out.println("expResult: "+ expResult.toString());
-        System.out.println("result: "+result.toString());
         
         assertEquals(expResult, result);
     }

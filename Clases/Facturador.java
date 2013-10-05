@@ -294,7 +294,6 @@ public ArrayList<Factura> listarFacturas(Producto producto) throws SQLException,
                     Factura factura = Factura.consultarFactura(producto, fechaMinima);
                     
                     if (factura != null) {
-                        System.out.println(factura.toString());
                         list.add(factura);
                     }
                     mes++;
