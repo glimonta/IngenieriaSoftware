@@ -210,4 +210,20 @@ public class Afiliacion {
             System.err.println(ex.getMessage());
         }
     }
+    
+    /**
+     * Verifica si una afiliacion es igual a this.
+     * @return Regresa true si la afiliacion pasada como parametro tiene los
+     * mismos atributos que this.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        
+        Afiliacion afilia = (Afiliacion) obj;
+        
+        return (afilia.fechaFin.equals(this.fechaFin)) &
+               (afilia.fechaInicio.equals(this.fechaInicio)) &
+               (afilia.plan.equals(this.plan)) &
+               (afilia.producto.equals(this.producto));
+    }
 }

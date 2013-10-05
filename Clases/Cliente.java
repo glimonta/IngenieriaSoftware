@@ -209,5 +209,21 @@ public class Cliente {
                 this.nombre + ", Direccion: " + this.direccion + ", Telefonos: "
                 + tlfs;
     }
+    
+    /**
+     * Verifica si un cliente es igual a this.
+     * @return Regresa true si el cliente pasado como parametro tiene los
+     * mismos atributos que this.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        
+        Cliente cliente = (Cliente) obj;
+        
+        return (cliente.cedula == this.cedula) &
+               (cliente.direccion.equals(this.direccion)) &
+               (cliente.nombre.equals(this.nombre)) &
+               (cliente.telefonos.equals(this.telefonos));
+    }
 
 }

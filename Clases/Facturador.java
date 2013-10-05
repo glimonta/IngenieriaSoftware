@@ -169,7 +169,7 @@ public static Factura obtenerFacturaActual(Producto producto) throws SQLExceptio
             Calendar calendar = new GregorianCalendar();
             Date fechaActual = new Date (calendar.get(Calendar.YEAR)-1900, 
                     calendar.get(Calendar.MONTH), 1);
-
+            
             while (rs.next()){
 
                 /* Se verifica si la fecha es igual, de ser asi, 

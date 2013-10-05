@@ -235,4 +235,19 @@ public class Producto extends Facturable {
     public double obtenerPrecio() {
         return 0;
     };
+    
+    /**
+     * Verifica si un producto es igual a this.
+     * @return Regresa true si el producto pasado como parametro tiene los
+     * mismos atributos que this.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        
+        Producto prod = (Producto) obj;
+        
+        return (prod.codigoProd == this.codigoProd) &
+               (prod.modelo.equals(this.modelo)) &
+               (prod.cliente.equals(this.cliente));
+    }
 }

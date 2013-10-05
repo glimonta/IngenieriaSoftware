@@ -92,7 +92,8 @@ public class TipoServicio {
       st = conn.createStatement();
 
       // Eliminamos al TipoServicio
-      st.execute("delete from tipo_servicio where nombre = '" + this.nombre + "';");
+      st.execute("delete from tipo_servicio where nombre_tipo_servicio = '" + this.nombre + "';");
+      
       conn.close();
     } catch (SQLException ex) {
       // Si hay una excepcion se imprime un mensaje
