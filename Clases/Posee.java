@@ -139,4 +139,17 @@ public class Posee {
         }
     }
     
+    /**
+     * Verifica si un posee es igual a this.
+     * @return Regresa true si el posee pasado como parametro tiene los
+     * mismos atributos que this.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        
+        Posee posee = (Posee) obj;
+        return (posee.adicional.equals(this.adicional)) &
+               (posee.fechaInicio.equals(this.fechaInicio)) &
+               (posee.producto.equals(this.producto));
+    }
 }

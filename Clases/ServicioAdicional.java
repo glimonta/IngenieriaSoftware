@@ -53,7 +53,7 @@ public class ServicioAdicional extends Servicio {
                     + tarifa + "', '" + cantidadAdicional + "', '" 
                     + tipoPlan + "');";
             //Se inserta el servicio adicional a la Base de Datos
-            stmt.executeUpdate(insert);
+            stmt.executeQuery(insert);
 
         }catch (SQLException e) {
 
@@ -207,5 +207,23 @@ public class ServicioAdicional extends Servicio {
                 + "Tipo de Servicio: " + tipoServicio + ", Tarifa: " + tarifa 
                 + ", Cantidad Adicional: " + cantidadAdicional 
                 + ", Tipo de plan : " + tipoPlan;
+    }
+    
+    /**
+     * Verifica si un servicio es igual a this.
+     * @return Regresa true si el servicio pasado como parametro tiene los
+     * mismos atributos que this.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        
+        ServicioAdicional serv = (ServicioAdicional) obj;
+        
+        return (serv.cantidadAdicional == this.cantidadAdicional) &
+               (serv.descripcion.equals(this.descripcion)) &
+               (serv.nombre.equals(this.nombre)) &
+               (serv.tarifa == this.tarifa) &
+               (serv.tipoPlan.equals(this.tipoPlan)) &
+               (serv.tipoServicio.equals(this.tipoServicio));
     }
 }

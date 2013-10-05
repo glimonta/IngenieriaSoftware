@@ -287,13 +287,16 @@ public ArrayList<Factura> listarFacturas(Producto producto) throws SQLException,
                 Calendar calendar = new GregorianCalendar();
                 Date fechaActual = new Date(calendar.getTimeInMillis());
                 /* Para cada factura se crea un objeto y se agrega a la lista */
+                
                 while (fechaMinima.compareTo(fechaActual) <= 0){
 
                     //Se busca los datos faltantes de la factura en la base de datos
                     Factura factura = Factura.consultarFactura(producto, fechaMinima);
-                    if (factura != null)
+                    
+                    if (factura != null) {
+                        System.out.println(factura.toString());
                         list.add(factura);
-
+                    }
                     mes++;
                     if (mes == 12){
                         mes = 0;

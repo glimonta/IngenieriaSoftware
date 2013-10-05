@@ -68,6 +68,10 @@ public class FacturadorTest {
     public static final double FACTURA_COSTO_PLAN    = 100;
     public static final double FACTURA_MONTO_TOTAL   = 200;
     
+        //Constantes de servicio adicional
+    public static final float  TARIFA_SERV_ADICIONAL    = 7;
+    public static final int    CANTIDAD_SERV_ADICIONAL  = 10;
+    public static final String TIPO_PLAN_SERV_ADICIONAL = "PREPAGO";
     
     /*
      * Declaracion de variables
@@ -120,6 +124,17 @@ public class FacturadorTest {
         //Variable que almacena los datos de la factura
     public static Factura factura;
     
+        //Variable que almacena los datos de un servicio adicional
+    public static ServicioAdicional servAdicional;
+    
+        //Variable que almacena datos de una instancia de posee
+    public static Posee posee;
+    
+        //Variables, fechas a utilizar para afiliaciones y paquetes
+    public static Date inic;
+    public static Date fin;
+    public static Date inicFact;
+    
     public FacturadorTest() {
     }
     
@@ -167,9 +182,9 @@ public class FacturadorTest {
         }
         
         /*Se asocian los productos a los planes*/
-        Date inic = null;
-        Date fin = null;
-        Date inicFact = null;
+        inic = null;
+        fin = null;
+        inicFact = null;
         
         try {
         String sInic = "2013-03-13";
@@ -226,6 +241,25 @@ public class FacturadorTest {
         contiene = new Contiene(CANTIDAD_CONTIENE, 
                                 COSTO_ADICIONAL_CONTIENE, 
                                 paquete, servicio);
+        
+        /*Se definen valores para un nuevo servicio adicional consumido
+         * por el producto uno
+         */
+        servAdicional = new ServicioAdicional(NOMBRE_SERVICIO, 
+                                              DESCRIPCION_SERVICIO, 
+                                              NOMBRE_TIPO_SERVICIO, 
+                                              TARIFA_SERV_ADICIONAL,
+                                              CANTIDAD_SERV_ADICIONAL,
+                                              TIPO_PLAN_SERV_ADICIONAL);
+        try {
+            servAdicional.registrarServicioAd();
+        } catch (Exception e) {
+            // Si hay una excepcion se imprime un mensaje
+            System.err.println(e.getMessage());
+        }
+        posee = new Posee(inicFact, servAdicional, producto_uno);
+        posee.registrarPosee();
+        
         try {
             contiene.registrarContiene();
         } catch (Exception e) {
@@ -242,12 +276,12 @@ public class FacturadorTest {
         comentariosFactura.add("Comentario2");
         comentariosFactura.add("Comentario3");
         
-        factura = new Factura(inicFact, FACTURA_COSTO_PLAN, 
+        factura = new Factura(inicFact, FACTURA_COSTO_PLAN+TARIFA_SERV_ADICIONAL, 
                                         FACTURA_MONTO_TOTAL, 
                                         comentariosFactura,
                                         producto_uno);
         
-        factura.registrarFactura();
+        //factura.registrarFactura();
         
         System.out.println("\n**INICIO DE PRUEBAS DE FACTURADOR**");
         
@@ -261,7 +295,9 @@ public class FacturadorTest {
          */
         factura.eliminarFactura();
         consumo.eliminarConsumo();
+        posee.eliminarPosee();
         try {
+            servAdicional.eliminarServicioAd();
             contiene.eliminarContiene();
             servicio.eliminarServicio();
         } catch (Exception e) {
@@ -384,15 +420,14 @@ public class FacturadorTest {
     @Test
     public void testListarConsumos() throws Exception {
         System.out.println("listarConsumos");
-        Producto producto = null;
-        Date inicio = null;
-        Date fin = null;
+        Producto producto = producto_uno;
+        Date inicio = inic;
+        Date fin = this.fin;
         Facturador instance = new Facturador();
-        ArrayList expResult = null;
-        ArrayList result = instance.listarConsumos(producto, inicio, fin);
+        ArrayList expResult = new ArrayList();
+        expResult.add(consumo);
+        ArrayList result = instance.listarConsumos(producto, inicio, fin);   
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -401,12 +436,15 @@ public class FacturadorTest {
     @Test
     public void testListarServiciosAdicionalesContratados() throws Exception {
         System.out.println("listarServiciosAdicionalesContratados");
-        Producto producto = null;
+        Producto producto = producto_uno;
         Facturador instance = new Facturador();
-        ArrayList expResult = null;
+        ArrayList expResult = new ArrayList();
+        expResult.add(posee);
         ArrayList result = instance.listarServiciosAdicionalesContratados(producto);
+        
+        System.out.println("expResult: "+ expResult.toString());
+        System.out.println("result: "+result.toString());
+        
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 }

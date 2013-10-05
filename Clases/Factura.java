@@ -117,7 +117,6 @@ public class Factura {
             ResultSet rs = st.executeQuery("select valor from comentario where"
                     + " id = '" + producto.codigoProd + "' and fecha ='"
                     + fecha.toString() + "';");
-            
             // Si los conseguimos es porque existe la factura
             if (rs.next()) {
 

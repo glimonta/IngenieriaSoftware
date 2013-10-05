@@ -219,8 +219,8 @@ public class Cliente {
     public boolean equals(Object obj) {
         
         Cliente cliente = (Cliente) obj;
-        
-        return (cliente.cedula == this.cedula) &
+
+        return ((""+cliente.cedula).equals(""+this.cedula)) &
                (cliente.direccion.equals(this.direccion)) &
                (cliente.nombre.equals(this.nombre)) &
                (cliente.telefonos.equals(this.telefonos));

@@ -118,4 +118,17 @@ public class Modelo {
         return "Nombre: " + this.nombre;
     }
 
+    
+    /**
+     * Verifica si un cliente es igual a this.
+     * @return Regresa true si el cliente pasado como parametro tiene los
+     * mismos atributos que this.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        
+        Modelo modelo = (Modelo) obj;
+        
+        return (modelo.nombre.equals(this.nombre));
+    }
 }

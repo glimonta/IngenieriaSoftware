@@ -245,7 +245,6 @@ public class Producto extends Facturable {
     public boolean equals(Object obj) {
         
         Producto prod = (Producto) obj;
-        
         return (prod.codigoProd == this.codigoProd) &
                (prod.modelo.equals(this.modelo)) &
                (prod.cliente.equals(this.cliente));

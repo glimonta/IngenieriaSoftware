@@ -185,4 +185,19 @@ public class Servicio {
         return "Nombre: " + nombre + ", Descripcion: " + descripcion 
                 + ", Tipo de servicio: " + tipoServicio;
     }
+    
+    /**
+     * Verifica si un servicio es igual a this.
+     * @return Regresa true si el servicio pasado como parametro tiene los
+     * mismos atributos que this.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        
+        Servicio serv = (Servicio) obj;
+        
+        return (serv.descripcion.equals(this.descripcion)) &
+               (serv.nombre.equals(this.nombre)) &
+               (serv.tipoServicio.equals(this.tipoServicio));
+    }
 }
