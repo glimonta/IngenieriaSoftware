@@ -37,8 +37,9 @@ public class FacturadorTest extends Tests{
     public static final String NOMBRE_MODELO         = "modeloPrueba";
     
         //Constantes de productos
-    public static final int    CODIGO_PRODUCTO_UNO   = 777;
-    public static final int    CODIGO_PRODUCTO_DOS   = 888;
+    public static final int    CODIGO_PRODUCTO_UNO     = 777;
+    public static final int    CODIGO_PRODUCTO_DOS     = 888;
+    public static final int    CODIGO_PRODUCTO_SINPLAN = 666;
     
         //Constantes de Plan
     public static final String NOMBRE_PLAN           = "planPrueba";
@@ -54,7 +55,7 @@ public class FacturadorTest extends Tests{
     
         //Constantes de contiene
     public static final int CANTIDAD_CONTIENE        = 50;
-    public static final int COSTO_ADICIONAL_CONTIENE = 10;
+    public static final float COSTO_ADICIONAL_CONTIENE = 10;
     
         //Constantes de tipo servicio
     public static final String NOMBRE_TIPO_SERVICIO  = "tipoServicioPrueba";
@@ -92,6 +93,7 @@ public class FacturadorTest extends Tests{
         //Variables para almacenar los productos del cliente
     public static Producto producto_uno;
     public static Producto producto_dos;
+    public static Producto producto_sinplan;
     
         //Variable que almacena los datos del cliente
     public static Cliente clienteProd;
@@ -163,6 +165,10 @@ public class FacturadorTest extends Tests{
                                     NOMBRE_MODELO, 
                                     clienteProd);
         
+        producto_sinplan = insertProducto(CODIGO_PRODUCTO_SINPLAN,
+                                         NOMBRE_MODELO,
+                                         clienteProd);
+        
         /*Invocacion de los metodos auxiliares de la clase padre Tests.java
          * para obtener el primer y ultimo dia del mes
          */
@@ -233,6 +239,7 @@ public class FacturadorTest extends Tests{
             plan.eliminarPlan();
             producto_uno.eliminarProducto();
             producto_dos.eliminarProducto();
+            producto_sinplan.eliminarProducto();
             modelo.eliminarModelo();
             clienteProd.eliminarCliente();
             
@@ -265,10 +272,12 @@ public class FacturadorTest extends Tests{
         arrayProductos = new ArrayList();
         arrayProductos.add(producto_uno);
         arrayProductos.add(producto_dos);
+        arrayProductos.add(producto_sinplan);
 
         ArrayList result = Facturador.obtenerProductos(cliente);
         ArrayList expResult = arrayProductos;
-                
+        
+       
         assertEquals(expResult, result);
 
     }
@@ -285,6 +294,25 @@ public class FacturadorTest extends Tests{
         assertEquals(expResult, result);
     }
 
+    
+    /**
+     * Test of obtenerPlanActual method, of class Facturador.
+     * Revisamos que para un producto que no esta afiliado
+     * a ningun plan , el metodo obtenerplanActual retorna
+     * el valor nulo
+     */
+    @Test
+    public void testObtenerPlanActualSinAfiliacion() throws Exception {
+        System.out.println("Probando obtenerPlanActual de Facturador");
+        Producto producto = producto_sinplan;
+        
+        /*expResult debe ser nulo pues el producto no esta afiliado
+         * a ningun plan
+         */
+        Plan expResult = Facturador.obtenerPlanActual(producto);
+        assertNull(expResult);
+    }
+    
     /**
      * Test of obtenerFacturaActual method, of class Facturador.
      */
@@ -295,6 +323,23 @@ public class FacturadorTest extends Tests{
         Factura expResult = factura;
         Factura result = Facturador.obtenerFacturaActual(producto); 
         assertEquals(expResult, result);
+    }
+
+    
+    
+    /**
+     * Test of obtenerFacturaActual method, of class Facturador.
+     * Revisamos que para un producto que no esta afiliado
+     * a ningun plan , el metodo obtenerFacturaActual retorna
+     * el valor nulo
+     */
+    @Test
+    public void testObtenerFacturaActualSinAfiliacion() throws Exception {
+        System.out.println("obtenerFacturaActual");
+        Producto producto = producto_sinplan;
+        Factura expResult = factura;
+        Factura result = Facturador.obtenerFacturaActual(producto); 
+        assertNull(result);
     }
 
     /**
@@ -309,6 +354,22 @@ public class FacturadorTest extends Tests{
         expResult.add(afiliacionProdDos);
         ArrayList result = instance.listarPlanesAfiliados(producto);
         assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of listarPlanesAfiliados method, of class Facturador.
+     * Revisamos que para un producto que no esta afiliado
+     * a ningun plan , el metodo listarPlanesAfiliados retorna
+     * una lista vacia
+     */
+    @Test
+    public void testListarPlanesAfiliadosSinAfiliacion() throws Exception {
+        System.out.println("listarPlanesAfiliados");
+        Producto producto = producto_sinplan;
+        Facturador instance = new Facturador();
+        ArrayList result = instance.listarPlanesAfiliados(producto);
+        boolean expResult = result.isEmpty();
+        assertTrue(expResult);
     }
 
     /**
@@ -329,7 +390,7 @@ public class FacturadorTest extends Tests{
         
         assertEquals(expResult, result);
     }
-
+  
     /**
      * Test of listarConsumos method, of class Facturador.
      */
@@ -345,6 +406,24 @@ public class FacturadorTest extends Tests{
         ArrayList result = instance.listarConsumos(producto, inicio, fin);   
         assertEquals(expResult, result);
     }
+    
+    /**
+     * Test of listarConsumos method, of class Facturador.
+     * Revisamos que para un producto que no esta afiliado
+     * a ningun plan , el metodo listarConsumos retorna
+     * una lista vacia
+     */
+    @Test
+    public void testListarConsumosSinAfiliacion() throws Exception {
+        System.out.println("listarConsumos");
+        Producto producto = producto_sinplan;
+        Date inicio = inic;
+        Date fin = this.fin;
+        Facturador instance = new Facturador();
+        ArrayList result = instance.listarConsumos(producto, inicio, fin); 
+        boolean expResult = result.isEmpty();
+        assertTrue(expResult);
+    }
 
     /**
      * Test of listarServiciosAdicionalesContratados method, of class Facturador.
@@ -359,5 +438,21 @@ public class FacturadorTest extends Tests{
         ArrayList result = instance.listarServiciosAdicionalesContratados(producto);
         
         assertEquals(expResult, result);
+    }
+    
+     /**
+     * Test of listarServiciosAdicionalesContratados method, of class Facturador.
+     * Revisamos que para un producto que no esta afiliado
+     * a ningun plan , el metodo listarServiciosAdicionalesContratados retorna
+     * una lista vacia
+     */
+    @Test
+    public void testListarServiciosAdicionalesContratadosSinAfiliacion() throws Exception {
+        System.out.println("listarServiciosAdicionalesContratados");
+        Producto producto = producto_sinplan;
+        Facturador instance = new Facturador();
+        ArrayList result = instance.listarServiciosAdicionalesContratados(producto);
+        boolean expResult = result.isEmpty();
+        assertTrue(expResult);
     }
 }
