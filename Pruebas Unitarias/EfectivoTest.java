@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
  *
  * @author fertaku
  */
-public class EfectivoTest {
+public class EfectivoTest extends Tests {
     
     //Creamos instancias para probar las funciones
     static Efectivo dummy;
@@ -27,22 +27,16 @@ public class EfectivoTest {
     @BeforeClass
     public static void setUpClass() {
 
-        //Otorgamos valores especificos a las instancias
-        dummy = new Efectivo(999, 999);
-        dummyAgregar = new Efectivo(888, 888);
-        dummyEliminar = new Efectivo(777, 777);
-
-        dummy.registrarEfectivo();
-        
-        System.out.println(" --- INICIANDO PRUEBAS DE EFECTIVO.JAVA --- ");
+        /*Otorgamos valores especificos a las instancias*/
+        dummy = insertEfectivo(999, 999);
+        mensajeInicioPrueba("EFECTIVO");
     }
     
     @AfterClass
     public static void tearDownClass() {
         
         dummy.eliminarEfectivo();
-        
-        System.out.println(" --- FINALIZANDO PRUEBAS DE EFECTIVO.JAVA --- ");
+        mensajeFinPrueba("EFECTIVO");
     }
     
     @Before
@@ -61,7 +55,7 @@ public class EfectivoTest {
         System.out.println("Probando registrarEfectivo de Efectivo");
         
         //Agregamos un efectivo a la base de datos
-        dummyAgregar.registrarEfectivo();
+        dummyAgregar = insertEfectivo(888, 888);
         
         //Recuperamos dicha instancia de la base de datos
         Efectivo result = Efectivo.consultarEfectivo(dummyAgregar.numeroPago);
@@ -85,8 +79,7 @@ public class EfectivoTest {
         
         Efectivo result = Efectivo.consultarEfectivo(numPago);
         
-        //Realizamos la verificacion
-        
+        /*Realizamos la verificacion*/
         System.out.println(dummy.id);
         System.out.println(result.id);
         System.out.println(dummy.numeroPago);
@@ -105,16 +98,17 @@ public class EfectivoTest {
     public void testEliminarEfectivo() {
         System.out.println("Probando eliminarEfectivo de Efectivo");
         
-        //Agregamos una instancia para eliminarla posteriormente
-        dummyEliminar.registrarEfectivo();
         
-        //Eliminamos dicha instancia de la base de datos
+        /*Agregamos una instancia para eliminarla posteriormente*/
+        dummyEliminar = insertEfectivo(777, 777);
+        
+        /*-Eliminamos dicha instancia de la base de datos*/
         dummyEliminar.eliminarEfectivo();
         
-        //Intentamos recuperar dicha informacion de la base de datos
+        /*Intentamos recuperar dicha informacion de la base de datos*/
         Efectivo result = Efectivo.consultarEfectivo(dummyEliminar.numeroPago);
         
-        //Verificamos que en verdad fue eliminada, result debe ser null
+        /*Verificamos que en verdad fue eliminada, result debe ser null*/
         assertNull(result);
     }
 
@@ -125,11 +119,11 @@ public class EfectivoTest {
     public void testToString() {
         System.out.println("Probando toString de Efectivo");
         
-        //Se especifica el string esperado
+        /*Se especifica el string esperado*/
         String expResult = "ID de Pago: " + dummy.id.toString() + 
                            ", Numero de Pago: " + dummy.numeroPago.toString();
         
-        //Verificamos que los valores coinciden
+        /*Verificamos que los valores coinciden*/
         assertEquals(dummy.toString(), expResult);
     }
 }

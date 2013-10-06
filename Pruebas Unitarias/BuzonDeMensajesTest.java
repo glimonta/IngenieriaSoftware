@@ -16,7 +16,7 @@ import java.sql.SQLException;
  *
  * @author fertaku
  */
-public class BuzonDeMensajesTest {
+public class BuzonDeMensajesTest extends Tests{
     
     //Declaracion de constantes
     public static final int    CEDULA_CLIENTE        = 19499608;
@@ -52,33 +52,19 @@ public class BuzonDeMensajesTest {
         
         telefonos.add(Long.valueOf(TELEFONO_CLIENTE));
         
-        clienteProd     = new Cliente(CEDULA_CLIENTE, 
-                                      NOMBRE_CLIENTE, 
-                                      DIRECCION_CLIENTE, 
-                                      telefonos);
-        
-        clienteProd.registrarCliente();
+        clienteProd = insertCliente(CEDULA_CLIENTE, NOMBRE_CLIENTE, 
+                                    DIRECCION_CLIENTE, telefonos);
         
         /*Definimos un modelo y lo agregamos a la base de datos*/
-        
-        modelo = new Modelo(NOMBRE_MODELO);
-        
-        modelo.registrarModelo();
+        modelo = insertModelo(NOMBRE_MODELO);
         
         /*Definimos un producto y lo agregamos a la base de datos*/
-        prodFacturable = new Producto(CODIGO_PRODUCTO, NOMBRE_MODELO, 
+        prodFacturable = insertProducto(CODIGO_PRODUCTO, NOMBRE_MODELO, 
                                                        clienteProd  );
-        try {
-            prodFacturable.registrarProducto();
-        } catch (SQLException ex) {
-            // En caso de haber una excepcion se imprime el mensaje
-            System.err.println(ex.getMessage());
-        }
-        
         /* Creamos una instancia de Buzon de Mensaje */
-        buzon = new BuzonDeMensajes(prodFacturable);
+        buzon     = new BuzonDeMensajes(prodFacturable);
         buzon_dos = new BuzonDeMensajes(new ConferenciaTripartita(prodFacturable));
-        System.out.println("\n**INICIO DE PRUEBAS DE BUZON_DE_MENSAJES**");
+        mensajeInicioPrueba("BUZON_DE_MENSAJES");
     }
     
     @AfterClass
@@ -98,7 +84,7 @@ public class BuzonDeMensajesTest {
         modelo.eliminarModelo();
         
         clienteProd.eliminarCliente();
-        System.out.println("**FIN DE PRUEBAS DE BUZON_DE_MENSAJES**\n");
+        mensajeFinPrueba("BUZON_DE_MENSAJES");
         
     }
     

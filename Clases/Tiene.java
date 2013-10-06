@@ -259,4 +259,21 @@ public class Tiene {
 
         return res;
     }
+    
+    /**
+     * Verifica si un tiene es igual a this.
+     * @return Regresa true si el tiene pasado como parametro tiene los
+     * mismos atributos que this.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        
+        Tiene tiene = (Tiene) obj;
+
+        return (tiene.costo == this.costo) &
+               (tiene.fechaFin.equals(this.fechaFin)) &
+               (tiene.fechaInicio.equals(this.fechaInicio)) &
+               (tiene.paquete.equals(this.paquete)) &
+               (tiene.plan.equals(this.plan));
+    }
 }

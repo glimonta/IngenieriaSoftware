@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
  *
  * @author fertaku
  */
-public class TieneTest {
+public class TieneTest extends Tests{
     
     //Creamos instancias para probar las funciones
     static Plan plan;
@@ -31,30 +31,12 @@ public class TieneTest {
     public static void setUpClass() {
         
         //Otorgamos valores especificos a las instancias.
-        plan    = new Plan("NuevoPlan", "DescripcionPlan", "PREPAGO");
-        paquete = new Paquete("NuevoPaquete", "DescripcionPaquete");
-        
-        dummy = new Tiene(Date.valueOf("2013-1-1"), 
+        plan    = insertPlan("NuevoPlan", "DescripcionPlan", "PREPAGO");
+        paquete = insertPaquete("NuevoPaquete", "DescripcionPaquete");
+        dummy = insertTiene(Date.valueOf("2013-1-1"), 
                 Date.valueOf("2013-1-15"), 50, plan, paquete);
         
-        dummyAgregar = new Tiene(Date.valueOf("2013-2-1"), 
-                Date.valueOf("2013-2-15"), 150, plan, paquete);
-        
-        dummyEliminar = new Tiene(Date.valueOf("2013-3-1"), 
-                Date.valueOf("2013-3-15"), 250, plan, paquete);
-        
-        //Se agrega el plan, paquete a la base de datos
-        //Se agrega el dummy que se utilizara en las pruebas que
-        //no sean agregar y eliminar
-        try {
-            plan.registrarPlan();
-            paquete.registrarPaquete();
-            dummy.registrarTiene();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        
-        System.out.println(" --- INICIANDO PRUEBAS DE TIENE.JAVA --- ");
+        mensajeInicioPrueba("TIENE");
     }
     
     @AfterClass
@@ -69,7 +51,7 @@ public class TieneTest {
             System.out.println(e.getMessage());
         }
 
-        System.out.println(" --- FINALIZANDO PRUEBAS DE TIENE.JAVA --- ");
+        mensajeFinPrueba("TIENE");
 
     }
     
@@ -91,7 +73,8 @@ public class TieneTest {
         System.out.println("Probando registrarTiene de Tiene");
         
         //Agregamos a la base de datos una instancia de tiene
-        dummyAgregar.registrarTiene();
+        dummyAgregar = insertTiene(Date.valueOf("2013-2-1"), 
+                Date.valueOf("2013-2-15"), 150, plan, paquete);
         
         //Recuperamos esta instancia de la base de datos
         Tiene result = Tiene.consultarTiene(plan.nombre, paquete.nombre, 
@@ -140,7 +123,8 @@ public class TieneTest {
         System.out.println("Probando eliminarTiene de Tiene");
         
         //Agregamos una instancia a ser eliminada
-        dummyEliminar.registrarTiene();
+        dummyEliminar = insertTiene(Date.valueOf("2013-3-1"), 
+                Date.valueOf("2013-3-15"), 250, plan, paquete);
         
         //Eliminamos de la base de datos dicha instancia
         dummyEliminar.eliminarTiene();

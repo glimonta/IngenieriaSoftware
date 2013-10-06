@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
  *
  * @author andreso
  */
-public class TarjetaTest {
+public class TarjetaTest extends Tests{
     
     //Creamos distintas instancias para probar las funciones
     static Cliente cliente1;
@@ -33,30 +33,18 @@ public class TarjetaTest {
     
     @BeforeClass
     public static void setUpClass() {
+        
+        /*Insertamos en la base de datos instancias correspondientes
+         * a sus clientes y a sus tarjetas respectivas
+         */
         ArrayList<Long> telefonos = new ArrayList<Long>();
         telefonos.add(Long.valueOf("3713947"));
-        cliente1     = new Cliente(999599999,"Nombre1","Direccion1",telefonos);
-        cliente2     = new Cliente(999699999,"Nombre2","Direccion2",telefonos);
-        cliente3     = new Cliente(999799999,"Nombre3","Direccion3",telefonos);
-        dummy        = new Tarjeta(1,"1","Banco1",Date.valueOf("2014-2-8"),"DEBITO",1,cliente1.cedula.toString(),"Marca1");
-        dummyAgregar = new Tarjeta(2,"2","Banco2",Date.valueOf("2014-3-8"),"CREDITO",2,cliente2.cedula.toString(),"Marca2");
-        dummyEliminar= new Tarjeta(3,"3","Banco3",Date.valueOf("2014-4-8"),"DEBITO",3,cliente3.cedula.toString(),"Marca3");
+        cliente1     = insertCliente(999599999,"Nombre1","Direccion1",telefonos);
+        cliente2     = insertCliente(999699999,"Nombre2","Direccion2",telefonos);
+        cliente3     = insertCliente(999799999,"Nombre3","Direccion3",telefonos);
+        dummy        = insertTarjeta(1,"1","Banco1",Date.valueOf("2014-2-8"),"DEBITO",1,cliente1.cedula.toString(),"Marca1");
         
-        //Se agrega el cliente
-        //Se agrega el dummy que se utilizara en las pruebas que
-        //no sean agregar y eliminar
-        try {
-            
-            cliente1.registrarCliente();
-            cliente2.registrarCliente();
-            cliente3.registrarCliente();
-            dummy.RegistrarTarjeta();
-            
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        
-         System.out.println(" --- INICIANDO PRUEBAS DE TARJETA.JAVA --- ");
+        mensajeInicioPrueba("TARJETA");
     }
     
     @AfterClass
@@ -73,7 +61,7 @@ public class TarjetaTest {
             System.out.println(e.getMessage());
         }
 
-        System.out.println(" --- FINALIZANDO PRUEBAS DE TARJETA.JAVA --- ");
+        mensajeFinPrueba("TARJETA");
         
     }
     
@@ -119,10 +107,10 @@ public class TarjetaTest {
         
         System.out.println("Probando registrarTarjeta de Tarjeta");
         
-        //Agregamos a la base de datos una instancia de posee
-        dummyAgregar.RegistrarTarjeta();
+        //Agregamos a la base de datos una instancia de tarjeta
+        dummyAgregar = insertTarjeta(2,"2","Banco2",Date.valueOf("2014-3-8"),"CREDITO",2,cliente2.cedula.toString(),"Marca2");
         
-        //Recuperamos esta instancia dhe la base de datos
+        //Recuperamos esta instancia de la base de datos
         Tarjeta result = Tarjeta.consultarTarjeta(dummyAgregar.numero);
                 
         //Eliminamos dicha instancia de la base de datos
@@ -216,7 +204,7 @@ public class TarjetaTest {
         System.out.println("Probando eliminarTarjeta de Tarjeta");
         
         //Agregamos una instancia a ser eliminada
-        dummyEliminar.RegistrarTarjeta();
+        dummyEliminar= insertTarjeta(3,"3","Banco3",Date.valueOf("2014-4-8"),"DEBITO",3,cliente3.cedula.toString(),"Marca3");
         
         //Eliminamos de la base de datos dicha instancia
         dummyEliminar.eliminarTarjeta();
@@ -227,8 +215,6 @@ public class TarjetaTest {
         //Verificamos que dicha instancia no existe, es decir
         //la consulta debe retornar null
         assertNull(result);
-        
-        
         
     }
 }

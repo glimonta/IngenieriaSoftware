@@ -16,7 +16,7 @@ import java.sql.SQLException;
  *
  * @author fertaku
  */
-public class DesvioDeLlamadasTest {
+public class DesvioDeLlamadasTest extends Tests {
     
     //Declaracion de constantes
     public static final int    CEDULA_CLIENTE        = 19499608;
@@ -46,38 +46,24 @@ public class DesvioDeLlamadasTest {
     public static void setUpClass() {
         
         /*Definimos un cliente y lo agregamos a la base de datos*/
-        
         telefonos = new ArrayList();
-        
         telefonos.add(Long.valueOf(TELEFONO_CLIENTE));
-        
-        clienteProd     = new Cliente(CEDULA_CLIENTE, 
+        clienteProd     = insertCliente(CEDULA_CLIENTE, 
                                       NOMBRE_CLIENTE, 
                                       DIRECCION_CLIENTE, 
                                       telefonos);
         
-        clienteProd.registrarCliente();
-        
         /*Definimos un modelo y lo agregamos a la base de datos*/
-        
-        modelo = new Modelo(NOMBRE_MODELO);
-        
-        modelo.registrarModelo();
+        modelo = insertModelo(NOMBRE_MODELO);
         
         /*Definimos un producto y lo agregamos a la base de datos*/
-        prodFacturable = new Producto(CODIGO_PRODUCTO, NOMBRE_MODELO, 
+        prodFacturable = insertProducto(CODIGO_PRODUCTO, NOMBRE_MODELO, 
                                                        clienteProd  );
-        try {
-            prodFacturable.registrarProducto();
-        } catch (SQLException ex) {
-            // En caso de haber una excepcion se imprime el mensaje
-            System.err.println(ex.getMessage());
-        }
         
         /* Creamos una instancia de Buzon de Mensaje */
         desvio = new DesvioDeLlamadas(prodFacturable);
         desvio_dos = new DesvioDeLlamadas(new BuzonDeMensajes(prodFacturable));
-        System.out.println("\n**INICIO DE PRUEBAS DE DESVIO_DE_LLAMADAS**");
+        mensajeInicioPrueba("DESVIO_DE_LLAMADAS");
     }
     
     @AfterClass
@@ -97,7 +83,7 @@ public class DesvioDeLlamadasTest {
         modelo.eliminarModelo();
         
         clienteProd.eliminarCliente();
-        System.out.println("**FIN DE PRUEBAS DE DESVIO_DE_LLAMADAS**\n");
+        mensajeFinPrueba("DESVIO_DE_LLAMADAS");
     }
     
     @Before

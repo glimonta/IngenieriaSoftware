@@ -22,7 +22,7 @@ import java.text.DateFormat;
  *
  * @author fertaku
  */
-public class FacturadorTest {
+public class FacturadorTest extends Tests{
     
     /*
      * Declaracion de constantes
@@ -140,168 +140,76 @@ public class FacturadorTest {
     public FacturadorTest() {
     }
     
+    
     @BeforeClass
     public static void setUpClass() {
         
-        /*Definimos un cliente y lo agregamos a la base de datos*/
-        
+        /*Insercion del cliente a la base de datos*/
         telefonos = new ArrayList();
-        
         telefonos.add(Long.valueOf(TELEFONO_CLIENTE));
+        clienteProd = insertCliente(CEDULA_CLIENTE,NOMBRE_CLIENTE,
+                                    DIRECCION_CLIENTE,telefonos);
         
-        clienteProd     = new Cliente(CEDULA_CLIENTE, 
-                                      NOMBRE_CLIENTE, 
-                                      DIRECCION_CLIENTE, 
-                                      telefonos);
-        
-        clienteProd.registrarCliente();
-        
-        /*Definimos un modelo y lo agregamos a la base de datos*/
-        
-        modelo = new Modelo(NOMBRE_MODELO);
-        
-        modelo.registrarModelo();
-        
-        /*Definimos un nuevo plan y lo agregamos a la base de datos*/
-        plan = new Plan(NOMBRE_PLAN, DESCRIPCION_PLAN, TIPO_PLAN);
-        plan.registrarPlan();
-        
-        /*Definimos dos productos y los agregamos a la base de datos*/
-        producto_uno = new Producto(CODIGO_PRODUCTO_UNO,
+        /*Insercion del modelo a la base de datos*/
+        modelo = insertModelo(NOMBRE_MODELO);        
+        /*Insercion del plan a la base de datos*/
+        plan = insertPlan(NOMBRE_PLAN, DESCRIPCION_PLAN,TIPO_PLAN);
+        /*Insercion de dos productos a la base de datos*/
+        producto_uno = insertProducto(CODIGO_PRODUCTO_UNO,
                                     NOMBRE_MODELO, 
                                     clienteProd);
         
-        producto_dos = new Producto(CODIGO_PRODUCTO_DOS,
+        producto_dos = insertProducto(CODIGO_PRODUCTO_DOS,
                                     NOMBRE_MODELO, 
                                     clienteProd);
         
-        try {
-            producto_uno.registrarProducto();
-            producto_dos.registrarProducto();
-        } catch (SQLException ex) {
-            // En caso de haber una excepcion se imprime el mensaje
-            System.err.println(ex.getMessage());
-        }
+        /*Invocacion de los metodos auxiliares de la clase padre Tests.java
+         * para obtener el primer y ultimo dia del mes
+         */
+        inic =  firstDayMonth();
+        fin =   lastDayMonth();
+        inicFact = inic;
         
         /*Se asocian los productos a los planes*/
-        inic = null;
-        fin = null;
-        inicFact = null;
-        
-        try {
-        
-        Calendar c = Calendar.getInstance();
-        
-        //Obteniendo el ultimo dia del mes
-        c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        
-        //Almacenamos un string con el formato indicado
-        String sFin =  sdf.format(c.getTime());
-        
-        //Obtenemos el primer dia del mes
-        c.set(Calendar.DAY_OF_MONTH, c.getActualMinimum(Calendar.DAY_OF_MONTH));
-        
-        //Lo almacenamos como string con el formato adecuado
-        String sInic = sdf.format(c.getTime());
-        
-        java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(sInic);
-        inic = new java.sql.Date(utilDate.getTime());
-        
-        utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(sFin);
-        fin = new java.sql.Date(utilDate.getTime());
-        
-        String sFact = sInic;
-        utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(sFact);
-        inicFact = new java.sql.Date(utilDate.getTime());
-        } catch (Exception e) {
-            // Si hay una excepcion se imprime un mensaje
-            System.err.println(e.getMessage());
-        }
-        afiliacionProdUno = new Afiliacion(inic, null, plan, producto_uno);
-        afiliacionProdDos = new Afiliacion(inic, fin, plan, producto_dos);
-        
-        afiliacionProdUno.registrarAfiliacion();
-        afiliacionProdDos.registrarAfiliacion();
+        afiliacionProdUno = insertAfiliacion(inic, null, plan, producto_uno);
+        afiliacionProdDos = insertAfiliacion(inic, fin, plan, producto_dos);
         
         /*Se definen valores para paquete y se agrega a la base de datos*/
-        paquete = new Paquete(NOMBRE_PAQUETE, DESCRIPCION_PAQUETE);
-        paquete.registrarPaquete();
-        
+        paquete = insertPaquete(NOMBRE_PAQUETE, DESCRIPCION_PAQUETE);
         /*Se relaciona dicho paquete con el plan previamente creado*/
-        tiene = new Tiene(inic, fin, TIENE_COSTO_PLAN, plan, paquete);
-        try {
-            tiene.registrarTiene();
-        } catch (Exception e) {
-            // Si hay una excepcion se imprime un mensaje
-            System.err.println(e.getMessage());
-        }
-        
-        /* Se define un nuevo tipo de servicio y se agrega a la base de datos*/
-        tipoServicio = new TipoServicio(NOMBRE_TIPO_SERVICIO);
-        tipoServicio.registrarTipoServicio();
-        
-        /*Se definen valores para servicio y se agrega a la base de datos*/
-        servicio = new Servicio(NOMBRE_SERVICIO, 
+        tiene = insertTiene(inic, fin, TIENE_COSTO_PLAN, plan, paquete);
+        /*Se inserta un nuevo tipo de servicio*/
+        tipoServicio = insertTipoServicio(NOMBRE_TIPO_SERVICIO);
+        /*Se inserta un nuevo servicio*/
+        servicio = insertServicio(NOMBRE_SERVICIO, 
                                 DESCRIPCION_SERVICIO,
                                 NOMBRE_TIPO_SERVICIO);
-        try {
-            servicio.registrarServicio();
-        } catch (Exception e) {
-            // Si hay una excepcion se imprime un mensaje
-            System.err.println(e.getMessage());
-        }
         
-          
-        /*Se definen valores para una instancia de contiene*/
-        contiene = new Contiene(CANTIDAD_CONTIENE, 
-                                COSTO_ADICIONAL_CONTIENE, 
-                                paquete, servicio);
-        
-        /*Se definen valores para un nuevo servicio adicional consumido
-         * por el producto uno
-         */
-        servAdicional = new ServicioAdicional(NOMBRE_SERVICIO, 
+        /*Insercion de un servicio adicional en la base de datos*/
+        servAdicional = insertServicioAdicional(NOMBRE_SERVICIO, 
                                               DESCRIPCION_SERVICIO, 
                                               NOMBRE_TIPO_SERVICIO, 
                                               TARIFA_SERV_ADICIONAL,
                                               CANTIDAD_SERV_ADICIONAL,
                                               TIPO_PLAN_SERV_ADICIONAL);
-        try {
-            servAdicional.registrarServicioAd();
-        } catch (Exception e) {
-            // Si hay una excepcion se imprime un mensaje
-            System.err.println(e.getMessage());
-        }
-        posee = new Posee(inic, servAdicional, producto_uno);
-        posee.registrarPosee();
         
-        try {
-            contiene.registrarContiene();
-        } catch (Exception e) {
-            // Si hay una excepcion se imprime un mensaje
-            System.err.println(e.getMessage());
-        }
+        posee = insertPosee(inic, servAdicional, producto_uno);
+        /*Insercion de una instancia de contiene en la base de datos*/
+        contiene = insertContiene(CANTIDAD_CONTIENE, 
+                                COSTO_ADICIONAL_CONTIENE, 
+                                paquete, servicio);
         
-        /*Se definen valores para un consumo y se agrega a la base de datos*/
-        consumo = new Consumo(CANTIDAD_CONSUMO, inic, producto_uno, servicio);
-        consumo.registrarConsumo();
-        
+        /*Insercion del consumo en la base de datos*/
+        consumo = insertConsumo(CANTIDAD_CONSUMO, inic, producto_uno, servicio);
         comentariosFactura = new ArrayList();
-        
-        factura = new Factura(inicFact, TIENE_COSTO_PLAN, 
+        factura = insertFactura(inicFact, TIENE_COSTO_PLAN, 
                                         0, //Aqui falta revisar condicion de factura
                                         comentariosFactura,
                                         producto_uno);
         
         //factura.registrarFactura();
-        
-        System.out.println("\n**INICIO DE PRUEBAS DE FACTURADOR**");
-        
-        
+        mensajeInicioPrueba("FACTURADOR");
 
-
-        
     }
     
     @AfterClass
@@ -310,41 +218,30 @@ public class FacturadorTest {
         /*Se procede a eliminar todo lo agregado a la base de datos
          * durante la prueba.         
          */
-        factura.eliminarFactura();
-        consumo.eliminarConsumo();
-        posee.eliminarPosee();
         try {
+            factura.eliminarFactura();
+            consumo.eliminarConsumo();
+            posee.eliminarPosee();
             servAdicional.eliminarServicioAd();
             contiene.eliminarContiene();
             servicio.eliminarServicio();
-        } catch (Exception e) {
-            // Si hay una excepcion se imprime un mensaje
-            System.err.println(e.getMessage());
-        }
-        tipoServicio.eliminarTipoServicio();
-        try {
+            tipoServicio.eliminarTipoServicio();
             tiene.eliminarTiene();
-        } catch (Exception e) {
-            // Si hay una excepcion se imprime un mensaje
-            System.err.println(e.getMessage());
-        }
-        paquete.eliminarPaquete();
-        afiliacionProdUno.eliminarAfiliacion();
-        afiliacionProdDos.eliminarAfiliacion();
-        plan.eliminarPlan();
-        
-        try {
+            paquete.eliminarPaquete();
+            afiliacionProdUno.eliminarAfiliacion();
+            afiliacionProdDos.eliminarAfiliacion();
+            plan.eliminarPlan();
             producto_uno.eliminarProducto();
             producto_dos.eliminarProducto();
-        } catch (SQLException ex) {
-            // En caso de haber una excepcion se imprime el mensaje
-            System.err.println(ex.getMessage());
+            modelo.eliminarModelo();
+            clienteProd.eliminarCliente();
+            
+        } catch (Exception e) {
+            /* Si hay una excepcion se imprime un mensaje*/
+            System.err.println(e.getMessage());
         }
         
-        modelo.eliminarModelo();
-        
-        clienteProd.eliminarCliente();
-        System.out.println("**FIN DE PRUEBAS DE FACTURADOR**\n");
+        mensajeFinPrueba("FACTURADOR");
         
     }
     
