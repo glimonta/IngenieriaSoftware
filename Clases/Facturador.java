@@ -441,27 +441,43 @@ public static ArrayList<Posee> listarServiciosAdicionalesContratados(Producto pr
     return list;
 }
 
+    /**
+     * Metodo estrategia para calcular el costo de un plan prepago o postpago
+     * asociado a un producto en una fecha dada.
+     * @param producto: Producto a facturar.
+     * @param fecha: Fecha a facturar.
+     * @return Devuelve una factura con el costo total de los servicios. 
+     */
     public static Factura comoFacturar(Producto producto, Date fecha) {
         
         try {
+            
+            // Verifica que el producto dado existe. Si no, retorna nulo
             if (Producto.consultarProducto(producto.codigoProd) == null)               
-            return null;
+                return null;
+            
+            // Busca el plan asociado al producto
+            Plan plan = buscarPlan(producto,fecha);
 
-                Plan plan = buscarPlan(producto,fecha);
+            // Si el producto no tiene un plan asociado, devuelve nulo
+            if (plan == null)
+                return null;
 
-                if (plan == null)
-                    return null;
-                
-                ComoFacturar facturar = null;
-                
-                if (plan.tipoPlan.equals("PREPAGO"))
-                    //facturar = new FacturarPrepago();
-                    System.out.println("No implementado todavia");
-                else 
-                    facturar = new FacturarPostpago();
-                
-                Factura fact = facturar.facturar(producto,fecha);
-                return fact;
+            ComoFacturar facturar = null;
+
+            // Estrategia para planes prepago
+            if (plan.tipoPlan.equals("PREPAGO"))
+                //facturar = new FacturarPrepago();
+                System.out.println("No implementado todavia");
+            
+            // Estrategia para planes postpago
+            else 
+                facturar = new FacturarPostpago();
+
+            // Devuelve la factura mensual del producto en la fecha dada
+            Factura fact = facturar.facturar(producto,fecha);
+            
+            return fact;
                 
         } catch (SQLException ex) {
             Logger.getLogger(Facturador.class.getName()).log(Level.SEVERE, null, ex);
@@ -470,10 +486,19 @@ public static ArrayList<Posee> listarServiciosAdicionalesContratados(Producto pr
         return null;
     }
     
+    /**
+     * Busca el plan asociado a un producto en una fecha dada.
+     * @param producto: Producto a buscar plan.
+     * @param fecha: Fecha en la cual se busca el plan asociado al producto.
+     * @return Plan que tiene el producto en la fecha dada.
+     * @throws SQLException 
+     */
     public static Plan buscarPlan(Producto producto, Date fecha) throws SQLException {
         
+        // Busca todos los planes que ha tenido el producto
         ArrayList<Afiliacion> afiliaciones = Facturador.listarPlanesAfiliados(producto);
         
+        // Busca el plan asociado al producto en la fecha dada
         for (Afiliacion afil : afiliaciones) {
 
             if (((afil.fechaInicio.compareTo(fecha)) <= 0) 
