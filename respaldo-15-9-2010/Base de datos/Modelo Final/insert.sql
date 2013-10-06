@@ -115,11 +115,11 @@ INSERT INTO TIENE (NOMBRE_PLAN, TIPO_PLAN, NOMBRE_PAQUETE, COSTO, FECHA_INIC, FE
    ('Plan Mixto Plus', 'POSTPAGO', 'Paquete2', 211.00, DATE '1999-11-1', DATE '2500-12-1');
 
 INSERT INTO CONTIENE (NOMBRE_PAQUETE, NOMBRE_SERVICIO, CANTIDAD, COSTO_ADICIONAL) VALUES 
-   ('Paquete1', 'Segundos a moviles MOCEL'               , 200 , 0.1   ),
+   ('Paquete1', 'Segundos a moviles MOCEL'               , 1000 , 0.1   ),
    ('Paquete1', 'Segundos a otros operadores moviles'    , 1000 , 0.4   ),
    ('Paquete1', 'Mensajes de texto'                      , 200  , 0.5   ),
    ('Paquete1', 'Buzon de mensajes'                      , 1    , 0     ),
-   ('Paquete2', 'Segundos a moviles MOCEL'               , 200  , 0.0115),
+   ('Paquete2', 'Segundos a moviles MOCEL'               , 39000, 0.0115),
    ('Paquete2', 'Segundos a otros operadores moviles'    , 2600 , 0.0125),
    ('Paquete2', 'Segundos fijos MOCEL y otros operadores', 5000 , 0.0115),
    ('Paquete2', 'Mensajes de texto'                      , 200  , 0.5   ),
@@ -131,7 +131,7 @@ INSERT INTO CONTIENE (NOMBRE_PAQUETE, NOMBRE_SERVICIO, CANTIDAD, COSTO_ADICIONAL
 
 INSERT INTO ESTA_AFILIADO (ID, NOMBRE_PLAN, TIPO_PLAN, FECHA_INIC, FECHA_FIN) VALUES 
    (000,'Plan Mocel 2000', 'PREPAGO' , DATE '2001-8-1', DATE '2010-8-1' ),
-   (001,'Plan Mixto Plus', 'POSTPAGO', DATE '2000-8-1', DATE '2500-9-1' ),
+   (001,'Plan Mixto Plus', 'POSTPAGO', DATE '2000-8-1', NULL            ),
    (002,'Plan Mocel 2000', 'PREPAGO' , DATE '2010-8-1', DATE '2014-1-1' ),
    (003,'Plan Mixto Plus', 'POSTPAGO', DATE '2000-8-1', DATE '2009-4-1' ),
    (004,'Plan Mocel 2000', 'PREPAGO' , DATE '2005-8-1', DATE '2010-12-1'),
@@ -152,7 +152,6 @@ INSERT INTO POSEE (ID, NOMBRE_SERVICIO, FECHA_INIC) VALUES
 
 INSERT INTO CONSUME (ID, NOMBRE_SERVICIO, FECHA, CANTIDAD) VALUES 
    (001, 'Segundos a moviles MOCEL'           , '2013-5-1', 500 ),
-   (001, 'Mensajes de texto'                  , '2013-6-1', 1000),
    (011, 'Segundos a otros operadores moviles', '2013-5-1', 1000),                            
    (002, 'Segundos a moviles MOCEL'           , '2013-5-1', 100 );
                    

@@ -111,7 +111,7 @@ public class Producto extends Facturable {
                 stmt = conexion.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
 
-                if (rs.next())
+                if (rs.next()) {
 
                     //Se buscan los datos del cliente para agregarlos al objeto
                     client = Cliente.consultarCliente(
@@ -120,7 +120,8 @@ public class Producto extends Facturable {
                     //Se crea el producto
                     product = new Producto(codigo, 
                             rs.getString("NOMBRE_MODELO"), client);
-
+                }
+                
             } catch (SQLException e){
 
                 //Si hay un error se imprime en pantalla

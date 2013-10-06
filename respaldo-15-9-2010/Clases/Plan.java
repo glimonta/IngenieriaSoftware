@@ -162,7 +162,7 @@ public class Plan {
      */
     ArrayList<Paquete> ListarPaquetes() {
         
-        ArrayList<Paquete> paquetes = new ArrayList();
+        ArrayList<Paquete> paquetes = null;
         // Se conecta a la base de datos
         try (Connection conn = Conexion.obtenerConn()) {
             
@@ -186,55 +186,6 @@ public class Plan {
                 }
             }
             
-            
-            //se cierra la conexion
-            conn.close();
-            
-        } catch (SQLException ex) {
-            // Si hay una excepcion se imprime un mensaje
-            System.err.println(ex.getMessage());
-        }
-        
-        // Retorna la lista de paquetes que saco de la base de datos y en caso de no
-        // conseguir ninguno retorna null.
-        return paquetes;
-        
-    }
-    
-    /**
-     * Metodo que devuelve la lista de paquetes asociados al plan
-     * @return retorna la lista de paquetes asociados al plan en caso de existir
-     * en caso contrario retorna null
-     */
-    public ArrayList<Tiene> listarTiene() {
-        
-        ArrayList<Tiene> paquetes = new ArrayList();
-        // Se conecta a la base de datos
-        try (Connection conn = Conexion.obtenerConn()) {
-            
-            Statement st;
-            st = conn.createStatement();
-            // Se ejecuta el query
-            ResultSet rs = st.executeQuery("select fecha_inic, fecha_fin, costo, "
-                    + "nombre_paquete, descripcion from "
-                    + "paquete natural join tiene where nombre_plan = '" + 
-                    this.nombre + "';");
-            
-            // Verificamos que el query no retornara nulo
-                    
-                //Se guardan los paquetes obtenidos en una lista
-            while (rs.next()) {
-                
-                Paquete paq = new Paquete(rs.getString(4), rs.getString(5));
-                
-                Date fechaInic = Date.valueOf(rs.getString(1));
-                Date fechaFin = Date.valueOf(rs.getString(2));
-                float costo = Float.parseFloat(rs.getString(3));
-                                
-                Tiene tiene = new Tiene(fechaInic,fechaFin,costo,this,paq);
-                
-                paquetes.add(tiene);
-            }        
             
             //se cierra la conexion
             conn.close();
@@ -283,21 +234,6 @@ public class Plan {
         // conseguirlo retorna null.
         return costo;        
         
-    }
-    
-    /**
-     * Verifica si un plan es igual a this.
-     * @return Regresa true si el plan pasado como parametro tiene los
-     * mismos atributos que this.
-     */
-    @Override
-    public boolean equals(Object obj) {
-        
-        Plan plan = (Plan) obj;
-        
-        return (plan.nombre.equals(this.nombre)) &
-               (plan.descripcion.equals(this.descripcion)) &
-               (plan.tipoPlan.equals(this.tipoPlan));
     }
     
 }
