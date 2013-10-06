@@ -210,6 +210,56 @@ public class Paquete {
 
         return lista;
     }
+    
+   /**
+    * Metodo que lista todos los servicios asociados a un paquete.
+    * @return Una lista con los servicios asociados al paquete, si no hay
+    * servicos o el paquete no existe devuelve una lista vacia.
+    */
+    public ArrayList<Contiene> ListarContiene(){
+
+        //Se crea una lista vacia
+        ArrayList<Contiene> lista = new ArrayList();
+        Connection conexion = Conexion.obtenerConn();
+
+        if (conexion != null) {
+
+            Statement stmt = null;
+            String query = "select NOMBRE_SERVICIO, CANTIDAD, COSTO_ADICIONAL "
+                    + "from CONTIENE where NOMBRE_PAQUETE = '" + nombre + "';";
+
+            try {
+
+                //Se obtienen los datos de los servicios asociados al paquete
+                stmt = conexion.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+
+                /*Por cada servicio se obtienen los datos faltantes para crear
+                   un objeto y agregarlo a la lista*/
+                while (rs.next()) {
+
+                    String nomServicio = rs.getString(1);
+                    int cantidad = Integer.parseInt(rs.getString(2));
+                    float costoAdi = Float.parseFloat(rs.getString(3));
+                    
+                    Servicio serv = Servicio.consultarServicio(nomServicio);
+                    
+                    Contiene contiene = new Contiene(cantidad,costoAdi,this,serv);
+                    lista.add(contiene);
+                }
+                
+                conexion.close();
+
+            } catch (SQLException e) {
+
+                //Si hay un error se imprime en pantalla
+                System.out.println(e.getMessage());
+
+            }
+        }
+
+        return lista;
+    }
 
    /**
     * Convierte un objeto de tipo Paquete a String.

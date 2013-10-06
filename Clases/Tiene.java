@@ -35,6 +35,7 @@ public class Tiene {
         this.plan = plan;
     }
 
+
    /**
     * Metodo para agregar una tupla a la iterrelacion Tiene que no este presente 
     * en la base de datos.
