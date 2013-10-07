@@ -1,4 +1,3 @@
-
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -34,7 +33,7 @@ public static ArrayList<Producto> obtenerProductos(Cliente cliente) {
         // Buscamos en la base de datos los productos de los cuales el
         // cliente es dueño.
         ResultSet rs = st.executeQuery("select id, nombre_modelo from "
-                + "producto natural join es_duenio where ci = '" + 
+                + "producto natural join es_duenio where ci = '" +
                 cliente.cedula.toString() + "';");
 
         if (rs.next()) {
@@ -105,21 +104,20 @@ public static Plan obtenerPlanActual(Producto producto) throws SQLException{
             } else {
 
                 query = "select NOMBRE_PLAN, TIPO_PLAN, FECHA_INIC, FECHA_FIN " +
-                       "from ESTA_AFILIADO where ID = " + producto.codigoProd + 
+                       "from ESTA_AFILIADO where ID = " + producto.codigoProd +
                        "and FECHA_FIN is not null;";
 
                 //Busca los planes afiliados que no tengan fecha fin null
                 rs = stmt.executeQuery(query);
 
-                /*Revisa si la fecha actual esta comprendida entre las 
-                  fechas de afiliacion de los planes*/
+                /*Revisa si la fecha actual esta comprendida entre las fechas de afiliacion de los planes*/
                 while (rs.next()){
 
                     Date fecha_inic = Date.valueOf(rs.getString("FECHA_INIC"));
                     Date fecha_fin = Date.valueOf(rs.getString("FECHA_FIN"));
 
                     //Si la fecha esta comprendida se crea el objeto
-                    if (fecha_inic.compareTo(fechaActual) <= 0 && 
+                    if (fecha_inic.compareTo(fechaActual) <= 0 &&
                             fecha_fin.compareTo(fechaActual) > 0){
 
                         plan = Plan.consultarPlan(rs.getString("NOMBRE_PLAN")
@@ -164,16 +162,14 @@ public static Factura obtenerFacturaActual(Producto producto) throws SQLExceptio
             stmt = conexion.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
-            /*Se obtiene la fecha actual sin tomar en cuenta el dia 
-              y se convierte a formato sql*/
+            /*Se obtiene la fecha actual sin tomar en cuenta el dia y se convierte a formato sql*/
             Calendar calendar = new GregorianCalendar();
-            Date fechaActual = new Date (calendar.get(Calendar.YEAR)-1900, 
+            Date fechaActual = new Date (calendar.get(Calendar.YEAR)-1900,
                     calendar.get(Calendar.MONTH), 1);
             
             while (rs.next()){
 
-                /* Se verifica si la fecha es igual, de ser asi, 
-                 se crea la factura*/
+                /* Se verifica si la fecha es igual, de ser asi, se crea la factura*/
                 Date fechaFact = Date.valueOf(rs.getString("FECHA"));
 
                 if (fechaFact.compareTo(fechaActual) == 0)
@@ -209,7 +205,7 @@ public static ArrayList<Afiliacion> listarPlanesAfiliados(Producto producto) thr
     if (conexion != null) {
 
         Statement stmt = null;
-        String query = "select NOMBRE_PLAN, TIPO_PLAN, FECHA_INIC," 
+        String query = "select NOMBRE_PLAN, TIPO_PLAN, FECHA_INIC,"
                 + "FECHA_FIN from ESTA_AFILIADO where ID = " + producto.codigoProd + ";";
 
         try {
@@ -221,7 +217,7 @@ public static ArrayList<Afiliacion> listarPlanesAfiliados(Producto producto) thr
             while (rs.next()){
 
                 //Obtiene la informacion del plan
-                Plan plan = Plan.consultarPlan(rs.getString("NOMBRE_PLAN"), 
+                Plan plan = Plan.consultarPlan(rs.getString("NOMBRE_PLAN"),
                         rs.getString("TIPO_PLAN"));
                 Date fechaI = Date.valueOf(rs.getString("FECHA_INIC"));
                 String fechaFinStr = rs.getString("FECHA_FIN");
@@ -246,7 +242,7 @@ public static ArrayList<Afiliacion> listarPlanesAfiliados(Producto producto) thr
         } finally {
 
             //La conexion se cierra
-            conexion.close(); 
+            conexion.close();
         }
     }
     return list;
@@ -315,7 +311,7 @@ public static ArrayList<Factura> listarFacturas(Producto producto) throws SQLExc
         } finally {
 
             //La conexion se cierra
-            conexion.close(); 
+            conexion.close();
         }
     }
     return list;
@@ -328,8 +324,7 @@ public static ArrayList<Factura> listarFacturas(Producto producto) throws SQLExc
  * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
  * la conexion.
  */
-public static ArrayList<Consumo> listarConsumos(Producto producto,Date inicio, Date fin) 
-        throws SQLException {
+public static ArrayList<Consumo> listarConsumos(Producto producto,Date inicio, Date fin) throws SQLException {
 
     ArrayList<Consumo> list = new ArrayList();
 
@@ -348,14 +343,12 @@ public static ArrayList<Consumo> listarConsumos(Producto producto,Date inicio, D
             stmt = conexion.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
-            /*Revisa todos los consumos y almacena solo los que esten
-              comprendidos en las fechas dadas*/
+            /*Revisa todos los consumos y almacena solo los que esten comprendidos en las fechas dadas*/
             while (rs.next()){
 
                 Date fechaConsumo = Date.valueOf(rs.getString("FECHA"));
 
-                /*Si cumple las condiciones se crea el objeto Consumo y 
-                 se agrega a la lista */
+                /*Si cumple las condiciones se crea el objeto Consumo y se agrega a la lista */
                 if (inicio.compareTo(fechaConsumo) <= 0 &&
                         fin.compareTo(fechaConsumo) > 0) {
 
@@ -364,7 +357,7 @@ public static ArrayList<Consumo> listarConsumos(Producto producto,Date inicio, D
                             rs.getString("NOMBRE_SERVICIO"));
 
                     Consumo cons = new Consumo(
-                            Integer.parseInt(rs.getString("CANTIDAD")), 
+                            Integer.parseInt(rs.getString("CANTIDAD")),
                             Date.valueOf(rs.getString("FECHA")), producto, serv);
 
                     list.add(cons);
@@ -386,14 +379,13 @@ public static ArrayList<Consumo> listarConsumos(Producto producto,Date inicio, D
 }
 
 /**
- * Metodo para listar las servicios adicionales contratados de un producto 
+ * Metodo para listar las servicios adicionales contratados de un producto
  * determinado.
  * @return Una lista de objetos Posee.
  * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
  * la conexion.
  */
-public static ArrayList<Posee> listarServiciosAdicionalesContratados(Producto producto) 
-        throws SQLException{
+public static ArrayList<Posee> listarServiciosAdicionalesContratados(Producto producto) throws SQLException{
 
     ArrayList <Posee> list = new ArrayList();
 
@@ -403,24 +395,24 @@ public static ArrayList<Posee> listarServiciosAdicionalesContratados(Producto pr
     if (conexion != null) {
 
         Statement stmt = null;
-        String query = "select NOMBRE_SERVICIO, FECHA_INIC from " 
+        String query = "select NOMBRE_SERVICIO, FECHA_INIC from "
                 + "POSEE where ID = " + producto.codigoProd + ";";
 
         try {
 
             /*Se buscan los nombres de los servicios contratados y la fecha
-              de adquisicion */
+de adquisicion */
             stmt = conexion.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
-            /* Para todos los servicios adicionales contratados se crea un 
-               objeto y se agrega a la lista */
+            /* Para todos los servicios adicionales contratados se crea un
+objeto y se agrega a la lista */
             while (rs.next()){
 
                 Date fecha = Date.valueOf(rs.getString("FECHA_INIC"));
 
                 //Se consultan los datos restantes para crear el objeto
-                Posee pos = Posee.consultarPosee(producto.codigoProd, 
+                Posee pos = Posee.consultarPosee(producto.codigoProd,
                         rs.getString("NOMBRE_SERVICIO"), fecha);
                 list.add(pos);
 
@@ -435,79 +427,79 @@ public static ArrayList<Posee> listarServiciosAdicionalesContratados(Producto pr
         } finally {
 
             //La conexion se cierra
-            conexion.close(); 
+            conexion.close();
         }
     }
     return list;
 }
 
-    /**
-     * Metodo estrategia para calcular el costo de un plan prepago o postpago
-     * asociado a un producto en una fecha dada.
-     * @param producto: Producto a facturar.
-     * @param fecha: Fecha a facturar.
-     * @return Devuelve una factura con el costo total de los servicios. 
-     */
-    public static Factura comoFacturar(Producto producto, Date fecha) {
-        
-        try {
-            
-            // Verifica que el producto dado existe. Si no, retorna nulo
-            if (Producto.consultarProducto(producto.codigoProd) == null)               
-                return null;
-            
-            // Busca el plan asociado al producto
-            Plan plan = buscarPlan(producto,fecha);
+/**
+ * Metodo estrategia para calcular el costo de un plan prepago o postpago
+ * asociado a un producto en una fecha dada.
+ * @param producto: Producto a facturar.
+ * @param fecha: Fecha a facturar.
+ * @return Devuelve una factura con el costo total de los servicios. 
+ */
+public static Factura comoFacturar(Producto producto, Date fecha) {
 
-            // Si el producto no tiene un plan asociado, devuelve nulo
-            if (plan == null)
-                return null;
+  try {
 
-            ComoFacturar facturar = null;
+    // Verifica que el producto dado existe. Si no, retorna nulo
+    if (Producto.consultarProducto(producto.codigoProd) == null)               
+      return null;
 
-            // Estrategia para planes prepago
-            if (plan.tipoPlan.equals("PREPAGO"))
-                //facturar = new FacturarPrepago();
-                System.out.println("No implementado todavia");
-            
-            // Estrategia para planes postpago
-            else 
-                facturar = new FacturarPostpago();
+    // Busca el plan asociado al producto
+    Plan plan = buscarPlan(producto,fecha);
 
-            // Devuelve la factura mensual del producto en la fecha dada
-            Factura fact = facturar.facturar(producto,fecha);
-            
-            return fact;
-                
-        } catch (SQLException ex) {
-            Logger.getLogger(Facturador.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    // Si el producto no tiene un plan asociado, devuelve nulo
+    if (plan == null)
+      return null;
 
-        return null;
-    }
+    ComoFacturar facturar = null;
+
+    // Estrategia para planes prepago
+    if (plan.tipoPlan.equals("PREPAGO"))
+      //facturar = new FacturarPrepago();
+      System.out.println("No implementado todavia");
+
+    // Estrategia para planes postpago
+    else 
+      facturar = new FacturarPostpago();
+
+    // Devuelve la factura mensual del producto en la fecha dada
+    Factura fact = facturar.facturar(producto,fecha);
+
+    return fact;
+
+  } catch (SQLException ex) {
+    Logger.getLogger(Facturador.class.getName()).log(Level.SEVERE, null, ex);
+  }
+
+  return null;
+}
     
-    /**
-     * Busca el plan asociado a un producto en una fecha dada.
-     * @param producto: Producto a buscar plan.
-     * @param fecha: Fecha en la cual se busca el plan asociado al producto.
-     * @return Plan que tiene el producto en la fecha dada.
-     * @throws SQLException 
-     */
-    public static Plan buscarPlan(Producto producto, Date fecha) throws SQLException {
-        
-        // Busca todos los planes que ha tenido el producto
-        ArrayList<Afiliacion> afiliaciones = Facturador.listarPlanesAfiliados(producto);
-        
-        // Busca el plan asociado al producto en la fecha dada
-        for (Afiliacion afil : afiliaciones) {
+/**
+ * Busca el plan asociado a un producto en una fecha dada.
+ * @param producto: Producto a buscar plan.
+ * @param fecha: Fecha en la cual se busca el plan asociado al producto.
+ * @return Plan que tiene el producto en la fecha dada.
+ * @throws SQLException 
+ */
+public static Plan buscarPlan(Producto producto, Date fecha) throws SQLException {
 
-            if (((afil.fechaInicio.compareTo(fecha)) <= 0) 
-               && (afil.fechaFin == null || (fecha.compareTo(afil.fechaFin)) < 0)) {
+  // Busca todos los planes que ha tenido el producto
+  ArrayList<Afiliacion> afiliaciones = Facturador.listarPlanesAfiliados(producto);
 
-                return afil.plan;      
-            } 
-        }        
-        
-        return null;  
-    }
+  // Busca el plan asociado al producto en la fecha dada
+  for (Afiliacion afil : afiliaciones) {
+
+    if (((afil.fechaInicio.compareTo(fecha)) <= 0) 
+        && (afil.fechaFin == null || (fecha.compareTo(afil.fechaFin)) < 0)) {
+
+      return afil.plan;      
+    } 
+  }        
+
+  return null;  
+}
 }

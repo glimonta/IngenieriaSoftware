@@ -2,9 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ingsoftware;
-
-import static ingsoftware.AfiliacionTest.C1;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;

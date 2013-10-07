@@ -11,31 +11,31 @@ import java.util.ArrayList;
 
 public class Paquete {
 
-    public String nombre;        //Nombre del paquete
-    public String descripcion;   //Descripcion del paquete
+    public String nombre; //Nombre del paquete
+    public String descripcion; //Descripcion del paquete
 
 
-   /**
-    * Constructor de paquete.
-    * @param nom nombre del paquete.
-    * @param desc descripcion del paquete.
-    */
+    /**
+     * Constructor de paquete.
+     * @param nom nombre del paquete.
+     * @param desc descripcion del paquete.
+     */
 
     public Paquete(String nom, String desc) {
 
-        this.nombre = nom;
-        this.descripcion = desc;
+      this.nombre = nom;
+      this.descripcion = desc;
 
     }
 
-   /**
-    * Metodo para agregar un paquete que no este presente en la base de datos.
-    * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
-    * la conexion.
-    */
+    /**
+     * Metodo para agregar un paquete que no este presente en la base de datos.
+     * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
+     * la conexion.
+     */
     public void registrarPaquete(){
 
-        Connection conexion = null;  
+        Connection conexion = null;
 
         try {
 
@@ -59,14 +59,14 @@ public class Paquete {
         }
     }
 
-   /**
-    * Metodo para extraer un paquete de la base de datos dado su nombre.
-    * @param nom nombre del paquete a buscar.
-    * @return Devulve un objeto que representa el paquete almacenado en la base de
-    * datos, en caso de no existir devuelve null.
-    * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
-    * la conexion.
-    */
+    /**
+     * Metodo para extraer un paquete de la base de datos dado su nombre.
+     * @param nom nombre del paquete a buscar.
+     * @return Devulve un objeto que representa el paquete almacenado en la base de
+     * datos, en caso de no existir devuelve null.
+     * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
+     * la conexion.
+     */
     public static Paquete consultarPaquete(String nom){
 
         Paquete paquete = null;
@@ -77,7 +77,7 @@ public class Paquete {
         if (conexion != null) {
 
             Statement stmt = null;
-            String query = "select DESCRIPCION from PAQUETE where " + 
+            String query = "select DESCRIPCION from PAQUETE where " +
                            "NOMBRE_PAQUETE = '" + nom + "'";
 
             try {
@@ -97,17 +97,17 @@ public class Paquete {
                 //Si hay un error se imprime en pantalla
                 System.out.println("SQL EXCEPTION: ConsultarPaquete");
 
-            } 
+            }
         }
 
         return paquete;
     }
 
-   /**
-    * Metodo para eliminar un paquete de la base de datos.
-    * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
-    * la conexion.
-    */
+    /**
+     * Metodo para eliminar un paquete de la base de datos.
+     * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
+     * la conexion.
+     */
     public void eliminarPaquete(){
 
         Connection conexion = null;
@@ -120,7 +120,7 @@ public class Paquete {
             stmt = conexion.createStatement();
 
             //Se elimina el paquete de la base de datos
-            String delete = "delete from PAQUETE where NOMBRE_PAQUETE ='" 
+            String delete = "delete from PAQUETE where NOMBRE_PAQUETE ='"
                     + this.nombre + "';";
             stmt.executeUpdate(delete);
             conexion.close();
@@ -132,11 +132,11 @@ public class Paquete {
         }
     }
 
-   /**
-    * Metodo para modificar un paquete ya existente en la base de datos
-    * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
-    * la conexion.
-    */
+    /**
+     * Metodo para modificar un paquete ya existente en la base de datos
+     * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
+     * la conexion.
+     */
 
     public void modificarPaquete(){
 
@@ -150,8 +150,8 @@ public class Paquete {
             stmt = conexion.createStatement();
 
             //Se modifica el paquete en la base de datos
-            String update = "update PAQUETE set DESCRIPCION = '" 
-                    + this.descripcion + "' where NOMBRE_PAQUETE = '" 
+            String update = "update PAQUETE set DESCRIPCION = '"
+                    + this.descripcion + "' where NOMBRE_PAQUETE = '"
                     + this.nombre + "';";
             stmt.executeUpdate(update);
             conexion.close();
@@ -164,13 +164,13 @@ public class Paquete {
         }
     }
 
-   /**
-    * Metodo que lista todos los servicios asociados a un paquete.
-    * @return Una lista con los servicios asociados al paquete, si no hay
-    * servicos o el paquete no existe devuelve una lista vacia.
-    * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
-    * la conexion.
-    */
+    /**
+     * Metodo que lista todos los servicios asociados a un paquete.
+     * @return Una lista con los servicios asociados al paquete, si no hay
+     * servicos o el paquete no existe devuelve una lista vacia.
+     * @throws SQLException puede lanzar un excepcion si hay un error al cerrar
+     * la conexion.
+     */
     public ArrayList<Servicio> ListarServicios(){
 
         //Se crea una lista vacia
@@ -180,7 +180,7 @@ public class Paquete {
         if (conexion != null) {
 
             Statement stmt = null;
-            String query = "select NOMBRE_SERVICIO from CONTIENE where " 
+            String query = "select NOMBRE_SERVICIO from CONTIENE where "
                     + "NOMBRE_PAQUETE = '" + nombre + "';";
 
             try {
@@ -189,8 +189,7 @@ public class Paquete {
                 stmt = conexion.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
 
-                /*Por cada servicio se obtienen los datos faltantes para crear
-                   un objeto y agregarlo a la lista*/
+                /*Por cada servicio se obtienen los datos faltantes para crear un objeto y agregarlo a la lista*/
                 while (rs.next()) {
 
                     String nomServicio = rs.getString("NOMBRE_SERVICIO");
@@ -210,7 +209,7 @@ public class Paquete {
 
         return lista;
     }
-    
+
    /**
     * Metodo que lista todos los servicios asociados a un paquete.
     * @return Una lista con los servicios asociados al paquete, si no hay
@@ -261,13 +260,13 @@ public class Paquete {
         return lista;
     }
 
-   /**
-    * Convierte un objeto de tipo Paquete a String.
-    * @return un String que representa al paquete.
-    */
+    /**
+     * Convierte un objeto de tipo Paquete a String.
+     * @return un String que representa al paquete.
+     */
     @Override
     public String toString() {
 
-        return "Nombre: " + nombre + ", Descrpcion: " + descripcion; 
+        return "Nombre: " + nombre + ", Descrpcion: " + descripcion;
     }
 }
