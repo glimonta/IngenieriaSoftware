@@ -271,7 +271,9 @@ public class Tiene {
         Tiene tiene = (Tiene) obj;
 
         return (tiene.costo == this.costo) &
-               (tiene.fechaFin.equals(this.fechaFin)) &
+               ((fechaFin != null && tiene.fechaFin != null && 
+                tiene.fechaFin.equals(this.fechaFin)) || 
+                fechaFin == tiene.fechaFin)  &
                (tiene.fechaInicio.equals(this.fechaInicio)) &
                (tiene.paquete.equals(this.paquete)) &
                (tiene.plan.equals(this.plan));
