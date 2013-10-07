@@ -123,6 +123,10 @@ public class ConsumoTest {
                 dummy.producto.toString() + "], Servicio: [" +
                 dummy.servicio.toString() + "]";
         String result = dummy.toString();
+        
+        System.out.println(dummy);
+        System.out.println(expResult);
+        
         assertEquals(expResult, result);
     }
 
@@ -179,11 +183,11 @@ public class ConsumoTest {
     /**
      * Test of modificarConsumo method, of class Consumo.
      */
-    //@Test
+    @Test
     public void testModificarConsumo() throws ParseException {
         System.out.println("modificarConsumo");
         
-        dummy.cantidad = 80;
+        dummy.cantidad = 20;
         dummy.modificarConsumo();
         
         Consumo result = Consumo.consultarConsumo(7575, "FooServicio", Date.valueOf("2013-1-1"));
@@ -194,5 +198,9 @@ public class ConsumoTest {
                   dummy.servicio.nombre.equals(result.servicio.nombre);
         
         assertTrue(success);
+        
+        dummy.cantidad = 5;
+        dummy.modificarConsumo();
     }
+    
 }
