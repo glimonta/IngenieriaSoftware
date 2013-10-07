@@ -39,13 +39,13 @@ public class Afiliacion {
     public String toString() {
         if (this.fechaFin == null) {
             return "Fecha de Inicio: " + this.fechaInicio.toString() +
-                    ", Produto: [ " + this.producto.toString() +
+                    ", Producto: [ " + this.producto.toString() +
                     "], Plan: [" + this.plan.toString() + "]";
         }
         else {
             return "Fecha de Inicio: " + this.fechaInicio.toString() +
                     ", Fecha de Fin: " + this.fechaFin.toString() +
-                    ", Produto: [ " + this.producto.toString() +
+                    ", Producto: [ " + this.producto.toString() +
                     "], Plan: [" + this.plan.toString() + "]";
         }
     }

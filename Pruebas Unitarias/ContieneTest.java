@@ -19,6 +19,7 @@ public class ContieneTest {
     //Creamos instancias a utilizar durante las pruebas
     static Paquete paquete;
     static Servicio servicio;
+    static TipoServicio tiposervicio;
     static Servicio servicioAgregar;
     static Servicio servicioEliminar;
     static Contiene dummy;
@@ -34,6 +35,7 @@ public class ContieneTest {
         
         //Se le otorgan valores especificos a las instancias
         paquete = new Paquete("paquetePrueba", "Descripcion");
+        tiposervicio = new TipoServicio("TipoServicio1");
         servicio = new Servicio("servPrueba1", "Descripcion1", "TipoServicio1");
         servicioAgregar = new Servicio("servPrueba2", "Descripcion2", "TipoServicio1");
         servicioEliminar = new Servicio("servPrueba3", "Descripcion3", "TipoServicio1");
@@ -45,7 +47,9 @@ public class ContieneTest {
         //para probar las funciones que no sean agregar ni eliminar
         try {
             paquete.registrarPaquete();
+            tiposervicio.registrarTipoServicio();
             servicio.registrarServicio();
+            servicioAgregar.registrarServicio();
             dummy.registrarContiene();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -62,6 +66,9 @@ public class ContieneTest {
             dummy.eliminarContiene();
             paquete.eliminarPaquete();
             servicio.eliminarServicio();
+            servicioAgregar.eliminarServicio();
+            tiposervicio.eliminarTipoServicio();
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -136,6 +143,7 @@ public class ContieneTest {
         System.out.println("Probando eliminarContiene en Contiene");
         
         //Agregamos una instancia para ser eliminada
+        servicioEliminar.registrarServicio();
         dummyEliminar.registrarContiene();
         
         //Eliminamos la instancia recien agregada
@@ -145,6 +153,7 @@ public class ContieneTest {
         Contiene result = Contiene.consultarContiene(paquete.nombre, 
                                                      servicioEliminar.nombre);
         
+        servicioEliminar.eliminarServicio();
         //Si el resultado de dicha consulta es null, quiere
         //decir que la instancia se elimino correctamente
         assertNull(result);

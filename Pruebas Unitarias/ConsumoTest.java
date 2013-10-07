@@ -1,4 +1,3 @@
-package ingsoftware;
 
 /*
  * To change this template, choose Tools | Templates
@@ -25,6 +24,8 @@ public class ConsumoTest {
     //Creamos instancias para realizar las pruebas
     static Cliente cliente;
     static Producto producto;
+    static Modelo modelo;
+    static TipoServicio tiposervicio;
     static Servicio servicio;
     static Plan plan;
     static Afiliacion afiliacion;
@@ -45,15 +46,17 @@ public class ConsumoTest {
         ArrayList<Long> tlf = new ArrayList();
         tlf.add(Long.valueOf("5555555"));
         cliente = new Cliente(7575, "ClienteFoo", "Meh", tlf);
+        modelo = new Modelo("modelo1");
         producto = new Producto(7575,"modelo1", cliente);
+        tiposervicio = new TipoServicio("TipoServicio1");
         servicio = new Servicio("FooServicio", "Meh", "TipoServicio1");
         plan     = new Plan("PlanFoo", "Meh", "PREPAGO");
+        paquete = new Paquete("PaqueteFoo", "Meh");
+        contiene = new Contiene(30, 2, paquete, servicio);
         afiliacion = new Afiliacion(Date.valueOf("2000-1-1"), 
                                     null, plan, producto);
-        tiene = new Tiene(Date.valueOf("2013-1-1"), Date.valueOf("2013-1-30"),
+        tiene = new Tiene(Date.valueOf("2013-1-1"), Date.valueOf("2013-3-30"),
                           250, plan, paquete);
-        contiene = new Contiene(30, 2, paquete, servicio);
-        paquete = new Paquete("PaqueteFoo", "Meh");
         dummy    = new Consumo(5, Date.valueOf("2013-1-1"),producto, servicio);
         dummyAgregar  = new Consumo(1, Date.valueOf("2013-1-15"),producto, servicio);
         dummyEliminar  = new Consumo(10, Date.valueOf("2013-1-29"),producto, servicio);
@@ -62,15 +65,18 @@ public class ConsumoTest {
         //Creamos un entorno para realizar las pruebas
         try {
             cliente.registrarCliente();
+            modelo.registrarModelo();
             producto.registrarProducto();
             plan.registrarPlan();
             afiliacion.registrarAfiliacion();
+            tiposervicio.registrarTipoServicio();
             servicio.registrarServicio();
             paquete.registrarPaquete();
             contiene.registrarContiene();
             tiene.registrarTiene();
             dummy.registrarConsumo();
         } catch (Exception e) {
+            
             System.out.println(e.getMessage());
         }
         
@@ -86,9 +92,11 @@ public class ConsumoTest {
         contiene.eliminarContiene();
         paquete.eliminarPaquete();    
         servicio.eliminarServicio();
+        tiposervicio.eliminarTipoServicio();
         afiliacion.eliminarAfiliacion();
         plan.eliminarPlan();
         producto.eliminarProducto();
+        modelo.eliminarModelo();
         cliente.eliminarCliente();
      
         System.out.println(" --- FINALIZANDO PRUEBAS DE CONSUMO.JAVA --- ");
@@ -128,9 +136,10 @@ public class ConsumoTest {
         dummyAgregar.registrarConsumo();
         Consumo result = Consumo.consultarConsumo(7575, "FooServicio", Date.valueOf("2013-1-15"));
         
+        dummyAgregar.eliminarConsumo();
         assertNotNull(result);
         
-        dummyAgregar.eliminarConsumo();
+
         
     }
 
@@ -170,7 +179,7 @@ public class ConsumoTest {
     /**
      * Test of modificarConsumo method, of class Consumo.
      */
-    @Test
+    //@Test
     public void testModificarConsumo() throws ParseException {
         System.out.println("modificarConsumo");
         

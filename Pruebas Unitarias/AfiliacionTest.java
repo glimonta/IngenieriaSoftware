@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ingsoftware;
+
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -152,6 +152,8 @@ public class AfiliacionTest {
                            ", Producto: [ " + dummy.producto.toString() +
                            "], Plan: [" + dummy.plan.toString() + "]";
         String result1 = dummy.toString();
+        
+        System.out.println(expResult1 + "\n" + result1);
         
         //Test para afiliacion con fechafin indefinida
         String expResult2 = "Fecha de Inicio: " + dummyNull.fechaInicio.toString() +

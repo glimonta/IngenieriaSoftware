@@ -204,7 +204,7 @@ public class ServicioAdicional extends Servicio {
     public String toString() {
 
         return "Nombre: " + nombre + ", Descripcion: " + descripcion 
-                + "Tipo de Servicio: " + tipoServicio + ", Tarifa: " + tarifa 
+                + " Tipo de Servicio: " + tipoServicio + ", Tarifa: " + tarifa 
                 + ", Cantidad Adicional: " + cantidadAdicional 
                 + ", Tipo de plan : " + tipoPlan;
     }
