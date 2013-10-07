@@ -19,6 +19,9 @@ import static org.junit.Assert.*;
 public class ServicioTest {
     
     //Creamos distintas instancias para probar las funciones
+    static TipoServicio tiposervicio1;
+    static TipoServicio tiposervicio2;
+    static TipoServicio tiposervicio3;
     static Servicio dummy;
     static Servicio dummyAgregar;
     static Servicio dummyEliminar;
@@ -30,11 +33,20 @@ public class ServicioTest {
     public static void setUpClass() throws SQLException {
         
         //Otorgamos valores a dichas instancias
+        
+        tiposervicio1 = new TipoServicio("TipoServicio1");
+        tiposervicio2 = new TipoServicio("TipoServicio2");
+        tiposervicio3 = new TipoServicio("TipoServicio3");
+        
         dummy = new Servicio("ServicioPrueba1","DescripcionPrueba","TipoServicio1");
         
         dummyAgregar = new Servicio("ServicioPrueba2","DescripcionPrueba","TipoServicio2");
         
         dummyEliminar =new Servicio("ServicioPrueba3","DescripcionPrueba","TipoServicio3");
+        
+        tiposervicio1.registrarTipoServicio();
+        tiposervicio2.registrarTipoServicio();
+        tiposervicio3.registrarTipoServicio();
         
         //Agregamos el dummy para modificar, consultar, etc...
         dummy.registrarServicio();
@@ -50,6 +62,9 @@ public class ServicioTest {
         
         //Eliminamos los dummies que faltan
         dummy.eliminarServicio();
+        tiposervicio1.eliminarTipoServicio();
+        tiposervicio2.eliminarTipoServicio();
+        tiposervicio3.eliminarTipoServicio();
         
         System.out.println(" --- FINALIZANDO PRUEBAS DE SERVICIO.JAVA --- ");
     }

@@ -443,11 +443,9 @@ objeto y se agrega a la lista */
 public static Factura comoFacturar(Producto producto, Date fecha) {
 
   try {
-
     // Verifica que el producto dado existe. Si no, retorna nulo
     if (Producto.consultarProducto(producto.codigoProd) == null)               
       return null;
-
     // Busca el plan asociado al producto
     Plan plan = buscarPlan(producto,fecha);
 
@@ -455,17 +453,26 @@ public static Factura comoFacturar(Producto producto, Date fecha) {
     if (plan == null)
       return null;
 
-    ComoFacturar facturar = null;
+    // Verifica que el producto dado existe. Si no, retorna nulo
+    if (Producto.consultarProducto(producto.codigoProd) == null)               
+      return null;
 
-    // Estrategia para planes prepago
-    if (plan.tipoPlan.equals("PREPAGO"))
-      //facturar = new FacturarPrepago();
-      System.out.println("No implementado todavia");
+    // Busca el plan asociado al producto
+    Plan plan = buscarPlan(producto,fecha);
+            ComoFacturar facturar = null;
 
-    // Estrategia para planes postpago
-    else 
-      facturar = new FacturarPostpago();
+            // Estrategia para planes prepago
+            if (plan.tipoPlan.equals("PREPAGO"))
+                facturar = new FacturarPrepago();
+                System.out.println("No implementado todavia");
+            
+            // Estrategia para planes postpago
+            else 
+                facturar = new FacturarPostpago();
 
+    // Si el producto no tiene un plan asociado, devuelve nulo
+    if (plan == null)
+      return null;
     // Devuelve la factura mensual del producto en la fecha dada
     Factura fact = facturar.facturar(producto,fecha);
 
@@ -473,7 +480,7 @@ public static Factura comoFacturar(Producto producto, Date fecha) {
 
   } catch (SQLException ex) {
     Logger.getLogger(Facturador.class.getName()).log(Level.SEVERE, null, ex);
-  }
+        }
 
   return null;
 }
@@ -501,5 +508,4 @@ public static Plan buscarPlan(Producto producto, Date fecha) throws SQLException
   }        
 
   return null;  
-}
 }

@@ -15,12 +15,13 @@ import static org.junit.Assert.*;
  *
  * @author fertaku
  */
-public class ClienteTest {
+public class ClienteTest extends Tests{
     
     //Creamos varias instancias para probar las distintas funciones
     static Cliente dummy;
     static Cliente dummyAgregar;
     static Cliente dummyEliminar;
+    static ArrayList<Long> dummyTelf;
     
     public ClienteTest() {
     }
@@ -28,35 +29,26 @@ public class ClienteTest {
     @BeforeClass
     public static void setUpClass() {
         
-        //Otorgamos valores especificos a las instancias.
-        
-        ArrayList<Long> dummyTelf = new ArrayList();
+        /*Otorgamos valores especificos a las instancias.*/
+        dummyTelf = new ArrayList();
         dummyTelf.add(Long.valueOf("4424246"));
         dummyTelf.add(Long.valueOf("4123622646"));
-        dummy = new Cliente(19499608, "Fernando", "Montalban", dummyTelf);
         
-        dummyAgregar = new Cliente(777, "Twisted", "Fate", dummyTelf);
+        /*Registramos el cliente que sera utilizado para las demas
+         *pruebas que no sean agregar y eliminar.*/
+        dummy = insertCliente(19499608, "Fernando", "Montalban", dummyTelf);
         
-        dummyEliminar = new Cliente(999, "Cassio", "Peia", dummyTelf);
-        
-        //Registramos el cliente que sera utilizado para las demas
-        //pruebas que no sean agregar y eliminar.
-        dummy.registrarCliente();
-        
-        //El dummy para probar la funcion de agregar sera agregado en
-        //dicha prueba, igual para el dummy de eliminar.
-        
-        System.out.println(" --- INICIANDO PRUEBAS DE CLIENTE.JAVA --- ");
+        /*El dummy para probar la funcion de agregar sera agregado en
+         *dicha prueba, igual para el dummy de eliminar.*/
+        mensajeInicioPrueba("CLIENTE");
     }
     
     @AfterClass
     public static void tearDownClass() {
         
-        //Eliminamos los dummies restantes
+        /*Eliminamos los dummies restantes*/
         dummy.eliminarCliente();
-        
-        System.out.println(" --- FINALIZANDO PRUEBAS DE CLIENTE.JAVA --- ");
-        
+        mensajeFinPrueba("CLIENTE");
     }
     
     @Before
@@ -76,7 +68,7 @@ public class ClienteTest {
         System.out.println("Probando registrarCliente de Cliente");
         
         //Agregamos una instancia a la base de datos
-        dummyAgregar.registrarCliente();
+        dummyAgregar = insertCliente(777, "Twisted", "Fate", dummyTelf);
         
         //Verificamos si se agrego a la base de datos
         Cliente result = Cliente.consultarCliente(dummyAgregar.cedula);
@@ -144,7 +136,7 @@ public class ClienteTest {
         System.out.println("Probando eliminarCliente de Cliente");
         
         //Agregamos en la base de datos un cliente a eliminar
-        dummyEliminar.registrarCliente();
+        dummyEliminar = insertCliente(999, "Cassio", "Peia", dummyTelf);
         
         //Eliminamos el cliente que fue agregado
         dummyEliminar.eliminarCliente();

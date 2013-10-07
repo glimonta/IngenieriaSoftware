@@ -39,13 +39,13 @@ public class Afiliacion {
     public String toString() {
         if (this.fechaFin == null) {
             return "Fecha de Inicio: " + this.fechaInicio.toString() +
-                    ", Produto: [ " + this.producto.toString() +
+                    ", Producto: [ " + this.producto.toString() +
                     "], Plan: [" + this.plan.toString() + "]";
         }
         else {
             return "Fecha de Inicio: " + this.fechaInicio.toString() +
                     ", Fecha de Fin: " + this.fechaFin.toString() +
-                    ", Produto: [ " + this.producto.toString() +
+                    ", Producto: [ " + this.producto.toString() +
                     "], Plan: [" + this.plan.toString() + "]";
         }
     }
@@ -221,7 +221,9 @@ public class Afiliacion {
         
         Afiliacion afilia = (Afiliacion) obj;
         
-        return (afilia.fechaFin.equals(this.fechaFin)) &
+        return ((fechaFin != null && afilia.fechaFin != null && 
+                afilia.fechaFin.equals(this.fechaFin)) || 
+                fechaFin == afilia.fechaFin) &&
                (afilia.fechaInicio.equals(this.fechaInicio)) &
                (afilia.plan.equals(this.plan)) &
                (afilia.producto.equals(this.producto));

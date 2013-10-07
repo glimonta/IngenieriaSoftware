@@ -2,6 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+package ingsoftware;
+import static ingsoftware.AfiliacionTest.C1;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -18,7 +20,7 @@ import static org.junit.Assert.*;
  *
  * @author federio
  */
-public class FacturaTest {
+public class FacturaTest extends Tests{
     
     //Se agrega el Producto y Cliente necesarios
     static Cliente C1;
@@ -28,6 +30,16 @@ public class FacturaTest {
     static Factura dummy;
     static Factura dummyAgregar;
     static Factura dummyEliminar;
+    public static final String MODELO = "ModeloPrueba";
+    public static final float COSTO = 10;
+    public static Modelo modelo;
+    public static Plan plan;
+    public static Afiliacion afiliacion;
+    public static Date fechaInicioAfiliacion;
+    public static Date fechaFinAfiliacion;
+    public static Paquete paquete;
+    public static Tiene tiene;
+
     
     public FacturaTest() {
     }
@@ -36,11 +48,13 @@ public class FacturaTest {
     public static void setUpClass() throws SQLException, ParseException {
         
         //Se le dan valores al Cliente y Producto
-        ArrayList<Long> telfC1 = new ArrayList<Long>();
+        ArrayList<Long> telfC1 = new ArrayList();
         Long num = new Long(123);
         telfC1.add(num);
         C1 = new Cliente(123,"ClientePrueba","DirPrueba",telfC1);
         C1.registrarCliente();
+        
+        modelo = insertModelo("ModeloPrueba"); 
         
         P1 = new Producto(1,"ModeloPrueba",C1);
         P1.registrarProducto();
@@ -58,23 +72,40 @@ public class FacturaTest {
         utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(sInic);
         Date inic3 = new java.sql.Date(utilDate.getTime());
         
-        ArrayList<String> com = new ArrayList<String>();
+        ArrayList<String> com = new ArrayList();
         com.add("ComentarioPrueba");
         
-        dummy = new Factura(inic,1,2,com,P1);
-        dummyAgregar = new Factura(inic2,1,2,com,P1);
-        dummyEliminar = new Factura(inic3,1,2,com,P1);
-        
+        dummy = new Factura(inic,COSTO,2,com,P1);
+        dummyAgregar = new Factura(inic2,COSTO,2,com,P1);
+        dummyEliminar = new Factura(inic3,COSTO,2,com,P1);
         dummy.registrarFactura();
+        
+        fechaInicioAfiliacion = Date.valueOf("1993-3-13");
+        fechaFinAfiliacion = null;
+        
+        plan = insertPlan("PlanPrueba","desc","POSTPAGO");
+        afiliacion = insertAfiliacion(fechaInicioAfiliacion,fechaFinAfiliacion,
+                plan,P1);
+        paquete = insertPaquete("Paquete1","desc");
+        tiene = insertTiene(fechaInicioAfiliacion, 
+                            fechaFinAfiliacion, 
+                            COSTO, 
+                            plan, 
+                            paquete);
         
         System.out.println(" --- INICIANDO PRUEBAS DE FACTURA.JAVA --- ");
     }
     
     @AfterClass
     public static void tearDownClass() throws SQLException {
+        tiene.eliminarTiene();
+        paquete.eliminarPaquete();
+        afiliacion.eliminarAfiliacion();
+        plan.eliminarPlan();
         dummy.eliminarFactura();
+        P1.eliminarProducto();
+        modelo.eliminarModelo();
         C1.eliminarCliente();
-        P1.eliminarProducto();     
     }
     
     @Before
@@ -92,7 +123,7 @@ public class FacturaTest {
     public void testCalcularMontoTotal() {
         
         System.out.println("Probando calcularMontoTotal de Factura");
-        double expResult = 3.0;
+        double expResult = 12.0;
         double result = dummy.calcularMontoTotal();
         
         assertEquals(expResult, result,0.0);
@@ -106,7 +137,7 @@ public class FacturaTest {
         System.out.println("Probando toString de Factura");
         
         String expResult = "Fecha: " + "1993-03-13" + ", Monto: " + 
-                3.0 + ", Comentarios: [" + "ComentarioPrueba " +
+                12.0 + ", Comentarios: [" + "ComentarioPrueba " +
                 "] , Producto: [" + dummy.producto.toString() + "]";
         String result = dummy.toString();
         
@@ -162,7 +193,7 @@ public class FacturaTest {
         System.out.println("Probando modificarFactura de Factura");
         
         //Se modifica la factura
-        dummy.costoPlan = 28.0;
+        dummy.montoTotal++;
         dummy.modificarFactura();
         
         //Se consulta a ver si es la misma
@@ -174,6 +205,8 @@ public class FacturaTest {
                   dummy.fecha.equals(result.fecha) &&
                   dummy.montoTotal == result.montoTotal &&
                   dummy.producto.equals(result.producto);
+        
+        
         
         assertTrue(success);        
 
@@ -189,10 +222,12 @@ public class FacturaTest {
         //Agregando y eliminando la instancia
         dummyEliminar.registrarFactura();
         dummyEliminar.eliminarFactura();
-        
+        afiliacion.eliminarAfiliacion();
         //Chequeando si esta
         Factura result = Factura.consultarFactura(dummyEliminar.producto, dummyEliminar.fecha);
         
+        afiliacion = insertAfiliacion(fechaInicioAfiliacion,fechaFinAfiliacion,
+                plan,P1);
         assertNull(result);
     }
 }

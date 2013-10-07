@@ -269,4 +269,18 @@ public class Paquete {
 
         return "Nombre: " + nombre + ", Descrpcion: " + descripcion;
     }
+    
+    /**
+     * Verifica si un paquete es igual a this.
+     * @return Regresa true si el paquete pasado como parametro tiene los
+     * mismos atributos que this.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        
+        Paquete paquete = (Paquete) obj;
+        
+        return (paquete.descripcion.equals(this.descripcion)) &
+               (paquete.nombre.equals(this.nombre));
+    }
 }
