@@ -457,18 +457,16 @@ public static Factura comoFacturar(Producto producto, Date fecha) {
     if (Producto.consultarProducto(producto.codigoProd) == null)               
       return null;
 
-    // Busca el plan asociado al producto
-    Plan plan = buscarPlan(producto,fecha);
-            ComoFacturar facturar = null;
+    ComoFacturar facturar = null;
 
-            // Estrategia para planes prepago
-            if (plan.tipoPlan.equals("PREPAGO"))
-                facturar = new FacturarPrepago();
-                System.out.println("No implementado todavia");
-            
-            // Estrategia para planes postpago
-            else 
-                facturar = new FacturarPostpago();
+    // Estrategia para planes prepago
+    if (plan.tipoPlan.equals("PREPAGO"))
+        facturar = new FacturarPrepago();
+
+
+    // Estrategia para planes postpago
+    else 
+        facturar = new FacturarPostpago();
 
     // Si el producto no tiene un plan asociado, devuelve nulo
     if (plan == null)
@@ -508,4 +506,5 @@ public static Plan buscarPlan(Producto producto, Date fecha) throws SQLException
   }        
 
   return null;  
+}
 }
