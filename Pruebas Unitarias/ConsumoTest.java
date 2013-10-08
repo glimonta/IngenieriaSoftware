@@ -124,9 +124,6 @@ public class ConsumoTest {
                 dummy.servicio.toString() + "]";
         String result = dummy.toString();
         
-        System.out.println(dummy);
-        System.out.println(expResult);
-        
         assertEquals(expResult, result);
     }
 

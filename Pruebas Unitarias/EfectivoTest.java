@@ -80,10 +80,6 @@ public class EfectivoTest extends Tests {
         Efectivo result = Efectivo.consultarEfectivo(numPago);
         
         /*Realizamos la verificacion*/
-        System.out.println(dummy.id);
-        System.out.println(result.id);
-        System.out.println(dummy.numeroPago);
-        System.out.println(result.numeroPago);
         
         boolean success = (result.id.equals(dummy.id)) & 
                           (result.numeroPago.equals(dummy.numeroPago)); 

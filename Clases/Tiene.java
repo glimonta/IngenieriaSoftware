@@ -122,7 +122,7 @@ public class Tiene {
                 String fechaFinString = null;
 
                 //Si la tupla Tiene existe, se crea
-                if (rs.next())
+                if (rs.next()) {
 
                     //Se verifica si fecha_fin es null
                     fechaFinString = rs.getString("FECHA_FIN");
@@ -137,7 +137,7 @@ public class Tiene {
                         tiene = new Tiene(fechaI, null, 
                                 Float.parseFloat(rs.getString("COSTO")), plan, 
                                 pack);
-
+                }
             } catch (SQLException e){
 
                 //Si hay un error se imprime en pantalla

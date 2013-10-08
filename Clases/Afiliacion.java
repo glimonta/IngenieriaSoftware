@@ -165,11 +165,6 @@ public class Afiliacion {
                     this.plan.nombre + "' and tipo_plan ='" + this.plan.tipoPlan + 
                     "' and id = '" + this.producto.codigoProd + "' and fecha_inic = '" +
                     this.fechaInicio.toString() + "';");
-
-            System.out.println("delete from esta_afiliado where nombre_plan ='" + 
-                    this.plan.nombre + "' and tipo_plan ='" + this.plan.tipoPlan + 
-                    "' and id = '" + this.producto.codigoProd + "' and fecha_inic = '" +
-                    this.fechaInicio.toString() + "';");
             
         } catch (SQLException ex) {
             // Si hay una excepcion se imprime el mensaje de la misma.
@@ -198,8 +193,8 @@ public class Afiliacion {
             }
             else {
                 // Ejecutamos el uptdate en la base de datos
-                st.executeUpdate("update esta_afiliado set fecha_fin = 'null'"
-                        + "where id ='" + this.producto.codigoProd 
+                st.executeUpdate("update esta_afiliado set fecha_fin = null"
+                        + " where id ='" + this.producto.codigoProd 
                         + "' and nombre_plan ='" + this.plan.nombre
                         + "' and tipo_plan ='" + this.plan.tipoPlan
                         + "' and fecha_inic ='" + this.fechaInicio.toString() +"';");

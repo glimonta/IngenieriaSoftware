@@ -385,9 +385,6 @@ public class FacturadorTest extends Tests{
         expResult.add(factura);
         ArrayList result = instance.listarFacturas(producto);
 
-        System.out.println(expResult);
-        System.out.println(result);
-        
         assertEquals(expResult, result);
     }
   

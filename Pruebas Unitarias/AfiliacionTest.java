@@ -235,7 +235,9 @@ public class AfiliacionTest {
      */
     @Test
     public void testModificarAfiliacion() throws ParseException {
-        System.out.println("Probando modificarAfiliacion de Afiliacion");
+        try {
+            System.out.println("Probando modificarAfiliacion de Afiliacion");
+        
         
         //Se modifica dummy antes de modificarlo en la base de datos
         dummy.fechaFin = null;
@@ -252,8 +254,12 @@ public class AfiliacionTest {
         success = dummy.producto.codigoProd == result.producto.codigoProd && 
                   dummy.plan.nombre.equals(result.plan.nombre) &&
                   dummy.fechaInicio.equals(result.fechaInicio) && 
-                  dummy.plan.tipoPlan.equals(result.plan.tipoPlan);
+                  dummy.plan.tipoPlan.equals(result.plan.tipoPlan) && 
+                  dummy.fechaFin == result.fechaFin;
         
-        assertTrue(success);        
+        assertTrue(success);      
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 }
