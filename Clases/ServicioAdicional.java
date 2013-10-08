@@ -53,7 +53,7 @@ public class ServicioAdicional extends Servicio {
                     + tarifa + "', '" + cantidadAdicional + "', '" 
                     + tipoPlan + "');";
             //Se inserta el servicio adicional a la Base de Datos
-            stmt.executeQuery(insert);
+            stmt.executeUpdate(insert);
 
         }catch (SQLException e) {
 

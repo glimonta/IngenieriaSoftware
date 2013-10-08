@@ -282,7 +282,6 @@ public class PlanTest extends Tests{
                 expResult = (expResult && 
                             (lista_paquetes_plan.get(i).equals(listaPaquetes.get(i))));
                 i++;
-                System.out.println(expResult);
             }
            
         }
@@ -335,7 +334,6 @@ public class PlanTest extends Tests{
                 expResult = (expResult && 
                             (lista_tiene_plan.get(i).equals(listaTiene.get(i))));
                 i++;
-                System.out.println(expResult);
             }
            
         }
