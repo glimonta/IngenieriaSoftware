@@ -68,6 +68,7 @@ public class ServicioAdicionalTest {
         //Eliminamos los dummies que faltan
         dummy.eliminarServicioAd();
         pDummy.eliminarServicio();
+        T1.eliminarTipoServicio();
         
         System.out.println(" --- FINALIZANDO PRUEBAS DE Servicio.JAVA --- ");
     }
@@ -183,7 +184,7 @@ public class ServicioAdicionalTest {
         
         //Se especifica el string esperado de la funcion
         String expResult = "Nombre: " + "ServicioAPrueba1" + ", Descripcion: " + 
-                "DescripcionPrueba" + "Tipo de Servicio: " + "TipoPrueba" + 
+                "DescripcionPrueba" + " Tipo de Servicio: " + "TipoPrueba" + 
                 ", Tarifa: " + 1.0 + ", Cantidad Adicional: " + 2 
                 + ", Tipo de plan : " + "PREPAGO";
         

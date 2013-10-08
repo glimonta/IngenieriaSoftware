@@ -37,7 +37,7 @@ public class FacturarPrepago implements ComoFacturar {
 
             ArrayList<String> comentarios = new ArrayList();
             
-            Factura factura = new Factura(fecha,costoPlan,costoPlan,comentarios,producto);
+            Factura factura = new Factura(fecha,costoPlan,0,comentarios,producto);
             return factura;
 
   

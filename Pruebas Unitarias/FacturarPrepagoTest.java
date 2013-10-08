@@ -240,6 +240,7 @@ public class FacturarPrepagoTest extends Tests {
         FacturarPrepago instance = new FacturarPrepago();
         Factura expResult = factura;
         Factura result = instance.facturar(producto, fecha);
+        
         assertEquals(expResult, result);
 
     }
