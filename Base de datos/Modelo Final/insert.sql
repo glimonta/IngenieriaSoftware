@@ -1,5 +1,6 @@
 
-
+INSERT INTO ADMINISTRADOR (CI, NOMBRE) VALUES
+   (12345, 'SuperAdmin');
 
 INSERT INTO CLIENTE (CI,NOMBRE,DIRECCION) VALUES
    (1, 'cliente1'  , 'direccion1' ),

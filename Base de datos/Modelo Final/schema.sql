@@ -1,5 +1,14 @@
 -- TABLAS DE LA BASE DE DATOS ------------------------------------------------
 
+
+CREATE TABLE ADMINISTRADOR(
+   CI                INTEGER     NOT NULL,
+   NOMBRE            VARCHAR(50) NOT NULL,
+   CONSTRAINT PK_ADMINISTRADOR PRIMARY KEY(CI),
+   CONSTRAINT DOM_CI CHECK(CI > 0)
+);
+
+
 CREATE TABLE CLIENTE(
    CI                INTEGER      NOT NULL,
    NOMBRE            VARCHAR(50)  NOT NULL,
