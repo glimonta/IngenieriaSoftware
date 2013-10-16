@@ -148,45 +148,13 @@ public static Plan obtenerPlanActual(Producto producto) throws SQLException{
  */
 public static Factura obtenerFacturaActual(Producto producto) throws SQLException, ParseException{
 
-    Factura factura = null;
+    Calendar calendar = new GregorianCalendar();
+    Date fechaActual = new Date (calendar.get(Calendar.YEAR)-1900,
+            calendar.get(Calendar.MONTH), 1);
 
-    //Se crea la conexion de la base de datos
-    Connection conexion = Conexion.obtenerConn();
+    System.out.println(fechaActual.toString());
 
-    if (conexion != null){
-
-        Statement stmt = null;
-        String query = "select FECHA, MONTO_TOTAL from FACTURA " +
-                "where ID = " + producto.codigoProd + ";";
-        try{
-
-            //Se obitenen los datos de las facturas asociadas al producto
-            stmt = conexion.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-
-            /*Se obtiene la fecha actual sin tomar en cuenta el dia y se convierte a formato sql*/
-            Calendar calendar = new GregorianCalendar();
-            Date fechaActual = new Date (calendar.get(Calendar.YEAR)-1900,
-                    calendar.get(Calendar.MONTH), 1);
-            
-            while (rs.next()){
-
-                /* Se verifica si la fecha es igual, de ser asi, se crea la factura*/
-                Date fechaFact = Date.valueOf(rs.getString("FECHA"));
-
-                if (fechaFact.compareTo(fechaActual) == 0)
-                    factura = Factura.consultarFactura(producto, fechaFact);
-            }
-        } catch (SQLException e){
-
-            //Si hay un error se imprime en pantalla
-            System.out.println(e.getMessage());
-        } finally {
-
-            //La conexion se cierra
-            conexion.close();
-        }
-    }
+    Factura factura = comoFacturar(producto, fechaActual);
 
     return factura;
 }
@@ -531,6 +499,47 @@ public static Plan buscarPlan(Producto producto, Date fecha) throws SQLException
         
         return facturas;
 
+    }
+    
+    public static ArrayList<Factura> generarFacturasActuales() {
+    
+        ArrayList<Factura> facturas = new ArrayList();
+        
+        try {        
+            ArrayList<Cliente> clientes = Cliente.listarClientes();
+            ArrayList<Producto> productos = new ArrayList();
+            
+            for (Cliente cliente: clientes) {
+                
+                ArrayList<Producto> productosCliente = obtenerProductos(cliente);
+                
+                //System.out.println(cliente.toString());
+                productos.addAll(productosCliente);
+            }
+            
+            for (Producto producto: productos) {
+                
+                Factura factura = obtenerFacturaActual(producto);
+                
+            
+                if (factura != null) {
+                    System.out.println(factura.toString());
+                    facturas.add(factura);
+                }
+            }
+    
+        } catch (SQLException ex) {
+            Logger.getLogger(Facturador.class.getName()).log(Level.SEVERE, null, ex);
+    
+        } catch (ParseException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        System.out.println(facturas.size());
+        return facturas;
+        
+        
+        
     }
     
     

@@ -88,38 +88,7 @@ public class ClienteControlador {
       }
     }
 
-    
-    @RequestMapping (value = "/consultarFacturas.htm", method = RequestMethod.POST)
-    public ModelAndView consultarFacturaForm(Cliente clienteFactura, BindingResult result) throws SQLException {
-      logger.info("Se devuelve las facturas del cliente");
-      
-              
-      
-      if (clienteFactura.cedula <= 0) { 
-          return new ModelAndView("consultarFacturasError");
-      } else {
-          
-        Cliente cliente = Cliente.consultarCliente(clienteFactura.cedula);
-        
-        ArrayList<Factura> facturas = Facturador.facturarCliente(cliente);
-        return new ModelAndView("consultarFacturas", "facturas", facturas);
-      }
-    }
-    
 
-
-/*
-    @RequestMapping(method=RequestMethod.POST)
-    public String onSubmit(@ModelAttribute("SpringWeb") Cliente cliente, ModelMap result) {
-        model.addAtt
-        
-      cliente.registrarCliente();
-        
-      return "redirect:/hello.htm";
-        
-        
-        
-    }*/
     
     
 }
