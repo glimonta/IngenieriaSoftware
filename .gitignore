@@ -1,7 +1,7 @@
 # Package Files #
-*.jar
-*.war
-*.ear
+#*.jar
+#*.war
+#*.ear
 
 # Java #
 *.class
@@ -12,12 +12,12 @@
 !.gitignore
 
 # NetBeans #
-nbproject/private/
-nbproject
-build/
-nbbuild/
-dist/
-nbdist/
-nbactions.xml
-nb-configuration.xml
-/IngenieriaSoftware/nbproject/private/
+#nbproject/private/
+#nbproject
+#build/
+#nbbuild/
+#dist/
+#nbdist/
+#nbactions.xml
+#nb-configuration.xml
+#/IngenieriaSoftware/nbproject/private/
