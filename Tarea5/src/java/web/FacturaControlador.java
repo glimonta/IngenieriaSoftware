@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import domain.*;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -60,6 +61,37 @@ public class FacturaControlador {
         
         return new ModelAndView("consultarFacturasActuales", "model", model);       
         
+        
+    }
+    
+    
+    @RequestMapping (value = "/consultarProductos", method = RequestMethod.GET)
+    public ModelAndView consultarProductos(Model model) throws SQLException {
+        
+        logger.info("Consultar productos");
+        
+        model.addAttribute("Productos", Producto.listarProductos());
+        Producto producto = new Producto();
+        model.addAttribute("producto", producto);
+        
+        return new ModelAndView("consultarProductos", "model", model);       
+        
+        
+    }
+    
+    @RequestMapping (value = "/consultarFacturaProducto.htm", method = RequestMethod.POST)
+    public ModelAndView consultarFacturaProducto(Producto producto, BindingResult result) throws SQLException, ParseException {
+        
+        logger.info("Consultar Factura Producto");
+                
+        if (producto.codigoProd < 0) { 
+            return new ModelAndView("consultarFacturaProductoError");
+        } else {
+
+          Factura factura = Facturador.ultimaFactura(producto);
+
+          return new ModelAndView("consultarFacturaProducto", "factura", factura);
+        }
         
     }
 }

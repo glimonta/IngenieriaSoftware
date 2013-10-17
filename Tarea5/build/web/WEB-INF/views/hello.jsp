@@ -18,6 +18,8 @@
 <a href="<c:url value="consultarCliente.htm"/>">Consultar Cliente</a>
 <br>
 <a href="<c:url value="consultarFacturasActuales.htm"/>">Consultar Facturas Actuales</a>
+<br>
+<a href="<c:url value="consultarProductos.htm"/>">Consultar Productos</a>
 
 </body>
 </html>

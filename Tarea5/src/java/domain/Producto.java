@@ -11,6 +11,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.validation.constraints.Min;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * Clase Servicio: Representa a la entidad Producto en la base de datos como
@@ -19,11 +21,15 @@ import java.util.logging.Logger;
 
 public class Producto extends Facturable {
 
+    @Min(-1)
     public int codigoProd = 0;  //Codigo del producto
+    
     public String modelo;       //Modelo del producto
+    
     public Cliente cliente;     //Cliente que al quien le pertenece el producto
 
-
+    public Producto() {};    
+    
    /**
     * Constructor de servicio.
     * @param codigo Codigo del producto.
@@ -275,5 +281,46 @@ public class Producto extends Facturable {
         return (prod.codigoProd == this.codigoProd) &
                (prod.modelo.equals(this.modelo)) &
                (prod.cliente.equals(this.cliente));
+    }
+    
+ public static ArrayList<Producto> listarProductos() throws SQLException {
+
+        ArrayList <Producto> list = new ArrayList();
+
+        //Se crea la conexion de la base de datos
+        Connection conexion = Conexion.obtenerConn();
+
+        if (conexion != null) {
+
+            Statement stmt = null;
+            String query = "select ID from producto;";
+
+            try {
+      
+                stmt = conexion.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+
+                Producto producto;
+          
+                while (rs.next()){                
+                        
+                    producto = consultarProducto(Integer.parseInt(rs.getString(1)));
+                    
+                    if (producto != null)
+                        list.add(producto);
+                }
+
+            } catch (SQLException e) {
+                //Si hay un error se imprime en pantalla
+                System.out.println(e.getMessage());
+
+            } finally {
+
+                //La conexion se cierra
+                conexion.close();
+            }
+        }
+        return list;
+
     }
 }

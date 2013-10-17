@@ -32,6 +32,8 @@ public class FacturarPostpago implements ComoFacturar {
             // Busca el plan asociado al producto en la fecha dada           
             Plan plan = Facturador.buscarPlan(producto,fecha);
             
+            
+            
             // Si el producto no tiene un plan en la fecha dada, devuelve nulo
             if (plan == null)
                 return null;

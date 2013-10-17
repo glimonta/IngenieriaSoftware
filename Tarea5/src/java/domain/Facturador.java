@@ -437,16 +437,17 @@ public static Factura comoFacturar(Producto producto, Date fecha) {
     // Estrategia para planes postpago
     else 
         facturar = new FacturarPostpago();
-
-    // Si el producto no tiene un plan asociado, devuelve nulo
-    if (plan == null)
-      return null;
+    
     // Devuelve la factura mensual del producto en la fecha dada
+    
+    
     Factura fact = facturar.facturar(producto,fecha);
-
+   
+    
     return fact;
 
   } catch (SQLException ex) {
+
     Logger.getLogger(Facturador.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -542,8 +543,89 @@ public static Plan buscarPlan(Producto producto, Date fecha) throws SQLException
         
     }
     
+
+public static Factura ultimaFactura(Producto producto) throws SQLException, ParseException{
+
+    Factura factura = null;
+
+    //Se crea la conexion de la base de datos
+    Connection conexion = Conexion.obtenerConn();
+
+    if (conexion != null) {
+
+        Statement stmt = null;
+        try {
+
+            //Se buscan las facturas del producto
+            stmt = conexion.createStatement();
+
+            String query = "select date_part('month', FECHA_FIN) as mes,"
+                    + " date_part('year', FECHA_FIN) as year "
+                    + "from ESTA_AFILIADO where ID = " + producto.codigoProd + ";";
+
+            ResultSet rs = stmt.executeQuery(query);
+            Date fechaMax = null;
+            
+            
+            
+            if (rs.next() && (rs.getString(1) != null)) {
+                
+                int year = Integer.parseInt(rs.getString("year")) - 1900;
+                int mes = Integer.parseInt(rs.getString("mes")) -1;
+                fechaMax = new Date (year, mes, 1);
+            }
+            
+            boolean notNull = true;
+            
+            while (rs.next() && (fechaMax != null)){
+
+                if (rs.getString(1) == null) {
+                    notNull = false;
+                    break;
+                }
+                    
+                int year = Integer.parseInt(rs.getString("year")) - 1900;
+                int mes = Integer.parseInt(rs.getString("mes")) -1;
+                Date fechaActual = new Date (year, mes, 1);
+
+                /* Para cada factura se crea un objeto y se agrega a la lista */
+                
+              
+                if (fechaMax.compareTo(fechaActual) < 0){
+                    fechaMax = fechaActual;
+                }
+            }
+            
+              
+            Calendar calendar = new GregorianCalendar();
+            int month = calendar.get(Calendar.MONTH);
+            int anio = calendar.get(Calendar.YEAR) - 1900;
+            
+            Date fechaHoy = new Date(anio,month,1); 
+              
+            if ((notNull == false) || (fechaMax == null) || (fechaHoy.before(fechaMax))) {
+                fechaMax = fechaHoy;            
+            }
+            
+            Plan plan = buscarPlan(producto,fechaMax);
+            
+            if (plan != null && plan.tipoPlan.equals("POSTPAGO"))          
+                factura = comoFacturar(producto,fechaMax);    
+            
+            
+            
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            
+        } finally {
+            conexion.close();
+        }     
+    }    
+     return factura;
+}
     
     
+   
 }
 
 
