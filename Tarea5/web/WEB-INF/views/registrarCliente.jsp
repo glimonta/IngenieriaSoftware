@@ -3,13 +3,13 @@
 
 <html>
 <head>
-    <title><fmt:message key="title"/></title>
+    <title>Registrar cliente</title>
     <style>
     .error { color: red; }
     </style>
 </head>
 <body>
-    <h1><fmt:message key="heading"/></h1>
+    <h1>Registrar cliente</h1>
     <form:form modelAttribute="cliente" action ="registrarCliente.htm">
         <table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5">
             <tr>

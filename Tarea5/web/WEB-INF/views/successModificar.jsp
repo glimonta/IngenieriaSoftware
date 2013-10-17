@@ -6,13 +6,13 @@
 
 <html>
 <head>
-    <title><fmt:message key="tituloExitoModificar"/></title>
+    <title>Exito al modificar el cliente</title>
     <style>
     .error { color: red; }
     </style>
 </head>
 <body>
-    <h1><fmt:message key="modificarClienteExito"/></h1>
+    <h1>Exito al modificar el cliente</h1>
    
 <a href="<c:url value="hello.htm"/>">Home</a>
 </body>

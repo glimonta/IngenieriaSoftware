@@ -3,13 +3,13 @@
 
 <html>
 <head>
-    <title><fmt:message key="title"/></title>
+    <title>Registrar afiliacion a servicio adicional</title>
     <style>
     .error { color: red; }
     </style>
 </head>
 <body>
-    <h1><fmt:message key="heading"/></h1>
+    <h1>Registrar afiliacion a servicio adicional</h1>
     <form:form modelAttribute="servicioAdicional" action ="registrarServicioAdicional.htm">
         <table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5">
             <tr>

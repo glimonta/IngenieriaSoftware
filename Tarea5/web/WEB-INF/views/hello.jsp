@@ -5,13 +5,16 @@
 
 <html>
 <head>
-    <title><fmt:message key="title"/></title>
+    <title>MANEJADOR INNOVA</title>
     <style>
     .error { color: red; }
     </style>
 </head>
 <body>
-  
+    <h1>Bienvenido al manejador INNOVA</h1>
+    <h3>Seleccione una opcion de su preferencia:</h3>
+    <br>
+
    
 <a href="<c:url value="registrarCliente.htm"/>">Registrar cliente</a>
 <br>

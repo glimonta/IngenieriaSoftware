@@ -12,7 +12,7 @@
     </style>
     </head>
     <body>
-        <h1><fmt:message key="tituloConsultarCliente"/></h1>
+        <h1>Consultar clientes</h1>
         
         <h3>Clientes</h3>
         <c:forEach items="${model.Clientes}" var="cliente">
