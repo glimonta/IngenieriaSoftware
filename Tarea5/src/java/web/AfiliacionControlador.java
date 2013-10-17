@@ -33,15 +33,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- *
- * @author johndelgado
+ * Controlador que permite hacer la afiliacion de un producto y un plan
  */
 
 @Controller
 public class AfiliacionControlador {
     
     protected final Log logger = LogFactory.getLog(getClass());
-    
+    /**
+     * Obtiene la informacion de la afiliacion
+     */
     @RequestMapping(value= "/registrarAfiliacion", method = RequestMethod.GET)
     public String getRegistrationForm(Model model){
         logger.info("Crear objeto de afiliacion");
@@ -55,7 +56,9 @@ public class AfiliacionControlador {
         
     }
     
-    
+    /**
+     * Se envia la informacion obtenida a la base de datos
+     */
   @RequestMapping (value = "/registrarAfiliacion", method = RequestMethod.POST)
     public String getAfiliacionForm(Afiliacion afiliacion , BindingResult result) throws SQLException {
       logger.info("Se ha resgistrado la afiliacion");

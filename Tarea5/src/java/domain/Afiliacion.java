@@ -18,38 +18,77 @@ public class Afiliacion {
     Plan plan;           // Plan al que esta asociado.
     Producto producto;   // Producto que esta asociado.
 
+    /**
+     * Retorna la fecha de inicio de la afiliacion
+     * @return fecha de inicio de la afiliacion
+     */
     public Date getFechaInicio() {
         return fechaInicio;
     }
 
+    /**
+     * Se encarga de asignar la fecha de inicio de la afiliacion
+     * @param fechaInicio fecha de inicio de la afiliacion
+     */
     public void setFechaInicio(Date fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
+    /**
+     * Retorna la fecha final de la afiliacion
+     * @return fecha final de la afiliacion
+     */
     public Date getFechaFin() {
         return fechaFin;
     }
 
+    /**
+     * Se encarga de asignar la fecha final de la asignacion
+     * @param fechaFin fecha final de la afiliacion
+     */
     public void setFechaFin(Date fechaFin) {
         this.fechaFin = fechaFin;
     }
 
+    /**
+     * Retorna el plan afiliado
+     * @return plan afiliado
+     */
     public Plan getPlan() {
         return plan;
     }
 
+    /**
+     * Asigna el plan afiliado
+     * @param plan plan afiliado
+     */
     public void setPlan(Plan plan) {
         this.plan = plan;
     }
 
+    /**
+     * Retorna el producto que se afilia
+     * @return producto que se afilia
+     */
     public Producto getProducto() {
         return producto;
     }
 
+    /**
+     * Asigna el producto que se afilia
+     * @param producto 
+     */
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
-
+    
+    /**
+     * Constructor vacio
+     */
+    public Afiliacion() {
+        
+    }
+    
     /**
      * Constructor para la clase
      * @param fechaI fecha de inicio de la afiliacion.
@@ -57,11 +96,6 @@ public class Afiliacion {
      * @param plan plan que esta afiliado
      * @param producto producto que esta afiliado al plan
      */
-    
-    public Afiliacion() {
-        
-    }
-    
     public Afiliacion(Date fechaI, Date fechaF, Plan plan, Producto producto) {
         this.fechaInicio = fechaI;
         this.fechaFin = fechaF;

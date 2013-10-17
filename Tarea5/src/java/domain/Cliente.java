@@ -14,16 +14,16 @@ import org.hibernate.validator.constraints.Range;
  * la tabla cliente en la base de datos.
  */
 public class Cliente {
-    
+    //El minimo de la cedula es 1
     @Min(1)
     public Integer cedula;            // Cedula del cliente
-    
+    //El nombre no puede ser vacio
     @NotEmpty
     public String nombre;             // Nombre del cliente
-    
+    //La direccion no puede ser vacia
     @NotEmpty
     public String direccion;          // Direccion del cliente
-    
+    //Los telefonos no pueden ser vacios
     @NotEmpty
     public ArrayList<Long> telefonos; // telefonos del cliente
     
@@ -41,38 +41,73 @@ public class Cliente {
         this.telefonos = telefonos;
     }
     
+    /**
+     * Constructor vacio para la clase
+     */
     public Cliente() {
         
     }
     
+    /**
+     * Asigna la cedula del cliente
+     * @param cedula cedula del cliente
+     */
     public void setCedula(Integer cedula) {
         this.cedula = cedula;
     }
     
+    /**
+     * Asigna el nombre del cliente
+     * @param nombre nombre del cliente
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
     
+    /**
+     * Asigna la direccion del cliente
+     * @param direccion direccion del cliente
+     */
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
     
+    /**
+     * Asigna los telefonos del cliente
+     * @param telefonos telefonos del cliente
+     */
     public void setTelefonos(ArrayList<Long> telefonos) {
         this.telefonos = telefonos;
     }
     
+    /**
+     * Retorna la cedula del cliente
+     * @return cedula del cliente
+     */
     public Integer getCedula() {
         return this.cedula;
     }
     
+    /**
+     * Retorna el nombre del cliente
+     * @return nombre del cliente
+     */
     public String getNombre() {
         return this.nombre;
     }
     
+    /**
+     * Retorna la direccion del cliente
+     * @return direccion del cliente
+     */
     public String getDireccion() {
         return this.direccion;
     }
     
+    /**
+     * Retorna los telefonos del cliente
+     * @return telefonos del cliente
+     */
     public ArrayList<Long> getTelefonos() {
         return this.telefonos;
     }
