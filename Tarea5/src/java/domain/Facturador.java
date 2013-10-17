@@ -623,8 +623,132 @@ public static Factura ultimaFactura(Producto producto) throws SQLException, Pars
     }    
      return factura;
 }
-    
-    
+
+public static ArrayList<ServicioDisponiblePrepago> listarDisponibilidadDeCupos(Producto producto) throws SQLException {
+       Connection conexion = Conexion.obtenerConn();
+
+        ArrayList<ServicioDisponiblePrepago> disponibles = new ArrayList();
+        
+        Calendar calendar = new GregorianCalendar();
+        Date fechaActual = new Date (calendar.get(Calendar.YEAR) - 1900, 
+                calendar.get(Calendar.MONTH), 1);
+        Date fechaActualFin = new Date (calendar.get(Calendar.YEAR) - 1900, 
+                calendar.get(Calendar.MONTH)+1, 1);
+
+        
+        Plan planActual = obtenerPlanActual(producto);
+        ArrayList<Tiene> paquetes = planActual.listarTiene();
+        Tiene tieneActual = null;
+        for(Tiene tiene: paquetes)
+            if (tiene.fechaInicio.before(fechaActual) && 
+                    (tiene.fechaFin != null) || (tiene.fechaFin.before(fechaActualFin))){
+                tieneActual = tiene;
+                break;
+            }
+        
+        if(tieneActual == null)
+            return null;
+        
+        ArrayList<Contiene> contienes = tieneActual.paquete.ListarContiene();
+        ArrayList<ServicioAdicional> adicionales = listarServiciosAdicionalesActuales(producto);
+        ArrayList<Consumo> consumos = listarConsumos(producto,fechaActual, fechaActualFin);
+                
+        for(Contiene contiene : contienes){
+            
+            boolean seHaConsumido = false;
+            int restante = 0;
+            for(Consumo consumo : consumos){
+                
+                if(contiene.servicio.nombre.equals(consumo.servicio.nombre)){
+                    seHaConsumido = true;
+                    restante = contiene.cantidad - consumo.cantidad;
+                }
+                    
+                
+            }
+            
+            if(!seHaConsumido)
+                restante = contiene.cantidad;
+            
+            ServicioDisponiblePrepago disponible = new ServicioDisponiblePrepago(contiene.servicio.nombre,restante);
+            disponibles.add(disponible);
+            
+        }
+        
+        for(ServicioAdicional servicioAd : adicionales){
+            
+            boolean seHaConsumido = false;
+            int restante = 0;
+            for(Consumo consumo : consumos){
+                
+                if(servicioAd.nombre.equals(servicioAd.nombre)){
+                    seHaConsumido = true;
+                    restante = servicioAd.cantidadAdicional - consumo.cantidad;
+                }
+                    
+                
+            }
+            
+            if(!seHaConsumido)
+                restante = servicioAd.cantidadAdicional;
+            
+            ServicioDisponiblePrepago disponible = new ServicioDisponiblePrepago(servicioAd.nombre,restante);
+            disponibles.add(disponible);
+            
+        }
+        
+        return disponibles;
+        
+    }
+
+    public static ArrayList<ServicioAdicional> listarServiciosAdicionalesActuales(Producto producto){
+
+        Calendar calendar = new GregorianCalendar();
+        Date fechaActual = new Date (calendar.get(Calendar.YEAR) - 1900, 
+                calendar.get(Calendar.MONTH), 1);
+        
+        
+        Factura factura = null;
+        //Se crea una lista vacia
+        ArrayList<ServicioAdicional> listaServiciosAd = new ArrayList();
+        Connection conexion = Conexion.obtenerConn();
+
+        if (conexion != null) {
+
+            Statement stmt = null;
+            String query = "select nombre_servicio from posee where id = " +
+                    producto.codigoProd + " and fecha_inic = " +
+                    fechaActual.toString() + ";" ;
+
+            try {
+
+                //Se obtienen los datos de los servicios asociados al paquete
+                stmt = conexion.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+
+                /*Por cada servicio se obtienen los datos faltantes para crear
+                   un objeto y agregarlo a la lista*/
+                while (rs.next()) {
+
+                    String nomServicioAd = rs.getString(1);
+                    ServicioAdicional serv = ServicioAdicional.consultarServicioAd(nomServicioAd);
+                    
+                    listaServiciosAd.add(serv);
+                }
+                
+                conexion.close();
+
+            } catch (SQLException e) {
+
+                //Si hay un error se imprime en pantalla
+                System.out.println(e.getMessage());
+
+            }
+        }
+
+        return listaServiciosAd;
+    }
+
    
 }
 

@@ -20,7 +20,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 
 public class Producto extends Facturable {
-    //El minimo del codigo de producto es -1
+
     @Min(-1)
     public int codigoProd = 0;  //Codigo del producto
     
@@ -28,9 +28,6 @@ public class Producto extends Facturable {
     
     public Cliente cliente;     //Cliente que al quien le pertenece el producto
 
-    /**
-     * Constructor vacio
-     */
     public Producto() {};    
     
    /**
@@ -46,50 +43,26 @@ public class Producto extends Facturable {
         this.cliente = cliente;
     }
     
-    /**
-     * Asigna el codigo del producto
-     * @param codigo codigo del producto
-     */
     public void setCodigoProd(int codigo) {
         this.codigoProd = codigo;
     }
     
-    /**
-     * Asigna el modelo del producto
-     * @param mod modelo del producto
-     */
     public void setModelo(String mod) {
         this.modelo = mod;
     }
     
-    /**
-     * Asigna al cliente dueño del producto
-     * @param cliente cliente dueño del producto
-     */
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
     
-    /**
-     * Retorna el codigo del producto
-     * @return codigo del producto
-     */
     public int getCodigoProd() {
         return codigoProd;
     }
     
-    /**
-     * Retorna el modelo del producto
-     * @return modelo del producto
-     */
     public String getModelo(){
         return modelo;
     }
     
-    /**
-     * Retorna el cliente dueño del producto
-     * @return cliente dueño del producto
-     */
     public Cliente getCliente() {
         return cliente;        
     }

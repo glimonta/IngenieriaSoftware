@@ -35,9 +35,6 @@ public class ServicioAdicional extends Servicio {
         this.tipoPlan = tipoPlan;
     }
     
-    /**
-     * Constructor vacio
-     */
     public ServicioAdicional() {
         
     }

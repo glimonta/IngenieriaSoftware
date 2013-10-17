@@ -29,57 +29,30 @@ public class Servicio {
         this.tipoServicio = tipo;
     }
 
-    /**
-     * Constructor vacio
-     */
     public Servicio() {
         
     }
 
-    /**
-     * Retorna el nombre del servicio
-     * @return nombre del servicio
-     */
     public String getNombre() {
         return nombre;
     }
 
-    /**
-     * Asigna el nombre del servicio
-     * @param nombre nombre del servicio
-     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    /**
-     * Retorna la descripcion del servicio
-     * @return descripcion del servicio
-     */
     public String getDescripcion() {
         return descripcion;
     }
 
-    /**
-     * Asigna la descripcion del servicio
-     * @param descripcion descripcion del servicio
-     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
-    /**
-     * Retorna el tipo de servicio
-     * @return tipo de servicio
-     */
     public String getTipoServicio() {
         return tipoServicio;
     }
 
-    /**
-     * Asigna el tipo de servicio
-     * @param tipoServicio tipo de servicio
-     */
     public void setTipoServicio(String tipoServicio) {
         this.tipoServicio = tipoServicio;
     }

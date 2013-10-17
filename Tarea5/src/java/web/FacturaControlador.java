@@ -29,17 +29,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMethod;
 import javax.validation.Valid;
 
-/**
- * Controlador que permite manejar la factura.
- */
+
 @Controller
 public class FacturaControlador {
     
     protected final Log logger = LogFactory.getLog(getClass());
     
-    /**
-     * Consulta los datos de la factura.
-     */
     @RequestMapping (value = "/consultarFacturas.htm", method = RequestMethod.POST)
     public ModelAndView consultarFacturaForm(Cliente clienteFactura, BindingResult result) throws SQLException {
       logger.info("Se devuelve las facturas del cliente");
@@ -56,9 +51,7 @@ public class FacturaControlador {
       }
     }
     
-    /**
-     * Consulta los datos de las facturas actuales.
-     */
+    
     @RequestMapping (value = "/consultarFacturasActuales.htm", method = RequestMethod.GET)
     public ModelAndView consultarFacturasActuales(Model model) {
         
@@ -71,9 +64,7 @@ public class FacturaControlador {
         
     }
     
-    /**
-     * Consulta la informacion de los productos.
-     */
+    
     @RequestMapping (value = "/consultarProductos", method = RequestMethod.GET)
     public ModelAndView consultarProductos(Model model) throws SQLException {
         
@@ -88,9 +79,6 @@ public class FacturaControlador {
         
     }
     
-    /**
-     * Consulta la informacion de la factura de un producto.
-     */
     @RequestMapping (value = "/consultarFacturaProducto.htm", method = RequestMethod.POST)
     public ModelAndView consultarFacturaProducto(Producto producto, BindingResult result) throws SQLException, ParseException {
         
@@ -106,4 +94,6 @@ public class FacturaControlador {
         }
         
     }
+
+    
 }

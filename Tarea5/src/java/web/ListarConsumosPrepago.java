@@ -38,30 +38,35 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 
 @Controller
-public class ServicioAdicionalControlador {
+public class ListarConsumosPrepago {
     
     protected final Log logger = LogFactory.getLog(getClass());
     
-    @RequestMapping(value= "/registrarServicioAdicional", method = RequestMethod.GET)
+    @RequestMapping(value= "/", method = RequestMethod.GET)
     public String getRegistrationForm(Model model){
-        logger.info("Crear objeto de posee");
-        FormularioServicioAdicional servicioAdicional = new FormularioServicioAdicional();
-        model.addAttribute("servicioAdicional", servicioAdicional);
-        return "registrarServicioAdicional";
+        logger.info("Crear objeto de afiliacion");
+        Afiliacion afiliacion = new Afiliacion();
+        Plan plan = new Plan();
+        afiliacion.setPlan(plan);
+        Producto producto = new Producto();
+        afiliacion.setProducto(producto);
+        model.addAttribute("afiliacion", afiliacion);
+        return "registrarAfiliacion";
         
     }
     
     
-  @RequestMapping (value = "/registrarServicioAdicional", method = RequestMethod.POST)
-    public String getAfiliacionForm(FormularioServicioAdicional servicioAdicional , BindingResult result) throws SQLException {
-      logger.info("Se ha resgistrado la posesion");
+ // @RequestMapping (value = "/registrarAfiliacion", method = RequestMethod.POST)
+    public String getAfiliacionForm(Afiliacion afiliacion , BindingResult result) throws SQLException {
+      logger.info("Se ha resgistrado la afiliacion");
  
         Calendar calendar = new GregorianCalendar();
         Date ahora = new Date(calendar.get(Calendar.YEAR) - 1900,calendar.get(Calendar.MONTH),1);
-        ServicioAdicional servicioAdicionalFinal = ServicioAdicional.consultarServicioAd(servicioAdicional.getNombreProd());
-        Producto producto = Producto.consultarProducto(servicioAdicional.getCodigo());
-        Posee posee = new Posee(ahora, servicioAdicionalFinal, producto);
-        posee.registrarPosee();
+        Date ahoraAux = new Date(calendar.get(Calendar.YEAR) - 1900,calendar.get(Calendar.MONTH)+1,1);
+        Plan plan = Plan.consultarPlan(afiliacion.getPlan().getNombre(),afiliacion.getPlan().getTipoPlan());
+        Producto producto = Producto.consultarProducto(afiliacion.getProducto().getCodigoProd());
+        afiliacion = new Afiliacion(ahora, ahoraAux, plan, producto);
+        afiliacion.registrarAfiliacion();
         
        return "success";
     }

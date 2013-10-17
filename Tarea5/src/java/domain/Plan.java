@@ -18,57 +18,30 @@ public class Plan {
     String descripcion; //descripcion del plan
     String tipoPlan; //tipo del plan
 
-    /**
-     * Retorna el nombre del plan
-     * @return nombre del plan
-     */
     public String getNombre() {
         return nombre;
     }
 
-    /**
-     * Asigna el nombre del plan
-     * @param nombre nombre del plan
-     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    /**
-     * Retorna la descripcion del plan
-     * @return descripcion del plan
-     */
     public String getDescripcion() {
         return descripcion;
     }
 
-    /**
-     * Asigna la descripcion del plan
-     * @param descripcion descripcion del plan
-     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
-    /**
-     * Retorna el tipo de plan
-     * @return tipo de plan
-     */
     public String getTipoPlan() {
         return tipoPlan;
     }
 
-    /**
-     * Asigna el tipo de plan
-     * @param tipoPlan tipo de plan
-     */
     public void setTipoPlan(String tipoPlan) {
         this.tipoPlan = tipoPlan;
     }
     
-    /**
-     * Constructor vacio
-     */
     public Plan() {
         
     }
@@ -229,6 +202,47 @@ public class Plan {
             ResultSet rs = st.executeQuery("select nombre_paquete, descripcion from "
                     + "paquete natural join tiene where nombre_plan = '" + 
                     this.nombre + "';");
+            
+            // Verificamos que el query no retornara nulo
+            if (rs.next()) {
+                // Agregamos el primer paquete a la lista paquetes
+                Paquete paq = new Paquete(rs.getString(1), rs.getString(2));
+                paquetes.add(paq);
+                    
+                //Se guardan los paquetes obtenidos en una lista
+                while (rs.next()) {
+                    paq = new Paquete(rs.getString(1), rs.getString(2));
+                    paquetes.add(paq);
+                }
+            }
+            
+            
+            //se cierra la conexion
+            conn.close();
+            
+        } catch (SQLException ex) {
+            // Si hay una excepcion se imprime un mensaje
+            System.err.println(ex.getMessage());
+        }
+        
+        // Retorna la lista de paquetes que saco de la base de datos y en caso de no
+        // conseguir ninguno retorna null.
+        return paquetes;
+        
+    }
+    
+    ArrayList<Paquete> ListarPaquetesActuales() {
+        
+        ArrayList<Paquete> paquetes = new ArrayList();
+        // Se conecta a la base de datos
+        try (Connection conn = Conexion.obtenerConn()) {
+            
+            Statement st;
+            st = conn.createStatement();
+            // Se ejecuta el query
+            ResultSet rs = st.executeQuery("select nombre_paquete, descripcion from "
+                    + "paquete natural join tiene where nombre_plan = '" + 
+                    this.nombre + "' and fecha_fin is null;");
             
             // Verificamos que el query no retornara nulo
             if (rs.next()) {
