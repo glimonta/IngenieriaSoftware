@@ -20,44 +20,82 @@ public class Factura {
     ArrayList<String> comentarios; // comentarios asociados a la factura
     Producto producto; //producto asociado a la factura
     
-    
-    
+    /**
+     * Asigna la fecha de la factura
+     * @param fecha fecha de la factura
+     */ 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
     
+    /**
+     * Asigna el costo del plan
+     * @param costo costo del plan
+     */
     public void setCostoPlan(double costo) {
         this.costoPlan = costo;
     }
     
+    /**
+     * Asigna el monto total de la factura
+     * @param monto monto total de la factura
+     */
     public void setMontoTotal(double monto) {
         this.montoTotal = monto;
     }
     
+    /**
+     * Asigna los comentarios de la factura
+     * @param comentarios comentarios de la factura
+     */
     public void setComentarios(ArrayList<String> comentarios) {
         this.comentarios = comentarios;
     }
     
+    /**
+     * Asigna el producto de la factura
+     * @param producto producto de la factura
+     */
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
     
+    /**
+     * Retorna la fecha de la factura
+     * @return fecha de la factura
+     */
     public Date getFecha() {
         return fecha;
     }
     
+    /**
+     * Retorna el costo del plan 
+     * @return costo del plan
+     */
     public double getCostoPlan() {
         return costoPlan;
     }
     
+    /**
+     * Retorna el monto total de la factura
+     * @return monto total de la factura
+     */
     public double getMontoTotal() {
         return this.montoTotal + this.costoPlan;
     }
     
+    /**
+     * Retorna los comentarios de la factura
+     * @return comentarios de la factura
+     */
     public ArrayList<String> getComentarios() {
         return comentarios;
     }
     
+    /**
+     * Retorna el producto de la factura
+     * @return producto de la factura
+     */
     public Producto getProducto() {
         return producto;
     }

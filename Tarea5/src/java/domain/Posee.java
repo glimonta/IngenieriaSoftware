@@ -17,26 +17,50 @@ public class Posee {
     ServicioAdicional adicional; // Servicio Adicional contratado por el producto
     Producto producto;           // Producto asociado a la relacion posee
 
+    /**
+     * Retorna la fecha de inicio de la posesion
+     * @return fecha de inicio de la posesion
+     */
     public Date getFechaInicio() {
         return fechaInicio;
     }
 
+    /**
+     * Asigna la fecha de inicio de la posesion
+     * @param fechaInicio fecha de inicio de la posesion
+     */
     public void setFechaInicio(Date fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
+    /**
+     * Retorna el servicio adicional de la posesion
+     * @return servicio adicional de la posesion
+     */
     public ServicioAdicional getAdicional() {
         return adicional;
     }
 
+    /**
+     * Asigna el servicio adicional de la posesion
+     * @param adicional servicio adicional de la posesion
+     */
     public void setAdicional(ServicioAdicional adicional) {
         this.adicional = adicional;
     }
 
+    /**
+     * Retorna el producto de la posesion
+     * @return producto de la posesion
+     */
     public Producto getProducto() {
         return producto;
     }
 
+    /**
+     * Asigna el producto de la posesion
+     * @param producto producto de la posesion
+     */
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
@@ -53,6 +77,9 @@ public class Posee {
         this.producto = producto;
     }
     
+    /**
+     * Constructor vacio
+     */
     public Posee() {
         
     }

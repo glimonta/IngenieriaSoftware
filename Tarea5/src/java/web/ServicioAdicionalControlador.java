@@ -33,8 +33,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- *
- * @author johndelgado
+ * Controlador que se encarga de manejar los servicios adicionales.
  */
 
 @Controller
@@ -42,6 +41,9 @@ public class ServicioAdicionalControlador {
     
     protected final Log logger = LogFactory.getLog(getClass());
     
+    /**
+     * Obtiene la informacion del servicio adicional.
+     */
     @RequestMapping(value= "/registrarServicioAdicional", method = RequestMethod.GET)
     public String getRegistrationForm(Model model){
         logger.info("Crear objeto de posee");
@@ -51,7 +53,9 @@ public class ServicioAdicionalControlador {
         
     }
     
-    
+    /**
+     * Envia la informacion de la afiliacion a la base de datos.
+     */
   @RequestMapping (value = "/registrarServicioAdicional", method = RequestMethod.POST)
     public String getAfiliacionForm(FormularioServicioAdicional servicioAdicional , BindingResult result) throws SQLException {
       logger.info("Se ha resgistrado la posesion");

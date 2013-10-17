@@ -18,30 +18,57 @@ public class Plan {
     String descripcion; //descripcion del plan
     String tipoPlan; //tipo del plan
 
+    /**
+     * Retorna el nombre del plan
+     * @return nombre del plan
+     */
     public String getNombre() {
         return nombre;
     }
 
+    /**
+     * Asigna el nombre del plan
+     * @param nombre nombre del plan
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
+    /**
+     * Retorna la descripcion del plan
+     * @return descripcion del plan
+     */
     public String getDescripcion() {
         return descripcion;
     }
 
+    /**
+     * Asigna la descripcion del plan
+     * @param descripcion descripcion del plan
+     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
+    /**
+     * Retorna el tipo de plan
+     * @return tipo de plan
+     */
     public String getTipoPlan() {
         return tipoPlan;
     }
 
+    /**
+     * Asigna el tipo de plan
+     * @param tipoPlan tipo de plan
+     */
     public void setTipoPlan(String tipoPlan) {
         this.tipoPlan = tipoPlan;
     }
     
+    /**
+     * Constructor vacio
+     */
     public Plan() {
         
     }

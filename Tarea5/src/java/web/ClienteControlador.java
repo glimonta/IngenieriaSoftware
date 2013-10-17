@@ -25,13 +25,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMethod;
 import javax.validation.Valid;
 
-
+/**
+ * Controlador que permite registrar y/o modificar un cliente.
+ */
 @Controller
 //@RequestMapping(value="/cliente")
 public class ClienteControlador {
 
     protected final Log logger = LogFactory.getLog(getClass());
     
+    /**
+     * Obtiene la informacion del cliente
+     */
     @RequestMapping(value= "/registrarCliente", method = RequestMethod.GET)
     public String getRegistrationForm(Model model){
         logger.info("Crear objeto del cliente");
@@ -43,6 +48,9 @@ public class ClienteControlador {
         
     }
     
+    /**
+     * Envia la informacion a la base de datos.
+     */
     @RequestMapping (value = "/registrarCliente.htm", method = RequestMethod.POST)
     public String postRegistrationForm(@Valid Cliente cliente, BindingResult result) {
       logger.info("Se registra el cliente");
@@ -56,6 +64,9 @@ public class ClienteControlador {
       }
     }
     
+    /**
+     * Consulta los datos de los clientes
+     */
     @RequestMapping (value = "/consultarCliente.htm", method = RequestMethod.GET) 
     public ModelAndView consultarCliente(Model model) throws SQLException {
         
@@ -74,7 +85,9 @@ public class ClienteControlador {
   
     }
       
-    
+    /**
+     * Modifica los datos del cliente
+     */
     @RequestMapping (value = "/consultarCliente.htm", method = RequestMethod.POST)
     public String modificarClienteForm(@Valid Cliente cliente, BindingResult result) {
       logger.info("Se modifica el cliente");
