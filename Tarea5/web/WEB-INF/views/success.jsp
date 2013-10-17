@@ -11,7 +11,7 @@
     </style>
 </head>
 <body>
-    <h1><fmt:message key="registrarClienteExito"/></h1>
+    <h1><fmt:message key="registrarExito"/></h1>
    
 <a href="<c:url value="hello.htm"/>">Home</a>
 </body>

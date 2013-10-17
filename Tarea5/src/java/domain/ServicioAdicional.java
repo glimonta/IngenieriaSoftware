@@ -1,4 +1,4 @@
-
+   
 package domain;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -33,6 +33,10 @@ public class ServicioAdicional extends Servicio {
         this.tarifa = tarifa;
         this.cantidadAdicional = cantAd;
         this.tipoPlan = tipoPlan;
+    }
+    
+    public ServicioAdicional() {
+        
     }
 
    /**

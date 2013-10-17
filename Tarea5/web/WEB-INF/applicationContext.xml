@@ -21,7 +21,8 @@
         <property name="basename" value="messages"/>
     </bean>
 
-
+    <mvc:view-controller path="/views/registration_ok"
+        view-name = "/views/success.jsp"/>
     <!--bean id="propertyConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
           p:location="/WEB-INF/jdbc.properties" />

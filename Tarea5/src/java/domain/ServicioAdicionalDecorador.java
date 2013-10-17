@@ -9,6 +9,7 @@ public abstract class ServicioAdicionalDecorador extends Facturable {
     // Elemento facturable que va a decorar
     public Facturable facturable;
     
+    
     /**
      * Constructor para la clase
      * @param facturable elemento facturable que se va a decorar.

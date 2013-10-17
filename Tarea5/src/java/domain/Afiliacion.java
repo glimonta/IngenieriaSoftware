@@ -18,6 +18,38 @@ public class Afiliacion {
     Plan plan;           // Plan al que esta asociado.
     Producto producto;   // Producto que esta asociado.
 
+    public Date getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(Date fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public Date getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(Date fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public Plan getPlan() {
+        return plan;
+    }
+
+    public void setPlan(Plan plan) {
+        this.plan = plan;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
     /**
      * Constructor para la clase
      * @param fechaI fecha de inicio de la afiliacion.
@@ -25,6 +57,11 @@ public class Afiliacion {
      * @param plan plan que esta afiliado
      * @param producto producto que esta afiliado al plan
      */
+    
+    public Afiliacion() {
+        
+    }
+    
     public Afiliacion(Date fechaI, Date fechaF, Plan plan, Producto producto) {
         this.fechaInicio = fechaI;
         this.fechaFin = fechaF;
@@ -54,7 +91,7 @@ public class Afiliacion {
     /**
      * Permite registrar una afiliacion nueva a la base de datos.
      */
-    void registrarAfiliacion() {
+   public void registrarAfiliacion() {
         // Intentamos establecer conexion con la base de datos
         try (Connection conn = Conexion.obtenerConn()) {
 

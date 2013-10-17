@@ -13,13 +13,17 @@
 <body>
   
    
-<a href="<c:url value="registrarCliente.htm"/>">Registrar Cliente</a>
+<a href="<c:url value="registrarCliente.htm"/>">Registrar cliente</a>
 <br>
-<a href="<c:url value="consultarCliente.htm"/>">Consultar Cliente</a>
+<a href="<c:url value="consultarCliente.htm"/>">Consultar cliente</a>
 <br>
-<a href="<c:url value="consultarFacturasActuales.htm"/>">Consultar Facturas Actuales</a>
+<a href="<c:url value="consultarFacturasActuales.htm"/>">Consultar facturas actuales</a>
 <br>
-<a href="<c:url value="consultarProductos.htm"/>">Consultar Productos</a>
+<a href="<c:url value="consultarProductos.htm"/>">Consultar productos</a>
+<br>
+<a href="<c:url value="registrarAfiliacion.htm"/>">Registrar afiliacion</a>
+<br>
+<a href="<c:url value="registrarServicioAdicional.htm"/>">Registrar afiliacion a servicio adicional</a>
 
 </body>
 </html>

@@ -15,9 +15,9 @@ import java.sql.Statement;
 
 public class Conexion {
     
-    private static String url = "jdbc:postgresql://localhost/acs";
-    private static String user = "acs";
-    private static String pass = "andrea";
+    private static String url = "jdbc:postgresql://localhost:5432/Base";
+    private static String user = "johndelgado";
+    private static String pass = "una";
     
     /* Obtiene la conexion a la base de datos */
     

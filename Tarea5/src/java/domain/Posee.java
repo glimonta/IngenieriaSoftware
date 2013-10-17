@@ -16,6 +16,30 @@ public class Posee {
     Date fechaInicio;            // Fecha de adquision del servico adicional
     ServicioAdicional adicional; // Servicio Adicional contratado por el producto
     Producto producto;           // Producto asociado a la relacion posee
+
+    public Date getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(Date fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public ServicioAdicional getAdicional() {
+        return adicional;
+    }
+
+    public void setAdicional(ServicioAdicional adicional) {
+        this.adicional = adicional;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
     
     /**
      * Constructor asociado a la clase posee
@@ -27,6 +51,10 @@ public class Posee {
         this.fechaInicio = fechaInicio;
         this.adicional = adicional;
         this.producto = producto;
+    }
+    
+    public Posee() {
+        
     }
     
      /**
@@ -43,7 +71,7 @@ public class Posee {
     /**
      * Permite registrar un posee nuevo a la base de datos.
      */
-     void registrarPosee() {
+    public void registrarPosee() {
         // Intentamos establecer conexion con la base de datos
         try (Connection conn = Conexion.obtenerConn()) {
             

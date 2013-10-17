@@ -12,7 +12,6 @@
                 </library>
                 <library dirs="200">
                     <file>${libs.jstl11.classpath}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${libs.PostgreSQLDriver.classpath}</file>
@@ -52,6 +51,10 @@
                 </library>
                 <library dirs="200">
                     <file>${file.reference.spring-aop-2.5.5.jar-1}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${libs.jstl.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>

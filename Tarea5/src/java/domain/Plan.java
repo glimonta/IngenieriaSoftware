@@ -17,6 +17,35 @@ public class Plan {
     String nombre; //nombre del plan
     String descripcion; //descripcion del plan
     String tipoPlan; //tipo del plan
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getTipoPlan() {
+        return tipoPlan;
+    }
+
+    public void setTipoPlan(String tipoPlan) {
+        this.tipoPlan = tipoPlan;
+    }
+    
+    public Plan() {
+        
+    }
+    
     
     /**
      * Constructor de la clase plan
@@ -121,7 +150,7 @@ public class Plan {
      * @param tipo_plan tipo del plan
      * @return la instancia hecha objeto del plan en cuestion
      */
-    static Plan consultarPlan(String nombre, String tipo_plan) {
+   public static Plan consultarPlan(String nombre, String tipo_plan) {
         // Inicializamos un objeto Cliente en null
         Plan plan = null;
         

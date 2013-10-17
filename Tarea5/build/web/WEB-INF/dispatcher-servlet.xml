@@ -42,7 +42,8 @@
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="index" />
     
-
+    <mvc:view-controller path="registration_ok"
+        view-name = "hello21233"/>
         
 
 </beans>
