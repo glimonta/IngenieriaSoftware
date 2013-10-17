@@ -25,6 +25,20 @@ public class Controlador {
         return new ModelAndView("hello");
     }
     
+    @RequestMapping(value="/menuAdministrador.htm")
+    public ModelAndView handleRequestAdministrador(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        logger.info("Returning menuAdministrador view");
+        return new ModelAndView("menuAdministrador");
+    }
+    
+    @RequestMapping(value="/menuCliente.htm")
+    public ModelAndView handleRequestCliente(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        logger.info("Returning menuCliente view");
+        return new ModelAndView("menuCliente");
+    }
+    
     @RequestMapping(value="/success.htm")
     public ModelAndView handleRequestSuccess(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
