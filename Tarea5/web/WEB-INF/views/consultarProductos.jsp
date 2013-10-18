@@ -18,7 +18,7 @@
             <br><br>
         </c:forEach>            
 
-     
+     <h3>Ultima factura de un producto postpago </h3>
     <form:form modelAttribute="producto" action ="consultarFacturaProducto.htm">
         <table bgcolor="f8f8ff" border="0" cellspacing="0" cellpadding="5">
             <tr>

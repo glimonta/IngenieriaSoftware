@@ -39,15 +39,8 @@ public class ServicioDisponibleControlador {
         
     }
     
-    @RequestMapping (value = "/servicioDisponiblePrepago", method = RequestMethod.POST)
-    public String listarCuposDisponiblesPrepagoPost(Producto producto, BindingResult bd) throws SQLException {
-        
-        logger.info("listarCuposDisponiblesPrepago");
-        return "listarServicioDisponiblePrepago";   
-        
-    }
     
-    @RequestMapping (value = "/listarServicioDisponiblePrepago", method = RequestMethod.POST)
+    @RequestMapping (value = "/servicioDisponiblePrepago", method = RequestMethod.POST)
     public ModelAndView CuposDisponiblesPrepago(Producto producto, BindingResult bd) throws SQLException {
         ArrayList<ServicioDisponiblePrepago> serviciosDisponibles = Facturador.listarDisponibilidadDeCupos(producto);
         logger.info("listarServicioDisponiblePrepago");

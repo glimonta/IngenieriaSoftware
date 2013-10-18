@@ -27,6 +27,8 @@
 <a href="<c:url value="registrarAfiliacion.htm"/>">Registrar afiliacion</a>
 <br>
 <a href="<c:url value="registrarServicioAdicional.htm"/>">Registrar afiliacion a servicio adicional</a>
+<br>
+<a href="<c:url value="servicioDisponiblePrepago.htm"/>">Consultar cupos prepago</a>
 
 </body>
 </html>
